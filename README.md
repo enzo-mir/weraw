@@ -1,1 +1,5 @@
-### Initialisation of WeRaw
+### ©WeRaw
+
+# Design Preview
+
+![Preview](./assets/preview.png)
