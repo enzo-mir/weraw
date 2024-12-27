@@ -1,0 +1,119 @@
+.main {
+  display: grid;
+  grid-template-columns: 30% auto;
+  width: 100%;
+  height: 100svh;
+  padding: 5em 0 5em 7.5em;
+}
+
+.text_side {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 2em;
+  width: 100%;
+}
+
+.text_side h1 {
+  font-family: var(--kg-font);
+  font-weight: 200;
+  font-size: clamp(2em, 6vw, 4em);
+}
+
+.text_side p {
+  font-size: clamp(1em, 2vw, 1.5em);
+}
+
+.main em {
+  color: var(--blue);
+  font-style: normal;
+}
+
+.url_section {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 3em min-content;
+  margin-top: max(3em, 12svh);
+  place-self: start;
+  column-gap: 1em;
+  width: 100%;
+}
+
+.url_section h2 {
+  background-color: #fff;
+  padding: 0.5em 1em;
+  border-radius: 1em;
+  grid-area: 1 / 1 / 2 / 3;
+  color: black;
+  width: fit-content;
+  font-family: var(--bricolage-condensed--font);
+  height: fit-content;
+  width: fit-content;
+}
+
+.url_section > div {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2em;
+  border: 2px solid white;
+  width: 100%;
+  border-radius: 4em;
+}
+.url_section > img {
+  place-self: center;
+}
+.url_section > div button {
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--pink);
+}
+.url_section > div input {
+  height: 50px;
+  background-color: transparent;
+  border: unset;
+  color: white;
+  padding: 0.5em 1em;
+  font-size: clamp(1em, 2.5vw, 1.5em);
+  height: 100%;
+  width: 100%;
+}
+
+.url_section > div input:invalid {
+    border: 2px solid red;
+}
+
+.url_section > div input:focus-visible {
+  outline: none;
+}
+
+.aside {
+  display: grid;
+  place-items: center;
+  justify-content: end;
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: max-content max-content;
+}
+
+.aside img:first-child {
+  rotate: -25deg;
+  translate: 10%;
+}
+.aside img:nth-child(2) {
+  rotate: 20deg;
+  justify-self: center;
+}
+.aside img:last-child {
+  translate: -30% -10%;
+}
+
+.aside div {
+  rotate: 30deg;
+  align-self: center;
+}
+
+.square {
+  width: 275px;
+  height: 175px;
+  background-color: var(--green);
+  border: 0.5em solid white;
+}
