@@ -1,8 +1,10 @@
 .main {
   display: grid;
   grid-template-columns: 30% auto;
+  grid-template-rows: 100%;
   width: 100%;
   height: 100svh;
+  overflow-y: hidden;
   padding: 5em 0 5em 7.5em;
 }
 
@@ -11,12 +13,13 @@
   grid-template-rows: auto auto 1fr;
   gap: 2em;
   width: 100%;
+  z-index: 1;
 }
 
 .text_side h1 {
   font-family: var(--kg-font);
   font-weight: 200;
-  font-size: clamp(2em, 6vw, 4em);
+  font-size: clamp(1.8em, 6vw, 4em);
 }
 
 .text_side p {
@@ -49,6 +52,7 @@
   font-family: var(--bricolage-condensed--font);
   height: fit-content;
   width: fit-content;
+  font-size: clamp(1em, 2vw, 1.5em);
 }
 
 .url_section > div {
@@ -58,6 +62,7 @@
   border: 2px solid white;
   width: 100%;
   border-radius: 4em;
+  transition: all 0.2s ease-out;
 }
 .url_section > img {
   place-self: center;
@@ -66,6 +71,7 @@
   aspect-ratio: 1/1;
   border-radius: 50%;
   background-color: var(--pink);
+  transition: all 0.2s ease-out;
 }
 .url_section > div input {
   height: 50px;
@@ -78,12 +84,17 @@
   width: 100%;
 }
 
-.url_section > div input:invalid {
-    border: 2px solid red;
-}
-
 .url_section > div input:focus-visible {
   outline: none;
+}
+.url_section > div:has(input:invalid) {
+  border: 2px solid var(--pink);
+}
+.url_section > div:has(input:valid) {
+  border: 2px solid var(--green);
+}
+.url_section > div:has(input:valid) button {
+  background-color: var(--green);
 }
 
 .aside {
@@ -92,11 +103,16 @@
   justify-content: end;
   grid-template-columns: 1fr max-content;
   grid-template-rows: max-content max-content;
+  z-index: 0;
 }
-
+.aside img {
+  height: auto;
+}
 .aside img:first-child {
   rotate: -25deg;
   translate: 10%;
+  aspect-ratio: 3 / 2;
+  width: clamp(200px, 25svw, 400px);
 }
 .aside img:nth-child(2) {
   rotate: 20deg;
@@ -104,6 +120,9 @@
 }
 .aside img:last-child {
   translate: -30% -10%;
+  width: clamp(300px, 30svw, 550px);
+  height: auto;
+  aspect-ratio: 1 / 1;
 }
 
 .aside div {
@@ -112,8 +131,44 @@
 }
 
 .square {
-  width: 275px;
-  height: 175px;
+  width: clamp(100px, 15vw, 275px);
+  aspect-ratio: 3 / 2;
   background-color: var(--green);
   border: 0.5em solid white;
+}
+
+@media screen and (max-width: 1200px) {
+  .url_section {
+    margin-top: 0em;
+  }
+  .main {
+    grid-template-columns: 100%;
+    gap: 2em;
+    grid-template-rows: auto 1fr;
+    padding: 2em;
+  }
+  .aside {
+    position: relative;
+    height: 100%;
+    gap: 0;
+    max-width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
+  .aside img:first-child {
+    width: 125px;
+    height: 75px;
+  }
+  .aside img:nth-child(2) {
+    width: 75px;
+    translate: 0% -10%;
+  }
+  .aside img:last-child {
+    width: 125px;
+    translate: -40% -10%;
+  }
+  .aside div {
+    width: 75px;
+    border: 0.25em solid #fff;
+    translate: 0% 100%;
+  }
 }

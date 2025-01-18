@@ -12,12 +12,12 @@ import { ZodError } from "zod";
 
 export default function Home() {
   const [url, setUrl] = useState<string>("");
-  const submitUrl = () => {
+  const submitUrl = async () => {
     try {
-      const isValidUrl = urlSchema.parse(url);
-      console.log(isValidUrl);
+      urlSchema.parse(url);
     } catch (error) {
-      if (error instanceof ZodError) console.log(error.issues[0].message);
+      if (error instanceof ZodError) {
+      }
     }
   };
 
@@ -43,7 +43,14 @@ export default function Home() {
           </h2>
           <Image src={arrowLink} alt="Arrow link icon" width={30} />
           <div>
-            <input type="url" value={url} onChange={(e) => setUrl(e.currentTarget.value)} name="weraw_url" />
+            <input
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.currentTarget.value)}
+              name="weraw_url"
+              required
+              pattern="https://photos.weraw/*"
+            />
             <button onClick={submitUrl}>
               <Image src={checkImage} alt="Check icon" width={25} height={25} />
             </button>
@@ -51,7 +58,7 @@ export default function Home() {
         </section>
       </div>
       <aside className={style.aside}>
-        <Image src={waterPink} alt="Water pink image" width={500} objectFit="cover" />
+        <Image src={waterPink} alt="Water pink image" />
         <Image src={star} alt="Star image" width={275} />
         <div className={style.square}></div>
         <Image src={starEye} alt="Star eye image" width={550} />
