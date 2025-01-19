@@ -1,0 +1,22 @@
+.input {
+  background-color: transparent;
+  border: unset;
+  color: white;
+  padding: 0.5em 0.8em;
+  font-size: clamp(1em, 2vw, 1.2em);
+  height: 100%;
+  width: 100%;
+  border: 2px solid var(--pink);
+  border-radius: 10px;
+}
+
+.input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.container {
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}

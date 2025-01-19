@@ -9,7 +9,7 @@ export default class Url extends BaseModel {
   declare id: number
 
   @column()
-  declare url: string
+  declare name: string
 
   @column()
   declare done: boolean
@@ -19,9 +19,6 @@ export default class Url extends BaseModel {
 
   @column()
   declare groupe: UUID
-
-  @column.dateTime({ autoCreate: true })
-  declare endAt: DateTime
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

@@ -6,8 +6,8 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('url', 255).notNullable().unique()
-      table.uuid('groupe').notNullable().unique()
+      table.string('name', 255).notNullable()
+      table.uuid('groupe').notNullable().unique().defaultTo(this.db.rawQuery('uuid()').knexQuery)
       table.boolean('done').notNullable().defaultTo(false)
       table.boolean('end_selected').notNullable().defaultTo(false)
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
