@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'bricolage-grotesque-condensed';
+  src: url('../assets/fonts/BricolageGrotesque_Condensed-Bold.ttf');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'bricolage-grotesque';
+  src: url('../assets/fonts/BricolageGrotesque-Regular.ttf');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'KGSecondChances';
+  src: url('../assets/fonts/KGSecondChancesSketch.ttf');
+  font-style: normal;
+  font-weight: normal;
+}
+
+:root {
+  --bg: #111111;
+  --blue: #0080ff;
+  --pink: #ff6fff;
+  --green: #59f19a;
+  --bricolage--font: 'bricolage-grotesque';
+  --bricolage-condensed--font: 'bricolage-grotesque-condensed';
+  --kg-font: 'KGSecondChances';
+}
+
+html,
+body {
+  max-width: 100vw;
+  max-height: 100svh;
+  font-family: var(--bricolage--font);
+  background-color: var(--bg);
+  color: white;
+  font-family: var(--bricolage--font);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  background-color: inherit;
+  border: inherit;
+  cursor: pointer;
+}
+image {
+  object-fit: cover;
+  max-height: 100%;
+  max-width: 100%;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}

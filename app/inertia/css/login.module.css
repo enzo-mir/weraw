@@ -1,0 +1,29 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1em;
+  height: 100svh;
+}
+
+.main form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid var(--pink);
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+}
+
+.main form button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid var(--pink);
+  border-radius: 5px;
+  background-color: var(--pink);
+  color: white;
+  cursor: pointer;
+}
