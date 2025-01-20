@@ -12,7 +12,14 @@ export default class DashboardController {
       .join('photos', (q) => {
         q.on('urls.groupe', '=', 'photos.groupe')
       })
-      .select('urls.name', 'urls.created_at', 'urls.done', 'urls.end_selected', 'photos.url')
+      .select(
+        'urls.id',
+        'urls.name',
+        'urls.created_at',
+        'urls.done',
+        'urls.end_selected',
+        'photos.url'
+      )
     const groupedGaleriesByName = Object.values(
       galeries.reduce((acc, item) => {
         if (!acc[item.name]) {

@@ -1,3 +1,6 @@
+.article h2 {
+  font-size: clamp(1.5em, 2vw, 2em);
+}
 .article {
   position: relative;
   display: flex;
@@ -7,6 +10,16 @@
   aspect-ratio: 5 / 6;
   z-index: 10;
   padding: 0.5em;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 2px solid var(--pink);
+  transition: all 0.2s ease-out;
+}
+
+.article:hover {
+  cursor: pointer;
+  border: 2px solid var(--green);
+  animation: floating 0.5s ease-in-out forwards;
 }
 
 .article > *:not(img) {
@@ -17,20 +30,32 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: calc(100% / 3);
   height: 100%;
   object-fit: cover;
   object-position: center;
-  border-radius: 5px;
   z-index: -2;
-  filter: brightness(0.5);
+  filter: brightness(0.3);
+  user-select: none;
 }
-.article img:first-child {
-  z-index: -1;
-  clip-path: polygon(0 0, 33% 0, 33% 100%, 0% 100%);
+
+.article img:nth-child(2) {
+  left: calc(100% / 3);
 }
 
 .article img:last-child {
-  z-index: -1;
-  clip-path: polygon(66% 0, 100% 0, 100% 100%, 66% 100%);
+  right: 0;
+  left: unset;
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }

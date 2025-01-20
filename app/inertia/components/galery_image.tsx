@@ -1,7 +1,13 @@
 import syle from '#css/galery_image.module.css'
+import { router } from '@inertiajs/react'
 const GaleryImage = ({ ...props }) => {
+  console.log(props.galery.id)
+
+  const handleClick = () => {
+    router.visit(`/galery/${props.galery.id}`)
+  }
   return (
-    <article key={props.galery.id} className={syle.article}>
+    <article onClick={handleClick} key={props.galery.id} className={syle.article}>
       <h2>{props.galery.name}</h2>
       <p>Date : {new Date(props.galery.created_at).toLocaleDateString()}</p>
       <p>Avancement : {props.galery.done ? 'Terminé' : 'En cours'}</p>
