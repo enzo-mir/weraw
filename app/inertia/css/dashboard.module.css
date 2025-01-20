@@ -1,0 +1,53 @@
+/* Layout ---------------------- */
+.layout {
+  padding: 1em;
+}
+.layout nav {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  place-items: center;
+}
+.profile {
+  display: flex;
+  gap: 1rem;
+  place-items: center;
+}
+.profile button {
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+}
+.profile button:hover,
+.profile button:focus-visible {
+  filter: brightness(0.7);
+}
+
+.profile button:first-child {
+  background-color: var(--blue);
+}
+
+.profile button:last-child {
+  background-color: #dc3434;
+}
+/* Layout ---------------------- */
+
+.main {
+  display: grid;
+  gap: 1em;
+  padding: 5em 7.5svw;
+}
+
+.add_btn {
+  position: relative;
+  color: var(--green);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  border: 2px solid var(--green);
+  width: fit-content;
+  padding: 0.25em 0.5em;
+  border-radius: 5px;
+}
+
+.galeries {
+  display: flex;
+  gap: 1.5em;
+}

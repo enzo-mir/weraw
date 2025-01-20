@@ -20,3 +20,19 @@
   flex-direction: column;
   gap: 2em;
 }
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.container form button {
+  padding: 0.5em 1em;
+  background-color: var(--green);
+  color: white;
+  border-radius: 10px;
+  font-size: clamp(1em, 2vw, 1.2em);
+  cursor: pointer;
+
+}

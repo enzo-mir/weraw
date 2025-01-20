@@ -23,6 +23,8 @@
 }
 
 .close_btn {
+  display: grid;
+  place-items: center;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -34,4 +36,10 @@
   background-color: var(--pink);
   padding: 0.25em;
   border-radius: 2px;
+}
+
+.close_btn svg {
+  rotate: 45deg;
+  width: 25px;
+  height: 25px;
 }
