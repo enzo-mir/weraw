@@ -4,7 +4,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import style from '#css/login.module.css'
 import { useForm } from '@inertiajs/react'
 const Login = () => {
-  const { data, setData, post, processing } = useForm<FormValues>({
+  const { data, setData, post } = useForm<FormValues>({
     email: '',
     password: '',
   })

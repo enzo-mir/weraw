@@ -12,6 +12,7 @@ const inertiaConfig = defineConfig({
    */
   sharedData: {
     errors: (ctx) => ctx.inertia.always(() => ctx.session?.flashMessages.get('errors')),
+    _csrf: (ctx) => ctx.inertia.always(() => ctx.request.csrfToken),
   },
 
   /**
@@ -19,8 +20,8 @@ const inertiaConfig = defineConfig({
    */
   ssr: {
     enabled: false,
-    entrypoint: 'inertia/app/ssr.tsx'
-  }
+    entrypoint: 'inertia/app/ssr.tsx',
+  },
 })
 
 export default inertiaConfig

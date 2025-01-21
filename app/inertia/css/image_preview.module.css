@@ -1,0 +1,76 @@
+.container {
+  position: relative;
+  display: grid;
+  place-items: center;
+  grid-template-rows: auto 1fr 1fr 1fr;
+  gap: 2em;
+  height: 100%;
+  padding: 1em 2em;
+  max-height: 100svh;
+}
+
+.before_btn,
+.after_btn {
+  --clr: transparent;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  color: white;
+  top: 50%;
+  translate: 0 -50%;
+  border: 3px solid white;
+  border-radius: 50%;
+  padding: 5px;
+  z-index: 20;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--clr);
+  }
+}
+.before_btn:disabled,
+.after_btn:disabled {
+  filter: brightness(50%);
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+.container > img:last-child {
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center;
+  height: 80svh;
+}
+
+.heart:hover {
+  animation: shake 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95) forwards;
+}
+@keyframes shake {
+  0% {
+    rotate: 20deg;
+  }
+  50% {
+    rotate: -20deg;
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+.comment {
+}
+.container > div {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.before_btn {
+  --clr: var(--pink);
+  left: 3em;
+  rotate: 180deg;
+}
+
+.after_btn {
+  --clr: var(--green);
+  right: 3em;
+}

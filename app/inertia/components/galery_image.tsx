@@ -14,14 +14,7 @@ const GaleryImage = ({ ...props }) => {
       <p>Selection : {props.galery.end_selected ? 'Sélectionné' : 'En cours de selection'}</p>
       <div>
         {props.galery.url.map((url: string) => (
-          <img
-            key={url}
-            src={url}
-            alt={props.galery.name}
-            loading="lazy"
-            width={100}
-            height={100}
-          />
+          <img key={url} src={url} alt={props.galery.name} loading="lazy" />
         ))}
       </div>
     </article>
