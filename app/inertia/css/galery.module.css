@@ -184,3 +184,23 @@
 .main input:checked + .slider:before {
   transform: translateX(1.5em);
 }
+
+.edit {
+  display: flex;
+  gap: 1em;
+  justify-self: end;
+  height: fit-content;
+  font-size: large;
+}
+
+.edit button:last-child {
+  background-color: var(--blue);
+  color: white;
+  padding: 0.5em;
+  border-radius: 10px;
+}
+.edit button:first-child {
+  color: red;
+  text-decoration: underline;
+  font-size: 1em;
+}

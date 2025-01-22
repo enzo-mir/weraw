@@ -1,8 +1,6 @@
 import syle from '#css/galery_image.module.css'
 import { router } from '@inertiajs/react'
 const GaleryImage = ({ ...props }) => {
-  console.log(props.galery.id)
-
   const handleClick = () => {
     router.visit(`/galery/${props.galery.id}`)
   }

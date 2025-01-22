@@ -1,4 +1,5 @@
 import Url from '#models/url'
+import { deleteGaleryService } from '#services/delete_galery'
 import { deleteImage } from '#services/delete_image'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
@@ -36,5 +37,14 @@ export default class GaleriesController {
       return response.badRequest()
     }
     return response.redirect().back()
+  }
+
+  async deleteGalery(ctx: HttpContext) {
+    const { id } = ctx.params
+
+    const { error, success } = await deleteGaleryService(id)
+
+    if (error) ctx.response.notFound()
+    return ctx.response.redirect().toPath('/dashboard')
   }
 }

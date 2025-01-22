@@ -4,6 +4,8 @@ const Dialog = () => {
   const dialogElement = dialogState((state) => state.dialogElement)
   const setDialogElement = dialogState((state) => state.setDialogElement)
 
+  console.log(dialogElement)
+
   return (
     dialogElement !== null && (
       <div onClick={() => setDialogElement(null)} className={style.overlay}>

@@ -8,7 +8,9 @@ import { ValidateIcon } from '~/assets/icons/validate'
 import { useState } from 'react'
 import heart from '#assets/icons/heart.svg'
 import comment from '#assets/icons/comment.svg'
-import { deleteImageService } from '~/services/delete_image'
+import { dialogState } from '~/utils/stores/dialog.store'
+import { ConfirmDelImage } from '~/components/confirm_del_image'
+import Dialog from '~/components/dialog'
 
 const Galery = ({
   images,
@@ -22,23 +24,15 @@ const Galery = ({
   _csrf: string
 }) => {
   const [done, setDone] = useState<number>(urlData.done)
+  const setDialogElement = dialogState((state) => state.setDialogElement)
   async function handleChangDone() {
     setDone(done === 0 ? 1 : 0)
-
     await changeDone(!urlData.done, _csrf, urlData.id)
-  }
-
-  async function handleDeleteImage(image: GaleryType, e: React.MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation()
-    const response = await deleteImageService(image.id, _csrf)
-    if (response.ok) {
-      router.visit(location.href)
-    } else {
-    }
   }
 
   return (
     <>
+      <Dialog />
       {imageId !== null ? <ImagePreview id={imageId!} images={images} /> : null}
       <main className={style.main}>
         <div className={style.header}>
@@ -48,6 +42,10 @@ const Galery = ({
               Revenir à l'accueil <em>WeRaw</em>
             </p>
           </Link>
+          <aside className={style.urlData}>
+            <h1>{urlData.name}</h1>
+            <p>{new Date(urlData.createdAt).toLocaleDateString()}</p>
+          </aside>
           <div className={style.done}>
             <p>Terminé</p>
             <ValidateIcon
@@ -57,21 +55,24 @@ const Galery = ({
             />
             <p>{urlData.end_selected ? 'Selection finis' : 'Selection en cours'}</p>
           </div>
-          <aside className={style.urlData}>
-            <h1>{urlData.name}</h1>
-            <p>{new Date(urlData.createdAt).toLocaleDateString()}</p>
+
+          <aside className={style.edit}>
+            <Link href={`/galery/${urlData.id}`} method="post" className={style.del}>
+              Supprimer
+            </Link>
+            <button>Éditer</button>
           </aside>
         </div>
         <ul className={style.galery}>
           {images.map((image, id) => {
             return (
-              <li
-                key={id + image.url}
-                onClick={() => {
-                  router.visit(location.href + '?id=' + id)
-                }}
-              >
-                <button onClick={(e) => handleDeleteImage(image, e)}>
+              <li key={id + image.url} onClick={() => router.visit(location.href + '?id=' + id)}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setDialogElement(<ConfirmDelImage _csrf={_csrf} image={image} />)
+                  }}
+                >
                   <span>-</span>
                 </button>
                 <img src={image.url} alt={urlData.name + id} />
