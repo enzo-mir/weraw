@@ -21,3 +21,5 @@ router.post('/galery', [DashboardController, 'store']).use(middleware.auth())
 router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 router.get('/galery/:id', [GaleriesController, 'show']).use(middleware.auth())
 router.post('/url/status', [UrlsController, 'changeStatus'])
+
+router.post('/image/:id', [GaleriesController, 'deleteImage']).use(middleware.auth())

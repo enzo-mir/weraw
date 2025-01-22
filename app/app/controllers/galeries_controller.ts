@@ -1,4 +1,5 @@
 import Url from '#models/url'
+import { deleteImage } from '#services/delete_image'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 
@@ -26,5 +27,14 @@ export default class GaleriesController {
         : undefined
 
     return inertia.render('galery', { images: galeries, urlData: urlData[0], imageId })
+  }
+
+  async deleteImage({ session, response, params }: HttpContext) {
+    const { error } = await deleteImage(params.id)
+    if (error) {
+      session.flash({ error })
+      return response.badRequest()
+    }
+    return response.redirect().back()
   }
 }

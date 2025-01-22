@@ -8,6 +8,7 @@ import { ValidateIcon } from '~/assets/icons/validate'
 import { useState } from 'react'
 import heart from '#assets/icons/heart.svg'
 import comment from '#assets/icons/comment.svg'
+import { deleteImageService } from '~/services/delete_image'
 
 const Galery = ({
   images,
@@ -26,6 +27,16 @@ const Galery = ({
 
     await changeDone(!urlData.done, _csrf, urlData.id)
   }
+
+  async function handleDeleteImage(image: GaleryType, e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation()
+    const response = await deleteImageService(image.id, _csrf)
+    if (response.ok) {
+      router.visit(location.href)
+    } else {
+    }
+  }
+
   return (
     <>
       {imageId !== null ? <ImagePreview id={imageId!} images={images} /> : null}
@@ -60,7 +71,10 @@ const Galery = ({
                   router.visit(location.href + '?id=' + id)
                 }}
               >
-                <img src={image.url} />
+                <button onClick={(e) => handleDeleteImage(image, e)}>
+                  <span>-</span>
+                </button>
+                <img src={image.url} alt={urlData.name + id} />
                 {image.like ? <img src={heart} alt="heart like" /> : null}
                 {image.comment ? <img src={comment} alt="comment" /> : null}
               </li>
