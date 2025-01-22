@@ -1,18 +1,22 @@
 import style from '#css/add_galery.module.css'
-import { useForm } from '@inertiajs/react'
-import { FormEvent } from 'react'
+import { useForm, usePage } from '@inertiajs/react'
+import { FormEvent, useEffect } from 'react'
 import { FileUploader } from 'react-drag-drop-files'
 import { toast, ToastContainer } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
 const fileTypes = ['JPG', 'PNG', 'JPEG']
-const AddGalery = () => {
-  const { data, setData, post, processing, progress } = useForm<{
+const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }) => {
+  const isEditing: boolean = name !== null
+  const { id } = isEditing
+    ? (usePage().props as unknown as { urlData: { id: string } }).urlData
+    : { id: '' }
+  const { data, setData, post } = useForm<{
     name: string
     date: Date
     files: File[]
   }>({
-    name: '',
-    date: new Date(),
+    name: name || '',
+    date: date || new Date(),
     files: [],
   })
   const setDialogElement = dialogState((state) => state.setDialogElement)
@@ -22,6 +26,7 @@ const AddGalery = () => {
       type: 'error',
       autoClose: 2000,
     })
+
   const handleChange = (files: File[]) => {
     const fileArray: File[] = [...data.files]
     fileArray.push(...files)
@@ -30,56 +35,57 @@ const AddGalery = () => {
 
   function validateGalery(e: FormEvent) {
     e.preventDefault()
-    post('/galery', {
+    post(`/galery/${isEditing ? `edit/${id}` : 'add'}`, {
       forceFormData: true,
       onError: (e) => {
         notify(e.message)
       },
-      onSuccess: (e) => {
-        console.log(e)
-
+      onSuccess: () => {
         setDialogElement(null)
       },
     })
   }
+  useEffect(() => {
+    console.log(data.date.toISOString().split('T')[0])
+  }, [data.date])
 
   return (
     <>
       <ToastContainer />
       <div className={style.container}>
-        <h2>Ajouter une galerie d'image</h2>
+        <h2>{isEditing ? 'Éditer la galerie' : "Ajouter une galerie d'image"}</h2>
         <form onSubmit={validateGalery}>
           <input
             className={style.input}
             onChange={(e) => setData({ ...data, name: e.currentTarget.value })}
             type="text"
+            defaultValue={data.name}
             required
             placeholder="Nom de la galerie"
           />
           <input
             className={style.input}
             type="date"
-            onChange={(e) => setData({ ...data, date: e.currentTarget.value as unknown as Date })}
+            defaultValue={
+              date?.toISOString().split('T')[0] || data.date.toISOString().split('T')[0]
+            }
+            onChange={(e) => setData({ ...data, date: new Date(e.currentTarget.value) })}
             required
           />
-          <FileUploader
-            className={style.drag_div}
-            handleChange={handleChange}
-            multiple={true}
-            name="file"
-            types={fileTypes}
-          />
-          {processing && <p>loading</p>}
+          {!isEditing ? (
+            <FileUploader
+              className={style.drag_div}
+              handleChange={handleChange}
+              multiple={true}
+              name="file"
+              types={fileTypes}
+            />
+          ) : null}
           <button type="submit">Valider</button>
         </form>
-        {progress && (
-          <progress value={progress.percentage} max="100">
-            {progress.percentage}%
-          </progress>
-        )}
       </div>
     </>
   )
 }
 
-export default AddGalery
+export default ManageGalery

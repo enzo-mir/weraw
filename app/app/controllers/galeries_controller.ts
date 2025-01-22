@@ -1,8 +1,11 @@
+import Photo from '#models/photo'
 import Url from '#models/url'
 import { deleteGaleryService } from '#services/delete_galery'
 import { deleteImage } from '#services/delete_image'
 import type { HttpContext } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
 import db from '@adonisjs/lucid/services/db'
+import fs from 'node:fs'
 
 export default class GaleriesController {
   async show({ inertia, params, request }: HttpContext) {
@@ -46,5 +49,37 @@ export default class GaleriesController {
 
     if (error) ctx.response.notFound()
     return ctx.response.redirect().toPath('/dashboard')
+  }
+
+  async editGalery({ request, response, params }: HttpContext) {
+    const { id } = params
+    const { name, date } = request.all()
+
+    const urlFind = await Url.find(id)
+
+    if (!urlFind) return response.notFound()
+
+    const query = `
+      UPDATE photos
+      SET url = REPLACE(url, '${urlFind.name}', '${name}')
+      WHERE groupe = '${urlFind.groupe}';
+    `
+    db.rawQuery(query).then((e) => {
+      console.log(e)
+    })
+
+    /*   await db
+      .from('photos')
+      .where('groupe', url.groupe)
+      .select('url')
+      .update({ url: name }) */
+
+    fs.rename(app.publicPath(`/images/${urlFind.name}`), app.publicPath(`/images/${name}`), (e) => {
+      console.log(e)
+    })
+
+    await Url.updateOrCreate({ id }, { name, createdAt: date })
+
+    return response.redirect().back()
   }
 }

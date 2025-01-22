@@ -11,6 +11,7 @@ import comment from '#assets/icons/comment.svg'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelImage } from '~/components/confirm_del_image'
 import Dialog from '~/components/dialog'
+import ManageGalery from '~/components/manage_galery'
 
 const Galery = ({
   images,
@@ -60,7 +61,15 @@ const Galery = ({
             <Link href={`/galery/${urlData.id}`} method="post" className={style.del}>
               Supprimer
             </Link>
-            <button>Éditer</button>
+            <button
+              onClick={() =>
+                setDialogElement(
+                  <ManageGalery name={urlData.name} date={new Date(urlData.createdAt)} />
+                )
+              }
+            >
+              Éditer
+            </button>
           </aside>
         </div>
         <ul className={style.galery}>

@@ -13,14 +13,21 @@ import { middleware } from './kernel.js'
 const UrlsController = () => import('#controllers/urls_controller')
 const GaleriesController = () => import('#controllers/galeries_controller')
 const DashboardController = () => import('#controllers/dashboard_controller')
+
 router.on('/').renderInertia('home')
 router.on('/login').renderInertia('login')
 router.post('/login', [AuthentificationsController, 'login'])
 router.post('/logout', [AuthentificationsController, 'logout'])
-router.post('/galery', [DashboardController, 'store']).use(middleware.auth())
 router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
-router.get('/galery/:id', [GaleriesController, 'show']).use(middleware.auth())
 router.post('/url/status', [UrlsController, 'changeStatus'])
-
 router.post('/image/:id', [GaleriesController, 'deleteImage']).use(middleware.auth())
-router.post('/galery/:id', [GaleriesController, 'deleteGalery']).use(middleware.auth())
+
+router
+  .group(() => {
+    router.post('/add', [DashboardController, 'store'])
+    router.get('/:id', [GaleriesController, 'show'])
+    router.post('/:id', [GaleriesController, 'deleteGalery'])
+    router.post('/edit/:id', [GaleriesController, 'editGalery'])
+  })
+  .prefix('/galery')
+  .use(middleware.auth())

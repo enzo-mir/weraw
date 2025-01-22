@@ -1,6 +1,6 @@
 import { JSX } from 'react'
 import DashboardLayout from './dashboard/layout'
-import AddGalery from '~/components/add_galery'
+import ManageGalery from '~/components/manage_galery'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { GaleriesType } from '~/utils/types/galeries.type'
 import style from '#css/dashboard.module.css'
@@ -11,7 +11,10 @@ const Dashboard = ({ galeries }: { galeries: GaleriesType | [] }) => {
 
   return (
     <main className={style.main}>
-      <button className={style.add_btn} onClick={() => setDialogElement(<AddGalery />)}>
+      <button
+        className={style.add_btn}
+        onClick={() => setDialogElement(<ManageGalery name={null} date={null} />)}
+      >
         Ajouter une galerie +
       </button>
       <section className={style.galeries}>
