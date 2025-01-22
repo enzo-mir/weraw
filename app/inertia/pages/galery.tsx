@@ -12,6 +12,9 @@ import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelImage } from '~/components/confirm_del_image'
 import Dialog from '~/components/dialog'
 import ManageGalery from '~/components/manage_galery'
+import { FileUploader } from 'react-drag-drop-files'
+import addPhotos from '~/services/add_photos'
+import { ToastContainer } from 'react-toastify'
 
 const Galery = ({
   images,
@@ -31,8 +34,11 @@ const Galery = ({
     await changeDone(!urlData.done, _csrf, urlData.id)
   }
 
+  const fileTypes = ['JPG', 'PNG', 'JPEG']
+
   return (
     <>
+      <ToastContainer />
       <Dialog />
       {imageId !== null ? <ImagePreview id={imageId!} images={images} /> : null}
       <main className={style.main}>
@@ -72,6 +78,13 @@ const Galery = ({
             </button>
           </aside>
         </div>
+        <FileUploader
+          className={style.drag_div}
+          handleChange={(file: File[]) => addPhotos(file, _csrf, urlData.name)}
+          multiple={true}
+          name="file"
+          types={fileTypes}
+        />
         <ul className={style.galery}>
           {images.map((image, id) => {
             return (

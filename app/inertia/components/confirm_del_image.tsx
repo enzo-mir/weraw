@@ -12,7 +12,7 @@ export const ConfirmDelImage = ({ image, _csrf }: { image: GaleryType; _csrf: st
     const response = await deleteImageService(image.id, _csrf)
     if (response.ok) {
       setDialogElement(null)
-      router.visit(location.href)
+      router.reload()
     } else {
       toast("Une erreur est survenue lors de la suppression de l'image", {
         type: 'error',

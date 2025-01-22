@@ -4,7 +4,8 @@ import fs from 'node:fs'
 
 export const storeImages = (
   name: string,
-  images: MultipartFile[]
+  images: MultipartFile[],
+  updating: boolean
 ): Promise<
   Array<{
     url: string
@@ -12,7 +13,8 @@ export const storeImages = (
 > => {
   const folderPath = app.publicPath(`images/${name.replaceAll(' ', '_')}`)
   const files = Array.isArray(images) ? images : [images]
-  if (fs.existsSync(folderPath)) {
+
+  if (!updating && fs.existsSync(folderPath)) {
     throw new Error('Une galerie existe déjà avec ce nom')
   } else {
     const uploadPromises = files.map((image) => {

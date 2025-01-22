@@ -20,8 +20,8 @@ router.post('/login', [AuthentificationsController, 'login'])
 router.post('/logout', [AuthentificationsController, 'logout'])
 router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 router.post('/url/status', [UrlsController, 'changeStatus'])
+router.post('/image/add', [GaleriesController, 'addImage']).use(middleware.auth())
 router.post('/image/:id', [GaleriesController, 'deleteImage']).use(middleware.auth())
-
 router
   .group(() => {
     router.post('/add', [DashboardController, 'store'])

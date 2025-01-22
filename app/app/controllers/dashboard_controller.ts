@@ -41,7 +41,7 @@ export default class DashboardController {
     ]
 
     try {
-      const images = await storeImages(name, files)
+      const images = await storeImages(name, files, false)
       const url = await Url.create({ name, createdAt: date, groupe: randomUUID() })
       const photoPromises = images.map(
         async (image) =>
