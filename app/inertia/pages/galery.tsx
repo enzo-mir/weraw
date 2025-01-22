@@ -1,9 +1,14 @@
 import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
 import style from '#css/galery.module.css'
-import { router, usePage } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import ImagePreview from '~/components/image_preview'
-import { ChangeEvent } from 'react'
 import { changeDone } from '~/services/change_done'
+import pinkArrow from '#assets/icons/arrow_link.png'
+import { ValidateIcon } from '~/assets/icons/validate'
+import { useState } from 'react'
+import heart from '#assets/icons/heart.svg'
+import comment from '#assets/icons/comment.svg'
+
 const Galery = ({
   images,
   urlData,
@@ -15,19 +20,37 @@ const Galery = ({
   imageId?: number
   _csrf: string
 }) => {
-  async function handleChangDone(e: ChangeEvent<HTMLInputElement>) {
-    await changeDone(e.currentTarget.checked, _csrf, urlData.id)
+  const [done, setDone] = useState<number>(urlData.done)
+  async function handleChangDone() {
+    setDone(done === 0 ? 1 : 0)
+
+    await changeDone(!urlData.done, _csrf, urlData.id)
   }
   return (
     <>
       {imageId !== null ? <ImagePreview id={imageId!} images={images} /> : null}
       <main className={style.main}>
-        <label className={style.switch}>
-          <input type="checkbox" defaultChecked={urlData.done} onChange={handleChangDone} />
-          <span className={style.slider}></span>
-        </label>
-
-        <p>{urlData.end_selected ? 'Selection finis' : 'Selection en cours'}</p>
+        <div className={style.header}>
+          <Link href="/dashboard" className={style.back}>
+            <img src={pinkArrow} alt="arrow back to menu" />
+            <p>
+              Revenir à l'accueil <em>WeRaw</em>
+            </p>
+          </Link>
+          <div className={style.done}>
+            <p>Terminé</p>
+            <ValidateIcon
+              onClick={handleChangDone}
+              className={style.validateSvg}
+              data-validate={done}
+            />
+            <p>{urlData.end_selected ? 'Selection finis' : 'Selection en cours'}</p>
+          </div>
+          <aside className={style.urlData}>
+            <h1>{urlData.name}</h1>
+            <p>{new Date(urlData.createdAt).toLocaleDateString()}</p>
+          </aside>
+        </div>
         <ul className={style.galery}>
           {images.map((image, id) => {
             return (
@@ -38,8 +61,8 @@ const Galery = ({
                 }}
               >
                 <img src={image.url} />
-                {image.like ? <p>Liked</p> : null}
-                {image.comment ? <p>{image.comment.slice(0, 20)}...</p> : <p>No comment</p>}
+                {image.like ? <img src={heart} alt="heart like" /> : null}
+                {image.comment ? <img src={comment} alt="comment" /> : null}
               </li>
             )
           })}

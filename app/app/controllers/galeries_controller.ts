@@ -16,7 +16,9 @@ export default class GaleriesController {
       .select('photos.comment')
       .select('photos.id')
 
-    const urlData = await Url.query().where('id', params.id).select('end_selected', 'done', 'id')
+    const urlData = await Url.query()
+      .where('id', params.id)
+      .select('end_selected', 'done', 'name', 'created_at', 'id')
 
     const imageId =
       typeof Number.parseInt(request.qs().id) === 'number'

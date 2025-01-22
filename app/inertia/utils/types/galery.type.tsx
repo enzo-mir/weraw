@@ -7,6 +7,8 @@ export type GaleryType = {
 
 export type UrlDataType = {
   id: number
-  done: boolean
+  done: number
+  name: string
+  createdAt: string
   end_selected: boolean
 }

@@ -2,11 +2,18 @@
   position: relative;
   display: grid;
   place-items: center;
-  grid-template-rows: auto 1fr 1fr 1fr;
+  grid-template-rows: 50px 1fr 1fr 1fr;
   gap: 2em;
   height: 100%;
   padding: 1em 2em;
   max-height: 100svh;
+}
+
+.container > div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .before_btn,

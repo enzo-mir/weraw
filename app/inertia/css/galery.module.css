@@ -1,28 +1,110 @@
 .main {
   display: grid;
+  padding: 2em;
+  gap: 1em;
   width: 100%;
 }
 
 .galery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  justify-items: center;
-  padding: 3em;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 2em;
   gap: 2em;
   width: 100%;
 }
-.galery img {
+
+.galery li img:nth-child(3),
+.galery li img:nth-child(2) {
+  width: 30px;
+  margin-left: 1em;
+  padding-top: 0.5em;
+}
+
+.galery:hover {
+  cursor: pointer;
+}
+.galery img:first-child {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 .galery > li {
   position: relative;
-  height: clamp(300px, 40svh, 40svh);
+  height: clamp(0px, 25svh, 25svh);
   list-style-type: none;
-  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.validateSvg {
+  z-index: 20;
+}
+.validateSvg g path {
+  stroke: var(--pink);
+  fill: transparent;
+  filter: brightness(0.5);
+  transition: all 0.2s ease-out;
+}
+.validateSvg:hover g path {
+  cursor: pointer;
+  filter: brightness(1);
+}
+.validateSvg[data-validate='1'] g path {
+  stroke: var(--green);
+  filter: brightness(1);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100px auto;
+  height: 200px;
+}
+.back {
+  position: relative;
+  display: flex;
+  padding-top: 1em;
+  padding-left: 3em;
+  font-weight: 600;
+  font-size: larger;
+  height: fit-content;
+}
+.back em {
+  color: var(--blue);
+}
+.back > img {
+  position: absolute;
+  rotate: 100deg;
+  scale: -1 1;
+  left: 0;
+  top: -15px;
+  width: 36px;
+}
+.done {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  grid-area: 2 / 1 / 3 / 2;
+}
+.urlData {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.5em;
+}
+
+.urlData p {
+  color: var(--blue);
+  font-size: larger;
+}
+
+.urlData h1 {
+  font-size: clamp(1.6em, 3vw, 2.5em);
+  font-family: var(--kg-font);
+  font-weight: 100;
 }
 
 /* From Uiverse.io by mrhyddenn */

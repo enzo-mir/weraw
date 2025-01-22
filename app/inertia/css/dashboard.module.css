@@ -33,7 +33,7 @@
 
 .main {
   display: grid;
-  gap: 1em;
+  gap: 2em;
   padding: 5em 7.5svw;
 }
 
@@ -43,8 +43,8 @@
   font-size: clamp(1rem, 2vw, 1.2rem);
   border: 2px solid var(--green);
   width: fit-content;
-  padding: 0.25em 0.5em;
-  border-radius: 5px;
+  padding: 0.4em 0.65em;
+  border-radius: 50px;
 }
 
 .galeries {
