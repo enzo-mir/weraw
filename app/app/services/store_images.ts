@@ -19,17 +19,23 @@ export const storeImages = (
     const sanitizedOriginalName = originalName
       .toLowerCase()
       .replace(/[^a-z0-9]/g, '-')
-      .substring(0, 50)
+      .substring(0, 50) // Limit the length of original name
 
     return `${timestamp}-${randomString}-${sanitizedOriginalName}.webp`
   }
 
   const folderPath = app.publicPath(`images/${name.replaceAll(' ', '_')}`)
 
+  // Ensure array of images
   const files = Array.isArray(images) ? images : [images]
 
   if (!updating && fs.existsSync(folderPath)) {
     throw new Error('Une galerie existe déjà avec ce nom')
+  }
+
+  // Create directory if it doesn't exist
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath, { recursive: true })
   }
 
   const uploadPromises = files.map((image) => {
@@ -38,13 +44,13 @@ export const storeImages = (
       try {
         const bufferedImage = await sharp(image.tmpPath)
           .webp({
-            quality: 50,
+            quality: 70,
             effort: 4,
             lossless: false,
           })
           .resize(900, null, {
             withoutEnlargement: true,
-            fit: 'inside',
+            fit: 'cover',
           })
           .toBuffer()
 

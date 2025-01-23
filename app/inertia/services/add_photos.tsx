@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 
-export default function addPhotos(files: File[], _csrf: string, galeryName: string) {
+export default async function addPhotos(files: File[], _csrf: string, galeryName: string) {
   const formData = new FormData()
   for (const file of files) {
     formData.append('files', file)
@@ -9,16 +9,15 @@ export default function addPhotos(files: File[], _csrf: string, galeryName: stri
 
   formData.append('_csrf', _csrf)
   formData.append('galeryName', galeryName)
-  fetch('/image/add', {
-    method: 'POST',
 
+  const promise = fetch('/image/add', {
+    method: 'POST',
     body: formData,
-  }).then((res) => {
-    if (res.ok) {
-      toast.success('Photo ajoutée')
-      router.reload()
-    } else {
-      toast.error("Erreur lors de l'ajout")
-    }
   })
+  await toast.promise(promise, {
+    pending: 'Téléchargement de(s) photo(s)...',
+    success: 'Photo(s) ajoutée(s)',
+    error: "Erreur lors de l'ajout",
+  })
+  if ((await promise).ok) router.reload()
 }

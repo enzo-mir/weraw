@@ -72,7 +72,6 @@ export default class GaleriesController {
   async addImage({ request, response, session }: HttpContext) {
     const files = request.allFiles().files as MultipartFile[]
     const galeryName = request.only(['galeryName']).galeryName
-
     try {
       const url = await Url.findByOrFail('name', galeryName)
 

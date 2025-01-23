@@ -1,15 +1,17 @@
 import style from '#css/add_galery.module.css'
 import { useForm, usePage } from '@inertiajs/react'
-import { FormEvent, useEffect } from 'react'
+import { FormEvent, useRef } from 'react'
 import { FileUploader } from 'react-drag-drop-files'
-import { toast, ToastContainer } from 'react-toastify'
+import { Id, toast, ToastContainer } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
+
 const fileTypes = ['JPG', 'PNG', 'JPEG']
+
 const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }) => {
   const isEditing: boolean = name !== null
-  const { id } = isEditing
-    ? (usePage().props as unknown as { urlData: { id: string } }).urlData
-    : { id: '' }
+  const props = usePage().props as unknown as { urlData: { id: string } }
+  const { id } = isEditing ? props.urlData : { id: '' }
+
   const { data, setData, post } = useForm<{
     name: string
     date: Date
@@ -20,12 +22,29 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
     files: [],
   })
   const setDialogElement = dialogState((state) => state.setDialogElement)
+  const progressToastId = useRef<Id | null>(null)
 
-  const notify = (text: string) =>
+  const notifyError = (text: string) =>
     toast(text, {
       type: 'error',
       autoClose: 2000,
     })
+
+  const loader = (percentage: number) => {
+    if (!progressToastId.current) {
+      progressToastId.current = toast(
+        `${isEditing ? 'Mise à jour' : 'Téléchargement'}: ${percentage}%`,
+        {
+          type: 'info',
+          hideProgressBar: false,
+        }
+      )
+    } else {
+      toast.update(progressToastId.current, {
+        render: `${isEditing ? 'Mise à jour' : 'Téléchargement'}: ${percentage}%`,
+      })
+    }
+  }
 
   const handleChange = (files: File[]) => {
     const fileArray: File[] = [...data.files]
@@ -38,20 +57,29 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
     post(`/galery/${isEditing ? `edit/${id}` : 'add'}`, {
       forceFormData: true,
       onError: (e) => {
-        notify(e.message)
+        notifyError(e.message)
+        progressToastId.current = null
       },
+
+      onProgress: (e) => {
+        if (e && e.percentage !== undefined) {
+          loader(e.percentage)
+        }
+      },
+
       onSuccess: () => {
+        toast.success(isEditing ? 'Mise à jour effectué' : 'Téléchargement terminé!', {
+          autoClose: 1500,
+        })
+        progressToastId.current = null
         setDialogElement(null)
       },
     })
   }
-  useEffect(() => {
-    console.log(data.date.toISOString().split('T')[0])
-  }, [data.date])
 
   return (
     <>
-      <ToastContainer />
+      {progressToastId.current ? <ToastContainer /> : null}
       <div className={style.container}>
         <h2>{isEditing ? 'Éditer la galerie' : "Ajouter une galerie d'image"}</h2>
         <form onSubmit={validateGalery}>

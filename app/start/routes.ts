@@ -26,7 +26,7 @@ router
   .group(() => {
     router.post('/add', [DashboardController, 'store'])
     router.get('/:id', [GaleriesController, 'show'])
-    router.post('/:id', [GaleriesController, 'deleteGalery'])
+    router.post('/delete/:id', [GaleriesController, 'deleteGalery'])
     router.post('/edit/:id', [GaleriesController, 'editGalery'])
   })
   .prefix('/galery')

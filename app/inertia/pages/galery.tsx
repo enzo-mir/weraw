@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import heart from '#assets/icons/heart.svg'
 import comment from '#assets/icons/comment.svg'
 import { dialogState } from '~/utils/stores/dialog.store'
-import { ConfirmDelImage } from '~/components/confirm_del_image'
+import { ConfirmDelete } from '~/components/confirm_del'
 import Dialog from '~/components/dialog'
 import ManageGalery from '~/components/manage_galery'
 import { FileUploader } from 'react-drag-drop-files'
@@ -53,7 +53,6 @@ const Galery = ({
     setImagesData((prevImages) => [...prevImages, ...nextBatch])
   }
 
-  // Observe when the user scrolls near the bottom
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -72,8 +71,6 @@ const Galery = ({
       if (loader.current) observer.unobserve(loader.current)
     }
   }, [hasMore, imagesData])
-  console.log(images.length)
-
   const fileTypes = ['JPG', 'PNG', 'JPEG']
   return (
     <>
@@ -103,9 +100,16 @@ const Galery = ({
           </div>
 
           <aside className={style.edit}>
-            <Link href={`/galery/${urlData.id}`} method="post" className={style.del}>
+            <button
+              className={style.del}
+              onClick={() => {
+                setDialogElement(
+                  <ConfirmDelete _csrf={_csrf} type={{ url: `/galery/delete/${urlData.id}` }} />
+                )
+              }}
+            >
               Supprimer
-            </Link>
+            </button>
             <button
               onClick={() =>
                 setDialogElement(
@@ -131,7 +135,7 @@ const Galery = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    setDialogElement(<ConfirmDelImage _csrf={_csrf} image={image} />)
+                    setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image }} />)
                   }}
                 >
                   <span>-</span>

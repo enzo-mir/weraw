@@ -6,9 +6,8 @@
 }
 
 .galery {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   padding-top: 2em;
   gap: 2em;
   width: 100%;
@@ -57,7 +56,8 @@
 
 .galery > li {
   position: relative;
-  height: clamp(0px, 25svh, 25svh);
+  width: 100%;
+  max-width: 250px;
   list-style-type: none;
   aspect-ratio: 1 / 1;
 }
@@ -131,51 +131,6 @@
   font-weight: 100;
 }
 
-/* From Uiverse.io by mrhyddenn */
-/* The switch - the box around the slider */
-.switch {
-  font-size: 17px;
-  position: relative;
-  display: inline-block;
-  width: 62px;
-  height: 35px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 1;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0px;
-  background: #fff;
-  transition: 0.4s;
-  border-radius: 30px;
-  border: 1px solid #ccc;
-}
-
-.slider:before {
-  position: absolute;
-  content: '';
-  height: 1.9em;
-  width: 1.9em;
-  border-radius: 16px;
-  left: 1.2px;
-  top: 0;
-  bottom: 0;
-  background-color: white;
-  box-shadow: 0 2px 5px #999999;
-  transition: 0.4s;
-}
-
 .main input:checked + .slider {
   background-color: var(--blue);
   border: 1px solid transparent;
@@ -203,4 +158,10 @@
   color: red;
   text-decoration: underline;
   font-size: 1em;
+}
+
+@media screen and (max-width : 512px) {
+  .galery {
+    place-items: center;
+  }
 }
