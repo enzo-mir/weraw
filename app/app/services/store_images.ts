@@ -1,7 +1,7 @@
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import app from '@adonisjs/core/services/app'
 import fs from 'node:fs'
-
+import sharp from 'sharp'
 export const storeImages = (
   name: string,
   images: MultipartFile[],
@@ -25,11 +25,30 @@ export const storeImages = (
             name: fileName,
           })
           .then(() => {
-            resolve({
-              url: `/images/${name.replaceAll(' ', '_')}/${fileName}`,
-            })
+            let url = `/images/${name.replaceAll(' ', '_')}/${fileName}`
+            if (image.size > 1000000) {
+              const newUrl = url.slice(0, url.lastIndexOf('.')) + '.jpeg'
+              sharp(app.publicPath(url))
+                .jpeg({ quality: 20 })
+                .toFile(app.publicPath(newUrl))
+                .then((e) => {
+                  fs.unlink(app.publicPath(url), (err) => {
+                    if (err) {
+                      reject(err)
+                    }
+
+                    return resolve({
+                      url: newUrl,
+                    })
+                  })
+                })
+            } else {
+              return resolve({
+                url,
+              })
+            }
           })
-          .catch(() => {
+          .catch((e) => {
             throw new Error('Erreur lors du déplacement du fichier')
           })
       })

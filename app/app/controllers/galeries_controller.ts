@@ -2,6 +2,7 @@ import Photo from '#models/photo'
 import Url from '#models/url'
 import { deleteGaleryService } from '#services/delete_galery'
 import { deleteImage } from '#services/delete_image'
+import { getImages } from '#services/get_images'
 import { storeImages } from '#services/store_images'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -11,30 +12,15 @@ import fs from 'node:fs'
 
 export default class GaleriesController {
   async show({ inertia, params, request }: HttpContext) {
-    const galeries = await db
-      .from('photos')
-      .as('photos')
-      .join('urls', (q) => {
-        q.on('photos.groupe', 'urls.groupe')
-      })
-      .where('urls.id', params.id)
-      .select('photos.url')
-      .select('photos.like')
-      .select('photos.comment')
-      .select('photos.id')
-
     const urlData = await Url.query()
       .where('id', params.id)
       .select('end_selected', 'done', 'name', 'created_at', 'id')
 
-    const imageId =
-      typeof Number.parseInt(request.qs().id) === 'number'
-        ? Number.parseInt(request.qs().id)
-        : undefined
-
-    return inertia.render('galery', { images: galeries, urlData: urlData[0], imageId })
+    return inertia.render('galery', {
+      images: await getImages(params as { id: string }),
+      urlData: urlData[0],
+    })
   }
-
   async deleteImage({ session, response, params }: HttpContext) {
     const { error } = await deleteImage(params.id)
     if (error) {
@@ -47,7 +33,7 @@ export default class GaleriesController {
   async deleteGalery(ctx: HttpContext) {
     const { id } = ctx.params
 
-    const { error, success } = await deleteGaleryService(id)
+    const { error } = await deleteGaleryService(id)
 
     if (error) ctx.response.notFound()
     return ctx.response.redirect().toPath('/dashboard')
@@ -67,12 +53,16 @@ export default class GaleriesController {
       WHERE groupe = '${urlFind.groupe}';
     `
     db.rawQuery(query).catch(() => {
-      return response.badRequest()
+      return response.status(500)
     })
 
-    fs.rename(app.publicPath(`/images/${urlFind.name}`), app.publicPath(`/images/${name}`), (e) => {
-      return response.badRequest()
-    })
+    fs.rename(
+      app.publicPath(`/images/${urlFind.name}`),
+      app.publicPath(`/images/${name}`),
+      (err) => {
+        if (err) response.status(500)
+      }
+    )
 
     await Url.updateOrCreate({ id }, { name, createdAt: date })
 
@@ -82,7 +72,6 @@ export default class GaleriesController {
   async addImage({ request, response, session }: HttpContext) {
     const files = request.allFiles().files as MultipartFile[]
     const galeryName = request.only(['galeryName']).galeryName
-
     try {
       const url = await Url.findByOrFail('name', galeryName)
 
