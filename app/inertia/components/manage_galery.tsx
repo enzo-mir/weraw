@@ -31,12 +31,15 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
     })
 
   const loader = (percentage: number) => {
+    console.log(progressToastId.current);
+    
     if (!progressToastId.current) {
       progressToastId.current = toast(
         `${isEditing ? 'Mise à jour' : 'Téléchargement'}: ${percentage}%`,
         {
           type: 'info',
           hideProgressBar: false,
+          autoClose: false,
         }
       )
     } else {
@@ -68,7 +71,9 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
       },
 
       onSuccess: () => {
-        toast.success(isEditing ? 'Mise à jour effectué' : 'Téléchargement terminé!', {
+        toast.update(progressToastId.current!, {
+          render: isEditing ? 'Mise à jour effectué' : 'Téléchargement terminé!',
+          type: 'success',
           autoClose: 1500,
         })
         progressToastId.current = null
@@ -79,7 +84,6 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
 
   return (
     <>
-      {progressToastId.current ? <ToastContainer /> : null}
       <div className={style.container}>
         <h2>{isEditing ? 'Éditer la galerie' : "Ajouter une galerie d'image"}</h2>
         <form onSubmit={validateGalery}>

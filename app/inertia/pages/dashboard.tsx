@@ -5,12 +5,14 @@ import { dialogState } from '~/utils/stores/dialog.store'
 import { GaleriesType } from '~/utils/types/galeries.type'
 import style from '#css/dashboard.module.css'
 import GaleryImage from '~/components/galery_image'
+import { ToastContainer } from 'react-toastify'
 
 const Dashboard = ({ galeries }: { galeries: GaleriesType | [] }) => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
 
   return (
     <main className={style.main}>
+      <ToastContainer />
       <button
         className={style.add_btn}
         onClick={() => setDialogElement(<ManageGalery name={null} date={null} />)}
