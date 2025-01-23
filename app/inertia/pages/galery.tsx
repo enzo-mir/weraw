@@ -37,16 +37,15 @@ const Galery = ({
     await changeDone(!urlData.done, _csrf, urlData.id)
   }
   useEffect(() => {
-    setImagesData(images.slice(0, splitNumber)) // Reset imagesData to the first batch
-    setHasMore(images.length > splitNumber) // Reset hasMore state
+    setImagesData(images.slice(0, splitNumber))
+    setHasMore(images.length > splitNumber)
   }, [images])
 
-  // Infinite scroll handler
   const loadMoreImages = () => {
     const currentLength = imagesData.length
 
     if (currentLength >= images.length) {
-      setHasMore(false) // No more images to load
+      setHasMore(false)
       return
     }
 
@@ -73,9 +72,9 @@ const Galery = ({
       if (loader.current) observer.unobserve(loader.current)
     }
   }, [hasMore, imagesData])
+  console.log(images.length)
 
   const fileTypes = ['JPG', 'PNG', 'JPEG']
-
   return (
     <>
       <ToastContainer />

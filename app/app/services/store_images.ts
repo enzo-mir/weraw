@@ -1,7 +1,9 @@
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import app from '@adonisjs/core/services/app'
+import { randomBytes } from 'node:crypto'
 import fs from 'node:fs'
 import sharp from 'sharp'
+
 export const storeImages = (
   name: string,
   images: MultipartFile[],
@@ -11,53 +13,59 @@ export const storeImages = (
     url: string
   }>
 > => {
+  function generateUniqueFileName(originalName: string): string {
+    const timestamp = new Date().getTime()
+    const randomString = randomBytes(4).toString('hex')
+    const sanitizedOriginalName = originalName
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '-')
+      .substring(0, 50)
+
+    return `${timestamp}-${randomString}-${sanitizedOriginalName}.webp`
+  }
+
   const folderPath = app.publicPath(`images/${name.replaceAll(' ', '_')}`)
+
   const files = Array.isArray(images) ? images : [images]
 
   if (!updating && fs.existsSync(folderPath)) {
     throw new Error('Une galerie existe déjà avec ce nom')
-  } else {
-    const uploadPromises = files.map((image) => {
-      return new Promise((resolve, reject) => {
-        const fileName = `${Date.now()}-${image.clientName}`.replaceAll(' ', '_')
-        image
-          .move(folderPath, {
-            name: fileName,
-          })
-          .then(() => {
-            let url = `/images/${name.replaceAll(' ', '_')}/${fileName}`
-            if (image.size > 1000000) {
-              const newUrl = url.slice(0, url.lastIndexOf('.')) + '.jpeg'
-              sharp(app.publicPath(url))
-                .jpeg({ quality: 20 })
-                .toFile(app.publicPath(newUrl))
-                .then((e) => {
-                  fs.unlink(app.publicPath(url), (err) => {
-                    if (err) {
-                      reject(err)
-                    }
-
-                    return resolve({
-                      url: newUrl,
-                    })
-                  })
-                })
-            } else {
-              return resolve({
-                url,
-              })
-            }
-          })
-          .catch((e) => {
-            throw new Error('Erreur lors du déplacement du fichier')
-          })
-      })
-    })
-
-    return Promise.all(uploadPromises) as unknown as Promise<
-      Array<{
-        url: string
-      }>
-    >
   }
+
+  const uploadPromises = files.map((image) => {
+    const fileName = generateUniqueFileName(image.clientName.replace(/\.[^/.]+$/, ''))
+    return new Promise(async (resolve, reject) => {
+      try {
+        const bufferedImage = await sharp(image.tmpPath)
+          .webp({
+            quality: 50,
+            effort: 4,
+            lossless: false,
+          })
+          .resize(900, null, {
+            withoutEnlargement: true,
+            fit: 'inside',
+          })
+          .toBuffer()
+
+        // Create full file path including the folder
+        const filePath = `images/${name.replaceAll(' ', '_')}/${fileName}`
+        const fullPath = app.publicPath(filePath)
+
+        await sharp(bufferedImage).toFile(fullPath)
+
+        resolve({
+          url: `/${filePath}`,
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  })
+
+  return Promise.all(uploadPromises) as Promise<
+    Array<{
+      url: string
+    }>
+  >
 }
