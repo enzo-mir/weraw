@@ -133,27 +133,29 @@ const Galery = ({
           types={fileTypes}
         />
         <ul className={style.galery}>
-          {imagesData.map((image, id) => {
-            return (
-              <DisplayGalery
-                key={id + image.url}
-                image={image}
-                id={id}
-                _csrf={_csrf}
-                setImageId={setImageId}
-                deleteBtn={
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image: image }} />)
-                    }}
-                  >
-                    <span>-</span>
-                  </button>
-                }
-              />
-            )
-          })}
+          {imagesData.length
+            ? imagesData.map((image, id) => {
+                return (
+                  <DisplayGalery
+                    key={id + image.url}
+                    image={image}
+                    id={id}
+                    _csrf={_csrf}
+                    setImageId={setImageId}
+                    deleteBtn={
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image: image }} />)
+                        }}
+                      >
+                        <span>-</span>
+                      </button>
+                    }
+                  />
+                )
+              })
+            : null}
         </ul>
         {hasMore && <div ref={loader} className={style.loader}></div>}
       </main>

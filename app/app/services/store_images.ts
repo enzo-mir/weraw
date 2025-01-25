@@ -26,14 +26,12 @@ export const storeImages = (
 
   const folderPath = app.publicPath(`images/${name.replaceAll(' ', '_')}`)
 
-  // Ensure array of images
   const files = Array.isArray(images) ? images : [images]
 
   if (!updating && fs.existsSync(folderPath)) {
     throw new Error('Une galerie existe déjà avec ce nom')
   }
 
-  // Create directory if it doesn't exist
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true })
   }
@@ -54,7 +52,6 @@ export const storeImages = (
           })
           .toBuffer()
 
-        // Create full file path including the folder
         const filePath = `images/${name.replaceAll(' ', '_')}/${fileName}`
         const fullPath = app.publicPath(filePath)
 

@@ -7,8 +7,9 @@ import style from '#css/dashboard.module.css'
 import GaleryImage from '~/components/galery_image'
 import { ToastContainer } from 'react-toastify'
 
-const Dashboard = ({ galeries }: { galeries: GaleriesType | [] }) => {
+const Dashboard = ({ galeries }: { galeries: GaleriesType }) => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
+  console.log(galeries)
 
   return (
     <main className={style.main}>

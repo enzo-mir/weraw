@@ -25,6 +25,9 @@
 .article > *:not(img) {
   height: fit-content;
 }
+.article:has(:not(img)) {
+  background-color: hsl(300, 100%, 29%);
+}
 
 .article img {
   position: absolute;

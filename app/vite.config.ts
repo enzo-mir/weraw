@@ -11,16 +11,13 @@ export default defineConfig({
     adonisjs({ entrypoints: ['inertia/app/app.tsx'], reload: ['resources/views/**/*.edge'] }),
   ],
 
-  /**
-   * Define aliases for importing modules from
-   * your frontend code
-   */
   resolve: {
     alias: {
       '~/': `${getDirname(import.meta.url)}/inertia/`,
       '#assets': `${getDirname(import.meta.url)}/inertia/assets/`,
       '#css': `${getDirname(import.meta.url)}/inertia/css/`,
       '#types': `${getDirname(import.meta.url)}/inertia/utils/types/`,
+      '#schemas': `${getDirname(import.meta.url)}/app/schemas/`,
     },
   },
 })

@@ -2,14 +2,14 @@ import Photo from '#models/photo'
 import Url from '#models/url'
 import { storeImages } from '#services/store_images'
 import type { HttpContext } from '@adonisjs/core/http'
-import { randomUUID } from 'node:crypto'
 import db from '@adonisjs/lucid/services/db'
+import { randomUUID } from 'node:crypto'
 export default class DashboardController {
-  public async index({ inertia }: HttpContext) {
+  public async index({ inertia, auth }: HttpContext) {
     const galeries = await db
       .from('urls')
       .as('urls')
-      .join('photos', (q) => {
+      .leftJoin('photos', (q) => {
         q.on('urls.groupe', '=', 'photos.groupe')
       })
       .select(
@@ -20,17 +20,22 @@ export default class DashboardController {
         'urls.end_selected',
         'photos.url'
       )
-    const groupedGaleriesByName = Object.values(
-      galeries.reduce((acc, item) => {
-        if (!acc[item.name]) {
-          acc[item.name] = { ...item, url: [] } // Initialize with empty URL array
-        }
-        acc[item.name].url.push(item.url) // Add the URL to the array
+    console.log(galeries)
+
+    const groupedGaleriesByName = galeries.reduce(
+      (acc: { [key: string]: any }, { name, url, id, created_at, done, end_selected }) => {
+        acc[name] = acc[name] || { id, created_at, done, end_selected, url: [] }
+        acc[name].url.push(url)
         return acc
-      }, {})
+      },
+      {}
     )
 
-    return inertia.render('admin/dashboard', { galeries: groupedGaleriesByName })
+    const result = Object.values(groupedGaleriesByName)
+
+    const email = auth.user?.email
+
+    return inertia.render('admin/dashboard', { galeries: result, user: { email } })
   }
 
   public async store({ request, response, session }: HttpContext) {

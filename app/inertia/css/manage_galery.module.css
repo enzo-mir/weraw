@@ -37,7 +37,6 @@
   transition: background-color 0.15s ease;
 }
 .container form label {
-
   & > input {
     background-color: transparent;
     border: unset;
@@ -55,6 +54,18 @@
     font-size: 1em;
     height: 100%;
     margin-left: 1em;
+  }
+}
+
+.container form:has(> p) {
+  gap: 0.5em;
+
+  & input {
+    margin-block-end: 1em;
+  }
+
+  & button {
+    margin-block: 1em;
   }
 }
 .container form button:hover,

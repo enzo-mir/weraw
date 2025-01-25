@@ -10,6 +10,7 @@
 const AuthentificationsController = () => import('#controllers/authentifications_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const EditAccountController = () => import('#controllers/admin/edit_account_controller')
 const GaleryClientController = () => import('#controllers/client/galery_client_controller')
 const UrlsController = () => import('#controllers/urls_controller')
 const GaleriesController = () => import('#controllers/galeries_controller')
@@ -23,11 +24,13 @@ router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 
 router
   .group(() => {
-    router.post('/image/add', [GaleriesController, 'addImage']).use(middleware.auth())
-    router.post('/image/:id', [GaleriesController, 'deleteImage']).use(middleware.auth())
+    router.post('/image/add', [GaleriesController, 'addImage'])
+    router.post('/image/:id', [GaleriesController, 'deleteImage'])
     router.post('/url/status', [UrlsController, 'changeStatus'])
+    router.post('/edit', [EditAccountController, 'index'])
   })
   .prefix('admin')
+  .use(middleware.auth())
 
 router
   .group(() => {
