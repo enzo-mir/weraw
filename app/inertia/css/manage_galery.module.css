@@ -29,10 +29,35 @@
 
 .container form button {
   padding: 0.5em 1em;
-  background-color: var(--green);
   color: white;
   border-radius: 10px;
   font-size: clamp(1em, 2vw, 1.2em);
   cursor: pointer;
+  border: 3px solid var(--green);
+  transition: background-color 0.15s ease;
+}
+.container form label {
 
+  & > input {
+    background-color: transparent;
+    border: unset;
+    color: white;
+    padding: 0.5em;
+    font-size: 1em;
+    height: 100%;
+    border: 2px solid var(--pink);
+    border-radius: 10px;
+    margin-top: 1em;
+    filter: brightness(0.6);
+  }
+  & > button {
+    padding: 0.3em 0.6em;
+    font-size: 1em;
+    height: 100%;
+    margin-left: 1em;
+  }
+}
+.container form button:hover,
+.container form button:focus-visible {
+  background-color: var(--green);
 }

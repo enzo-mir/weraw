@@ -2,7 +2,7 @@ import { FormEvent } from 'react'
 import { FormValues } from '../utils/types/login.type'
 import { toast, ToastContainer } from 'react-toastify'
 import style from '#css/login.module.css'
-import { useForm } from '@inertiajs/react'
+import { Head, useForm } from '@inertiajs/react'
 const Login = () => {
   const { data, setData, post } = useForm<FormValues>({
     email: '',
@@ -16,7 +16,7 @@ const Login = () => {
 
   async function handlSubmit(e: FormEvent) {
     e.preventDefault()
-    post('/login', {
+    post('/auth/login', {
       onSuccess: (e) => {
         console.log(e)
       },
@@ -28,6 +28,7 @@ const Login = () => {
 
   return (
     <main className={style.main}>
+      <Head title="Login" />
       <ToastContainer />
       <form onSubmit={handlSubmit}>
         <input

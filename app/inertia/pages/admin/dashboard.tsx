@@ -1,5 +1,5 @@
 import { JSX } from 'react'
-import DashboardLayout from './dashboard/layout'
+import DashboardLayout from './layout'
 import ManageGalery from '~/components/manage_galery'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { GaleriesType } from '~/utils/types/galeries.type'

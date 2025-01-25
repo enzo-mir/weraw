@@ -20,16 +20,20 @@
   top: 0;
   right: 0;
   height: fit-content;
-  color: white;
-  background-color: #dc3434;
+  color: var(--red);
+  background-color: white;
   width: 3em;
   height: 3em;
   z-index: 10;
   transition: all 0.2s ease-out;
   translate: 50% -50%;
   border-radius: 10px;
-  border: 1px dashed white;
-
+  border: 3px solid var(--red);
+  &:hover,
+  &:focus-visible {
+    background-color: var(--red);
+    color: white;
+  }
   & span {
     font-size: 3em;
     line-height: 0;
@@ -39,9 +43,12 @@
 
 .galery li img:nth-child(3),
 .galery li img:nth-child(4) {
-  width: 30px;
+  width: 40px;
+  height: 40px;
   margin-left: 1em;
   padding-top: 0.5em;
+  border-radius: 0;
+  object-fit: contain;
 }
 
 .galery img:hover {
@@ -131,15 +138,6 @@
   font-weight: 100;
 }
 
-.main input:checked + .slider {
-  background-color: var(--blue);
-  border: 1px solid transparent;
-}
-
-.main input:checked + .slider:before {
-  transform: translateX(1.5em);
-}
-
 .edit {
   display: flex;
   gap: 1em;
@@ -147,20 +145,29 @@
   height: fit-content;
   font-size: large;
 }
-
-.edit button:last-child {
-  background-color: var(--blue);
+.edit button {
+  --clr: transparent;
+  border: 3px solid var(--clr);
   color: white;
-  padding: 0.5em;
-  border-radius: 10px;
+  padding: 0.4em 0.65em;
+  border-radius: 50px;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--clr);
+  }
 }
 .edit button:first-child {
-  color: red;
-  text-decoration: underline;
-  font-size: 1em;
+  --clr: var(--green);
 }
 
-@media screen and (max-width : 512px) {
+.edit button:last-child {
+  --clr: var(--pink);
+}
+
+@media screen and (max-width: 512px) {
   .galery {
     place-items: center;
   }

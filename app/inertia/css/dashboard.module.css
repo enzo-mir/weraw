@@ -13,21 +13,25 @@
   place-items: center;
 }
 .profile button {
+  --clr: transparent;
   color: white;
   padding: 0.5em 1em;
-  border-radius: 5px;
-}
-.profile button:hover,
-.profile button:focus-visible {
-  filter: brightness(0.7);
+  background-color: transparent;
+  border: 3px solid var(--clr);
+  border-radius: 50px;
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--clr);
+  }
 }
 
 .profile button:first-child {
-  background-color: var(--blue);
+  --clr: var(--green);
 }
-
 .profile button:last-child {
-  background-color: #dc3434;
+  --clr: var(--pink);
 }
 /* Layout ---------------------- */
 
@@ -45,6 +49,13 @@
   width: fit-content;
   padding: 0.4em 0.65em;
   border-radius: 50px;
+  transition: background-color 0.15s ease;
+}
+
+.add_btn:hover,
+.add_btn:focus-visible {
+  background-color: var(--green);
+  color: white;
 }
 
 .galeries {

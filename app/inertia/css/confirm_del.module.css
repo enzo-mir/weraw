@@ -11,20 +11,26 @@
 .container p {
   font-size: clamp(1.3rem, 3vw, 1.7rem);
 }
-.container button:first-child {
-  background-color: var(--red);
-}
+
 .container button {
+  --clr: transparent;
   padding: 0.5em 1em;
   border-radius: 0.25em;
-  background-color: var(--blue);
   color: #fff;
   border: none;
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.15s ease-in-out;
+  border-radius: 50px;
+  border: 3px solid var(--clr);
 }
-
-.container button:hover {
-  filter: brightness(0.5);
+.container button:first-child {
+  --clr: var(--green);
+}
+.container button:last-child {
+  --clr: var(--pink);
+}
+.container button:hover,
+.container button:focus-visible {
+  background-color: var(--clr);
 }

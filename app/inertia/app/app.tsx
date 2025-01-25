@@ -6,7 +6,7 @@ import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import '#css/globals.css'
 
-const appName = "WeRaw"
+const appName = 'WeRaw'
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,

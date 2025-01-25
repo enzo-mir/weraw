@@ -1,3 +1,5 @@
+import { UUID } from 'node:crypto'
+
 export type GaleryType = {
   id: number
   comment: string
@@ -11,4 +13,5 @@ export type UrlDataType = {
   name: string
   createdAt: string
   end_selected: boolean
+  groupe: UUID
 }

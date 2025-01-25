@@ -1,3 +1,6 @@
-import { z } from "zod";
+import { z } from 'zod'
 
-export const urlSchema = z.string().url({ message: "Invalid url" }).startsWith("https://photos.weraw/", { message: "Invalid url" });
+export const urlSchema = z
+  .string()
+  .url({ message: 'Lien expiré ou invalide' })
+  .startsWith('https://photos.weraw/', { message: 'Lien expiré ou invalide' })

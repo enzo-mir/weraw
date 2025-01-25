@@ -1,9 +1,10 @@
-import style from '#css/add_galery.module.css'
+import style from '#css/manage_galery.module.css'
 import { useForm, usePage } from '@inertiajs/react'
 import { FormEvent, useRef } from 'react'
 import { FileUploader } from 'react-drag-drop-files'
-import { Id, toast, ToastContainer } from 'react-toastify'
+import { Id, toast } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
+import UrlToSend from './admin/url_to_send'
 
 const fileTypes = ['JPG', 'PNG', 'JPEG']
 
@@ -31,8 +32,8 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
     })
 
   const loader = (percentage: number) => {
-    console.log(progressToastId.current);
-    
+    console.log(progressToastId.current)
+
     if (!progressToastId.current) {
       progressToastId.current = toast(
         `${isEditing ? 'Mise à jour' : 'Téléchargement'}: ${percentage}%`,
@@ -57,7 +58,7 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
 
   function validateGalery(e: FormEvent) {
     e.preventDefault()
-    post(`/galery/${isEditing ? `edit/${id}` : 'add'}`, {
+    post(`/galery/admin/${isEditing ? `edit/${id}` : 'add'}`, {
       forceFormData: true,
       onError: (e) => {
         notifyError(e.message)
@@ -112,7 +113,9 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
               name="file"
               types={fileTypes}
             />
-          ) : null}
+          ) : (
+            <UrlToSend />
+          )}
           <button type="submit">Valider</button>
         </form>
       </div>

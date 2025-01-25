@@ -1,20 +1,19 @@
 import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
 import style from '#css/galery.module.css'
-import { Link } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import ImagePreview from '~/components/image_preview'
 import { changeDone } from '~/services/change_done'
 import pinkArrow from '#assets/icons/arrow_link.png'
 import { ValidateIcon } from '~/assets/icons/validate'
 import { useEffect, useRef, useState } from 'react'
-import heart from '#assets/icons/heart.svg'
-import comment from '#assets/icons/comment.svg'
 import { dialogState } from '~/utils/stores/dialog.store'
-import { ConfirmDelete } from '~/components/confirm_del'
+import { ConfirmDelete } from '~/components/admin/confirm_del'
 import Dialog from '~/components/dialog'
 import ManageGalery from '~/components/manage_galery'
 import { FileUploader } from 'react-drag-drop-files'
 import addPhotos from '~/services/add_photos'
 import { ToastContainer } from 'react-toastify'
+import DisplayGalery from '~/components/display_galery'
 const Galery = ({
   images,
   urlData,
@@ -74,21 +73,23 @@ const Galery = ({
   const fileTypes = ['JPG', 'PNG', 'JPEG']
   return (
     <>
+      <Head title="Galery" />
       <ToastContainer />
       <Dialog />
-      {imageId !== null ? <ImagePreview setImageId={setImageId} id={imageId} /> : null}
+      {imageId !== null ? <ImagePreview type="admin" setImageId={setImageId} id={imageId} /> : null}
       <main className={style.main}>
         <div className={style.header}>
           <Link href="/dashboard" className={style.back}>
             <img src={pinkArrow} alt="arrow back to menu" />
             <p>
-              Revenir à l'accueil <em>WeRaw</em>
+              Revenir au dashboard <em>WeRaw</em>
             </p>
           </Link>
           <aside className={style.urlData}>
             <h1>{urlData.name}</h1>
             <p>{new Date(urlData.createdAt).toLocaleDateString()}</p>
           </aside>
+
           <div className={style.done}>
             <p>Terminé</p>
             <ValidateIcon
@@ -101,16 +102,6 @@ const Galery = ({
 
           <aside className={style.edit}>
             <button
-              className={style.del}
-              onClick={() => {
-                setDialogElement(
-                  <ConfirmDelete _csrf={_csrf} type={{ url: `/galery/delete/${urlData.id}` }} />
-                )
-              }}
-            >
-              Supprimer
-            </button>
-            <button
               onClick={() =>
                 setDialogElement(
                   <ManageGalery name={urlData.name} date={new Date(urlData.createdAt)} />
@@ -118,6 +109,19 @@ const Galery = ({
               }
             >
               Éditer
+            </button>
+            <button
+              className={style.del}
+              onClick={() => {
+                setDialogElement(
+                  <ConfirmDelete
+                    _csrf={_csrf}
+                    type={{ url: `/galery/admin/delete/${urlData.id}` }}
+                  />
+                )
+              }}
+            >
+              Supprimer
             </button>
           </aside>
         </div>
@@ -131,26 +135,23 @@ const Galery = ({
         <ul className={style.galery}>
           {imagesData.map((image, id) => {
             return (
-              <li key={id + image.url} onClick={() => setImageId(id)}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image }} />)
-                  }}
-                >
-                  <span>-</span>
-                </button>
-                <img
-                  width={250}
-                  height={250}
-                  src={image.url}
-                  alt={urlData.name + id}
-                  loading="lazy"
-                />
-
-                {image.like ? <img src={heart} alt="heart like" /> : null}
-                {image.comment ? <img src={comment} alt="comment" /> : null}
-              </li>
+              <DisplayGalery
+                key={id + image.url}
+                image={image}
+                id={id}
+                _csrf={_csrf}
+                setImageId={setImageId}
+                deleteBtn={
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image: image }} />)
+                    }}
+                  >
+                    <span>-</span>
+                  </button>
+                }
+              />
             )
           })}
         </ul>

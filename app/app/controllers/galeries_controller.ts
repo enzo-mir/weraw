@@ -2,7 +2,7 @@ import Photo from '#models/photo'
 import Url from '#models/url'
 import { deleteGaleryService } from '#services/delete_galery'
 import { deleteImage } from '#services/delete_image'
-import { getImages } from '#services/get_images'
+import { getAdminImages } from '#services/get_images'
 import { storeImages } from '#services/store_images'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -11,14 +11,15 @@ import db from '@adonisjs/lucid/services/db'
 import fs from 'node:fs'
 
 export default class GaleriesController {
-  async show({ inertia, params, request }: HttpContext) {
+  async show({ inertia, params }: HttpContext) {
     const urlData = await Url.query()
       .where('id', params.id)
-      .select('end_selected', 'done', 'name', 'created_at', 'id')
-
-    return inertia.render('galery', {
-      images: await getImages(params as { id: string }),
-      urlData: urlData[0],
+      .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe')
+      .first()
+    const images = await getAdminImages(params as { id: string })
+    return inertia.render('admin/galery', {
+      images,
+      urlData,
     })
   }
   async deleteImage({ session, response, params }: HttpContext) {

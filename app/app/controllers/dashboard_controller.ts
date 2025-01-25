@@ -30,7 +30,7 @@ export default class DashboardController {
       }, {})
     )
 
-    return inertia.render('dashboard', { galeries: groupedGaleriesByName })
+    return inertia.render('admin/dashboard', { galeries: groupedGaleriesByName })
   }
 
   public async store({ request, response, session }: HttpContext) {

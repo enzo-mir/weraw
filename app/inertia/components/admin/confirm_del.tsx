@@ -1,4 +1,4 @@
-import { Link, router } from '@inertiajs/react'
+import { router } from '@inertiajs/react'
 import { toast, ToastContainer } from 'react-toastify'
 import { deleteImageService } from '~/services/delete_image'
 import { dialogState } from '~/utils/stores/dialog.store'
@@ -29,8 +29,8 @@ export const ConfirmDelete = ({
         })
       }
     } else {
-        setDialogElement(null)
-        router.post(type.url as string)
+      setDialogElement(null)
+      router.post(type.url as string)
     }
   }
   return (

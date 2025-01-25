@@ -1,5 +1,5 @@
 export const changeDone = async (value: boolean, _csrf: string, urlId: number) => {
-  const data = await fetch('/url/status', {
+  const data = await fetch('/admin/url/status', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
