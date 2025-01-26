@@ -1,0 +1,112 @@
+.container {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  justify-self: center;
+  grid-template-columns: 1fr;
+  width: 100%;
+  gap: 1em;
+  height: 100svh;
+  padding: 3em;
+}
+
+.container::after {
+  content: '';
+  display: block;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  border-radius: 50%;
+  bottom: 50%;
+  right: 50%;
+  background: repeating-radial-gradient(
+    circle,
+    var(--pink) 0,
+    var(--pink) 1px,
+    var(--bg) 1px,
+    var(--bg) 15px
+  );
+  z-index: 0;
+}
+
+.container::before {
+  content: '';
+  display: block;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  background: var(--bg);
+  background-image: radial-gradient(var(--green) 2px, transparent 0);
+  background-size: 40px 40px;
+  background-position: 0px 0px;
+  z-index: 0;
+}
+
+.container div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  background-color: var(--bg);
+  z-index: 50;
+  padding: 3em;
+}
+.container div > * {
+  z-index: 50;
+  width: fit-content;
+}
+.container div::before {
+  content: '';
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  background: linear-gradient(-45deg, transparent, 90%, var(--pink));
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+.container div span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background-color: var(--bg);
+  width: 98%;
+  height: 98%;
+  z-index: 1;
+}
+.container div::after {
+  content: '';
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  background: linear-gradient(-225deg, transparent, 90%, var(--green));
+  z-index: -1;
+  bottom: 0;
+  right: 0;
+}
+.container h1 {
+  font-family: var(--kg-font);
+  font-size: clamp(2em, 3vw, 3.5em);
+  font-weight: lighter;
+  align-self: start;
+}
+
+.container div a {
+  display: inline-block;
+  padding: 10px;
+  border: 2px solid var(--green);
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--green);
+  }
+}
