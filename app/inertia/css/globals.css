@@ -60,3 +60,18 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+button {
+  padding: 0.5em 1em;
+  color: white;
+  border-radius: 50px;
+  font-size: 1em;
+  cursor: pointer;
+  border: 3px solid var(--green);
+  transition: background-color 0.15s ease;
+  width: fit-content;
+}
+button:hover,
+button:focus-visible {
+  background-color: var(--green);
+}

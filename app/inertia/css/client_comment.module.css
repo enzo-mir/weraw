@@ -35,7 +35,6 @@
 }
 .container em {
   font-style: italic;
-  font-size: 0.8em;
   color: var(--blue);
 }
 
@@ -55,19 +54,4 @@
   min-height: max-content;
   resize: vertical;
   color: white;
-}
-
-.container form button {
-  padding: 0.5em 1em;
-  color: white;
-  border-radius: 10px;
-  font-size: 1em;
-  cursor: pointer;
-  border: 3px solid var(--green);
-  transition: background-color 0.15s ease;
-  width: fit-content;
-}
-.container form button:hover,
-.container form button:focus-visible {
-  background-color: var(--green);
 }

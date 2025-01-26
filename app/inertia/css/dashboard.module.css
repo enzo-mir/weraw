@@ -18,7 +18,6 @@
   padding: 0.5em 1em;
   background-color: transparent;
   border: 3px solid var(--clr);
-  border-radius: 50px;
   transition: background-color 0.15s ease;
 
   &:hover,

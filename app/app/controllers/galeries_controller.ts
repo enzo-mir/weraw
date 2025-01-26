@@ -14,7 +14,7 @@ export default class GaleriesController {
   async show({ inertia, params }: HttpContext) {
     const urlData = await Url.query()
       .where('id', params.id)
-      .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe')
+      .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe', 'jwt')
       .first()
     const images = await getAdminImages(params as { id: string })
     return inertia.render('admin/galery', {

@@ -1,26 +1,29 @@
 import style from '#css/client_comment.module.css'
-import { useForm } from '@inertiajs/react'
+import { useForm, usePage } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 import { imagesStore } from '~/utils/stores/images.store'
-import { GaleryType } from '~/utils/types/galery.type'
+import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
 
 const CommentSide = ({
   text,
   setDisplayClientComment,
   id,
+  type,
 }: {
   text?: string
   setDisplayClientComment: (v: boolean) => void
   id: number
+  type: 'client' | 'admin'
 }) => {
   const { data, setData, post } = useForm({
     comment: text || '',
   })
   const setImages = imagesStore((state) => state.setImages)
+  const group = (usePage().props as unknown as { urlData: UrlDataType }).urlData.groupe
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    post(`/comment/${location.pathname.replace('/galery/', '')}/${id}`, {
+    post(`/comment/${group}/${id}`, {
       onSuccess: (e) => {
         toast.success('Commentaire mis à jour !', {
           autoClose: 2000,
@@ -57,7 +60,7 @@ const CommentSide = ({
         </svg>
       </button>
       <h2>
-        Laisser un commentaire
+        Laissez un commentaire
         <em>WeRaw</em>
       </h2>
       <form onSubmit={handleSubmit}>
@@ -69,8 +72,9 @@ const CommentSide = ({
           placeholder="..."
           defaultValue={text}
           onChange={(e) => setData({ ...data, comment: e.target.value })}
+          readOnly={type === 'admin'}
         ></textarea>
-        <button>Envoyer</button>
+        {type === 'client' ? <button>Envoyer</button> : null}
       </form>
     </aside>
   )

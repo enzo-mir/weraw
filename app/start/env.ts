@@ -38,4 +38,6 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   ADMIN_EMAIL: Env.schema.string(),
   START_IMAGE_URL: Env.schema.string(),
+
+  JWT_SECRET: Env.schema.string(),
 })

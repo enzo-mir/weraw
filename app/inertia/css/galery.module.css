@@ -22,12 +22,13 @@
   height: fit-content;
   color: var(--red);
   background-color: white;
-  width: 3em;
-  height: 3em;
+  padding: 0;
+  width: 2.7em;
+  height: 2.7em;
   z-index: 10;
   transition: all 0.2s ease-out;
   translate: 50% -50%;
-  border-radius: 10px;
+  border-radius: 50%;
   border: 3px solid var(--red);
   &:hover,
   &:focus-visible {
@@ -47,13 +48,15 @@
   position: absolute;
   bottom: -5px;
   left: -5px;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 0;
   object-fit: contain;
   filter: drop-shadow(3px -3px 0px var(--bg));
 }
-.galery li:not(:has(button)) img:nth-child(3) {
+
+.galery li:not(:has(button)) img:nth-child(3),
+.galery li:has(button) img:nth-child(4) {
   bottom: -8px;
   left: 40px;
 }

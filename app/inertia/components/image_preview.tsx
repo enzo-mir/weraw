@@ -57,6 +57,7 @@ const ImagePreview = ({
       <ToastContainer stacked={false} />
       {displayClientComment ? (
         <CommentSide
+          type={type}
           id={(images || imagesProps)[id].id}
           text={(images || imagesProps)[id].comment}
           setDisplayClientComment={setDisplayClientComment}
@@ -69,6 +70,7 @@ const ImagePreview = ({
             <HeartIcon
               liked={(images || imagesProps)[id].like}
               id={(images || imagesProps)[id].id}
+              type={type}
             />
             <CommentIcon
               commented={!!(images || imagesProps)[id].comment}

@@ -9,6 +9,7 @@ import { imagesStore } from '~/utils/stores/images.store'
 const Galery = (props: { images: Array<GaleryType>; urlData: UrlDataType; _csrf: string }) => {
   const [imageId, setImageId] = useState<number | null>(null)
   const images = imagesStore((state) => state.images)
+  console.log(props.images)
 
   return (
     <>

@@ -1,0 +1,16 @@
+import { Link } from '@inertiajs/react'
+import style from '#css/error_page.module.css'
+export default function Unauthorized() {
+  return (
+    <main className={style.container}>
+      <div>
+        <span></span>
+        <h1>Oups !</h1>
+        <p>Le lien est in valide ou expiré</p>
+        <Link href="/" rel="noreferrer">
+          Revenez en lieux sûr
+        </Link>
+      </div>
+    </main>
+  )
+}

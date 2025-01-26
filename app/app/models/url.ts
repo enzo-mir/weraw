@@ -20,6 +20,9 @@ export default class Url extends BaseModel {
   @column()
   declare groupe: UUID
 
+  @column()
+  declare jwt: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

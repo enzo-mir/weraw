@@ -1,9 +1,8 @@
+import { UUID } from 'crypto'
 import { toast } from 'react-toastify'
 import { GaleryType } from '~/utils/types/galery.type'
 
-export const likeImage = async (id: number, _csrf: string) => {
-  const group = location.pathname.replace('/galery/', '')
-
+export const likeImage = async (group: UUID, id: number, _csrf: string) => {
   return await fetch(`/image/like/${group}`, {
     method: 'POST',
     headers: {

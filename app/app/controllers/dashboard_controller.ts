@@ -1,5 +1,6 @@
 import Photo from '#models/photo'
 import Url from '#models/url'
+import { jwtMaker } from '#services/jwt_service'
 import { storeImages } from '#services/store_images'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
@@ -23,7 +24,14 @@ export default class DashboardController {
 
     const groupedGaleriesByName = galeries.reduce(
       (acc: { [key: string]: any }, { name, url, id, created_at, done, end_selected }) => {
-        acc[name] = acc[name] || { id, name, created_at, done, end_selected, url: [] }
+        acc[name] = acc[name] || {
+          id,
+          name,
+          created_at,
+          done,
+          end_selected,
+          url: [],
+        }
         url && acc[name].url.push(url)
         return acc
       },
@@ -46,7 +54,10 @@ export default class DashboardController {
 
     try {
       const images = await storeImages(name, files, false)
-      const url = await Url.create({ name, createdAt: date, groupe: randomUUID() })
+      const groupe = randomUUID()
+      const jwt = await jwtMaker(groupe)
+      const url = await Url.create({ name, createdAt: date, groupe, jwt: jwt as string })
+
       const photoPromises = images.map(
         async (image) =>
           await Photo.create({

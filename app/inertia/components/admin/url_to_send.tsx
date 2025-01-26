@@ -4,12 +4,14 @@ import { toast } from 'react-toastify'
 import { UrlDataType } from '~/utils/types/galery.type'
 
 const UrlToSend = () => {
-  const groupe = (usePage().props.urlData as unknown as UrlDataType).groupe
-  const url = `${window.location.origin}/galery/${groupe}`
+  const { jwt } = usePage().props.urlData as unknown as UrlDataType
+
+  const url = `${window.location.origin}/galery/${jwt}`
+
   function clipToKeyboard(e: MouseEvent) {
     e.stopPropagation()
     const button = e.currentTarget as HTMLButtonElement
-    button.focus() 
+    button.focus()
 
     if (navigator.clipboard) {
       navigator.clipboard

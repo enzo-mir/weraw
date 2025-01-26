@@ -1,12 +1,3 @@
-/*
-|--------------------------------------------------------------------------
-| Routes file
-|--------------------------------------------------------------------------
-|
-| The routes file is used for defining the HTTP routes.
-|
-*/
-
 const AuthentificationsController = () => import('#controllers/authentifications_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -50,7 +41,7 @@ router
       })
       .prefix('/admin')
       .use(middleware.auth())
-
-    router.get('/:groupe', [GaleryClientController, 'show'])
   })
   .prefix('/galery')
+
+router.get('/galery/:jwt', [GaleryClientController, 'show']).use(middleware.jwt())

@@ -3,18 +3,23 @@ import { usePage } from '@inertiajs/react'
 
 import { likeImage } from '~/services/like_image'
 import { imagesStore } from '~/utils/stores/images.store'
+import { UrlDataType } from '~/utils/types/galery.type'
 
 type HeartIconProps = {
   id: number
   liked: boolean
+  type: 'client' | 'admin'
 }
 
-const HeartIcon: React.FC<HeartIconProps> = ({ id, liked }) => {
+const HeartIcon: React.FC<HeartIconProps> = ({ id, liked, type }) => {
   const _csrf = usePage().props._csrf as string
+  const group = (usePage().props as unknown as { urlData: UrlDataType }).urlData.groupe
+
   const setImages = imagesStore((state) => state.setImages)
 
   const handleClick = async () => {
-    const updatedImages = await likeImage(id, _csrf)
+    if (type === 'admin') return
+    const updatedImages = await likeImage(group, id, _csrf)
     setImages(updatedImages)
   }
 
