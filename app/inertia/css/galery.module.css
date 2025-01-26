@@ -42,11 +42,13 @@
 }
 
 .galery li img:nth-child(3),
-.galery li img:nth-child(4) {
+.galery li:not(:has(button)) img:nth-child(2),
+.galery li:has(button) img:nth-child(4) {
+  position: absolute;
+  bottom: -5px;
+  left: -5px;
   width: 40px;
   height: 40px;
-  margin-left: 1em;
-  padding-top: 0.5em;
   border-radius: 0;
   object-fit: contain;
 }

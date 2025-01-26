@@ -1,0 +1,73 @@
+.container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+  padding: 3em;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 40%;
+  min-width: 400px;
+  z-index: 10000;
+  background-color: var(--bg);
+}
+.close_btn {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: unset;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: var(--pink);
+  padding: 0.25em;
+  border-radius: 2px;
+}
+
+.close_btn svg {
+  rotate: 45deg;
+  width: 25px;
+  height: 25px;
+}
+.container em {
+  font-style: italic;
+  font-size: 0.8em;
+  color: var(--blue);
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+.container textarea {
+  font-family: var(--bricolage--font);
+  padding: 0.5em;
+  font-size: clamp(1em, 2vw, 1.2em);
+  background-color: hsl(0, 0%, 9%);
+  border-radius: 20px;
+  border: 2px solid var(--blue);
+  max-height: 60svh;
+  min-height: max-content;
+  resize: vertical;
+  color: white;
+}
+
+.container form button {
+  padding: 0.5em 1em;
+  color: white;
+  border-radius: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  border: 3px solid var(--green);
+  transition: background-color 0.15s ease;
+  width: fit-content;
+}
+.container form button:hover,
+.container form button:focus-visible {
+  background-color: var(--green);
+}

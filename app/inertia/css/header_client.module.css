@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100px;
+  height: 100%;
+  padding: 1em 2em;
+}
+
+.header aside {
+  display: grid;
+  gap: 1em;
+}
+
+.header h1 {
+  font-size: clamp(2em, 3vw, 3.5em);
+  font-family: var(--kg-font);
+  text-align: right;
+  font-weight: lighter;
+}
+
+.header aside p {
+  color: var(--blue);
+  font-size: clamp(1em, 2vw, 1.3em);
+  font-style: italic;
+}

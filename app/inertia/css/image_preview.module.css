@@ -49,6 +49,12 @@
   object-position: center;
   height: 80svh;
 }
+.comment {
+  height: 40px;
+}
+.heart {
+  height: 50px;
+}
 .comment:hover {
   cursor: pointer;
 }

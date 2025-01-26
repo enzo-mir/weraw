@@ -22,6 +22,10 @@ router.post('/auth/login', [AuthentificationsController, 'login'])
 router.post('/auth/logout', [AuthentificationsController, 'logout'])
 router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 
+router.group(() => {
+  router.post('/image/like/:groupe', [GaleriesController, 'like'])
+})
+
 router
   .group(() => {
     router.post('/image/add', [GaleriesController, 'addImage'])
@@ -37,7 +41,7 @@ router
     router
       .group(() => {
         router.post('/add', [DashboardController, 'store'])
-        router.get('/:id', [GaleriesController, 'show'])
+        router.get('/:id', [GaleriesController, 'show']).where('id', /^[0-9]+/)
         router.post('/delete/:id', [GaleriesController, 'deleteGalery'])
         router.post('/edit/:id', [GaleriesController, 'editGalery'])
       })

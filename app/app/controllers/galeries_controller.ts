@@ -2,7 +2,7 @@ import Photo from '#models/photo'
 import Url from '#models/url'
 import { deleteGaleryService } from '#services/delete_galery'
 import { deleteImage } from '#services/delete_image'
-import { getAdminImages } from '#services/get_images'
+import { getAdminImages, getClientImages } from '#services/get_images'
 import { storeImages } from '#services/store_images'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -90,5 +90,18 @@ export default class GaleriesController {
       session.flash({ errors: { message: error.message } })
       return response.redirect().back()
     }
+  }
+
+  async like({ request, response, params }: HttpContext) {
+    const { id } = request.only(['id'])
+    const photo = await Photo.query().where('id', id).first()
+
+    if (!photo) {
+      return response.badRequest({ message: 'Image introuvable' })
+    }
+    await Photo.updateOrCreate({ id }, { like: !photo.like })
+    return response.status(200).json({
+      images: await getClientImages(params as { groupe: string }),
+    })
   }
 }
