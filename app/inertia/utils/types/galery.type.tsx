@@ -9,7 +9,7 @@ export type GaleryType = {
 
 export type UrlDataType = {
   id: number
-  done: number
+  done: boolean
   name: string
   createdAt: string
   end_selected: boolean

@@ -1,5 +1,4 @@
 import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
-
 import heart from '#assets/icons/heart.svg'
 import comment from '#assets/icons/comment.svg'
 import { usePage } from '@inertiajs/react'

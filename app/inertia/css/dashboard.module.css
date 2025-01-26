@@ -36,6 +36,7 @@
 /* Layout ---------------------- */
 
 .main {
+  position: relative;
   display: grid;
   gap: 2em;
   padding: 5em 7.5svw;
@@ -61,4 +62,20 @@
 .galeries {
   display: flex;
   gap: 1.5em;
+}
+
+@media screen and (max-width: 500px) {
+  .layout nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1em;
+    place-items: center;
+  }
+
+  .galeries {
+    display: flex;
+    gap: 1em;
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }

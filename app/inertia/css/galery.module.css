@@ -7,7 +7,7 @@
 
 .galery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   padding-top: 2em;
   gap: 2em;
   width: 100%;
@@ -177,5 +177,25 @@
 @media screen and (max-width: 512px) {
   .galery {
     place-items: center;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .header a p {
+    display: none;
+  }
+  .done > p:first-child {
+    display: none;
+  }
+
+  .done {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1em;
+  }
+  .edit {
+    flex-direction: column;
+    justify-content: space-around;
   }
 }

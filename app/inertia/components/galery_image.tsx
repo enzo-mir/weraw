@@ -5,9 +5,8 @@ const GaleryImage = ({ ...props }: { galery: GaleriesType[0] }) => {
   const handleClick = () => {
     router.visit(`/galery/admin/${props.galery.id}`)
   }
-
-  console.log(props.galery)
-
+  console.log(props.galery);
+  
   return (
     <article onClick={handleClick} key={props.galery.id} className={syle.article}>
       <h2>{props.galery.name}</h2>

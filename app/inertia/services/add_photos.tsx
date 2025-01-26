@@ -14,10 +14,13 @@ export default async function addPhotos(files: File[], _csrf: string, galeryName
     method: 'POST',
     body: formData,
   })
+
   await toast.promise(promise, {
     pending: 'Téléchargement de(s) photo(s)...',
     success: 'Photo(s) ajoutée(s)',
     error: "Erreur lors de l'ajout",
   })
-  if ((await promise).ok) router.reload()
+  if ((await promise).ok) {
+    router.reload()
+  }
 }

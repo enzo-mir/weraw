@@ -7,11 +7,11 @@
   flex-direction: column;
   gap: 1em;
   max-width: 300px;
+  min-width: 200px;
   aspect-ratio: 5 / 6;
   z-index: 10;
   padding: 0.5em;
   border-radius: 20px;
-  overflow: hidden;
   border: 2px solid var(--pink);
   transition: all 0.2s ease-out;
 }
@@ -41,11 +41,23 @@
   filter: brightness(0.3);
   user-select: none;
 }
+.article img:first-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.article img:last-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
 
 .article img:nth-child(2) {
   left: calc(100% / 3);
 }
-
+.article h2 {
+  font-family: var(--kg-font);
+  font-weight: lighter;
+}
 .article img:last-child {
   right: 0;
   left: unset;

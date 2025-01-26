@@ -41,13 +41,16 @@
 
   &:hover {
     background-color: transparent;
+    cursor: not-allowed;
   }
 }
+
 .container > img:last-child {
   max-height: 100%;
   object-fit: cover;
   object-position: center;
   height: 80svh;
+  max-width: 80svw;
 }
 .comment {
   height: 40px;
@@ -62,6 +65,16 @@
   animation: shake 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95) forwards;
   cursor: pointer;
 }
+
+@keyframes cta {
+  50% {
+    background-color: var(--clr);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 @keyframes shake {
   0% {
     rotate: 0deg;
@@ -90,4 +103,33 @@
 .after_btn {
   --clr: var(--green);
   right: 3em;
+}
+
+@media screen and (max-width: 750px) {
+  .before_btn,
+  .after_btn {
+    align-self: self-end;
+    position: relative;
+    inset: 0;
+  }
+  .container {
+    grid-template-rows: 100px 1fr;
+    width: 100%;
+    grid-area: 1 / 1 / 2 / 3;
+  }
+
+  .container img:last-child {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    align-self: self-start;
+    height: auto;
+    max-height: 60svh;
+  }
+  .before_btn {
+    grid-area: 3 / 1 / 4 / 2;
+  }
+  .after_btn {
+    grid-area: 3 / 2 / 4 / 3;
+  }
 }

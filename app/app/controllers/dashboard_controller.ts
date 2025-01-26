@@ -20,12 +20,11 @@ export default class DashboardController {
         'urls.end_selected',
         'photos.url'
       )
-    console.log(galeries)
 
     const groupedGaleriesByName = galeries.reduce(
       (acc: { [key: string]: any }, { name, url, id, created_at, done, end_selected }) => {
-        acc[name] = acc[name] || { id, created_at, done, end_selected, url: [] }
-        acc[name].url.push(url)
+        acc[name] = acc[name] || { id, name, created_at, done, end_selected, url: [] }
+        url && acc[name].url.push(url)
         return acc
       },
       {}

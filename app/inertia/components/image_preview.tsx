@@ -63,16 +63,9 @@ const ImagePreview = ({
         />
       ) : null}
       <div className={overlayStyle.overlay} onClick={goBack}>
-        <button
-          className={style.before_btn}
-          onClick={(e) => changeImage(e, 'prev')}
-          disabled={id === 0}
-        >
-          <img src={arrow} alt="previous image arrow" />
-        </button>
         <article className={style.container} onClick={(e) => e.stopPropagation()}>
           <div>
-            <p>Image n°{id! + 1}</p>
+            {type === 'client' ? null : <p>Image n°{id! + 1}</p>}
             <HeartIcon
               liked={(images || imagesProps)[id].like}
               id={(images || imagesProps)[id].id}
@@ -89,6 +82,13 @@ const ImagePreview = ({
           />
         </article>
         {openComment ? <Comment comment={(images || imagesProps)[id].comment} /> : null}
+        <button
+          className={style.before_btn}
+          onClick={(e) => changeImage(e, 'prev')}
+          disabled={id === 0}
+        >
+          <img src={arrow} alt="previous image arrow" />
+        </button>
         <button
           className={style.after_btn}
           onClick={(e) => changeImage(e, 'next')}

@@ -24,3 +24,9 @@
   font-size: clamp(1em, 2vw, 1.3em);
   font-style: italic;
 }
+
+@media screen and (max-width: 750px) {
+  .header a p {
+    display: none;
+  }
+}

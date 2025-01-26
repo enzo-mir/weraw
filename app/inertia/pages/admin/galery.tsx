@@ -28,12 +28,11 @@ const Galery = ({
   const [hasMore, setHasMore] = useState(true)
   const loader = useRef<HTMLDivElement | null>(null) // Ref to detect scrolling
   const [imageId, setImageId] = useState<number | null>(null)
-  const [done, setDone] = useState<number>(urlData.done)
+  const [done, setDone] = useState<boolean>(!!urlData.done)
   const setDialogElement = dialogState((state) => state.setDialogElement)
-  const dialogElement = dialogState((state) => state.dialogElement)
   async function handleChangDone() {
-    setDone(done === 0 ? 1 : 0)
-    await changeDone(!urlData.done, _csrf, urlData.id)
+    setDone(!done)
+    await changeDone(!done, _csrf, urlData.id)
   }
   useEffect(() => {
     setImagesData(images.slice(0, splitNumber))
@@ -95,7 +94,7 @@ const Galery = ({
             <ValidateIcon
               onClick={handleChangDone}
               className={style.validateSvg}
-              data-validate={done}
+              data-validate={done ? '1' : '0'}
             />
             <p>{urlData.end_selected ? 'Selection finis' : 'Selection en cours'}</p>
           </div>
@@ -127,7 +126,7 @@ const Galery = ({
         </div>
         <FileUploader
           className={style.drag_div}
-          handleChange={(file: File[]) => addPhotos(file, _csrf, urlData.name)}
+          handleChange={async (file: File[]) => await addPhotos(file, _csrf, urlData.name)}
           multiple={true}
           name="file"
           types={fileTypes}

@@ -99,10 +99,14 @@ export default class GaleriesController {
     if (!photo) {
       return response.badRequest({ message: 'Image introuvable' })
     }
-    await Photo.updateOrCreate({ id }, { like: !photo.like })
-    return response.status(200).json({
-      images: await getClientImages(params as { groupe: string }),
-    })
+    try {
+      await Photo.updateOrCreate({ id }, { like: !photo.like })
+      return response.status(200).json({
+        images: await getClientImages(params as { groupe: string }),
+      })
+    } catch (error) {
+      return response.badRequest({ message: 'Une erreur est survenue' })
+    }
   }
 
   async comment({ request, response, params, inertia }: HttpContext) {
