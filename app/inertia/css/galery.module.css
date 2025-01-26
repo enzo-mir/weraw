@@ -51,6 +51,11 @@
   height: 40px;
   border-radius: 0;
   object-fit: contain;
+  filter: drop-shadow(3px -3px 0px var(--bg));
+}
+.galery li:not(:has(button)) img:nth-child(3) {
+  bottom: -8px;
+  left: 40px;
 }
 
 .galery img:hover {

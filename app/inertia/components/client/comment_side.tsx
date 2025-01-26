@@ -1,16 +1,44 @@
 import style from '#css/client_comment.module.css'
 import { useForm } from '@inertiajs/react'
+import { toast } from 'react-toastify'
+import { imagesStore } from '~/utils/stores/images.store'
+import { GaleryType } from '~/utils/types/galery.type'
 
 const CommentSide = ({
   text,
   setDisplayClientComment,
+  id,
 }: {
   text?: string
   setDisplayClientComment: (v: boolean) => void
+  id: number
 }) => {
-  const { data, setData } = useForm({
-    text: text || '',
+  const { data, setData, post } = useForm({
+    comment: text || '',
   })
+  const setImages = imagesStore((state) => state.setImages)
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    post(`/comment/${location.pathname.replace('/galery/', '')}/${id}`, {
+      onSuccess: (e) => {
+        toast.success('Commentaire mis à jour !', {
+          autoClose: 2000,
+          hideProgressBar: true,
+        })
+
+        setImages(e.props.images as GaleryType[])
+
+        setDisplayClientComment(false)
+      },
+      onError: () => {
+        toast.error('Erreur lors de la mise à jour du commentaire', {
+          autoClose: 2000,
+          hideProgressBar: true,
+        })
+      },
+    })
+  }
   return (
     <aside className={style.container}>
       <button className={style.close_btn} onClick={() => setDisplayClientComment(false)}>
@@ -32,15 +60,15 @@ const CommentSide = ({
         Laisser un commentaire
         <em>WeRaw</em>
       </h2>
-      <form>
-        <sub>{data.text.length}/200</sub>
+      <form onSubmit={handleSubmit}>
+        <sub>{data.comment.length}/200</sub>
         <textarea
           maxLength={200}
           rows={10}
-          name="com"
+          name="comment"
           placeholder="..."
           defaultValue={text}
-          onChange={(e) => setData({ text: e.target.value })}
+          onChange={(e) => setData({ ...data, comment: e.target.value })}
         ></textarea>
         <button>Envoyer</button>
       </form>

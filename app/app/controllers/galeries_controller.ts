@@ -104,4 +104,20 @@ export default class GaleriesController {
       images: await getClientImages(params as { groupe: string }),
     })
   }
+
+  async comment({ request, response, params, inertia }: HttpContext) {
+    const { comment } = request.only(['comment'])
+    const { groupe, imageId } = params
+
+    const photo = await Photo.query().where('groupe', groupe).andWhere('id', imageId).first()
+
+    if (!photo) {
+      return response.badRequest({ message: 'Image introuvable' })
+    }
+    await Photo.updateOrCreate({ id: imageId }, { comment })
+    inertia.share({
+      images: await getClientImages(params as { groupe: string }),
+    })
+    return response.redirect().back()
+  }
 }

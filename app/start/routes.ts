@@ -22,9 +22,12 @@ router.post('/auth/login', [AuthentificationsController, 'login'])
 router.post('/auth/logout', [AuthentificationsController, 'logout'])
 router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 
-router.group(() => {
-  router.post('/image/like/:groupe', [GaleriesController, 'like'])
-})
+router
+  .group(() => {
+    router.post('/image/like/:groupe', [GaleriesController, 'like'])
+    router.post('/comment/:groupe/:imageId', [GaleriesController, 'comment'])
+  })
+  .use(middleware.guest())
 
 router
   .group(() => {

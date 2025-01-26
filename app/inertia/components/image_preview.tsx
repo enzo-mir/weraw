@@ -23,7 +23,9 @@ const ImagePreview = ({
   const [openComment, setOpenComment] = useState<boolean>(false)
   const imagesProps = usePage().props.images as Array<GaleryType>
   const [displayClientComment, setDisplayClientComment] = useState<boolean>(false)
-  const images: Array<GaleryType> = imagesStore((state) => state.images) as unknown as Array<GaleryType>
+  const images: Array<GaleryType> = imagesStore(
+    (state) => state.images
+  ) as unknown as Array<GaleryType>
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -52,9 +54,10 @@ const ImagePreview = ({
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer stacked={false} />
       {displayClientComment ? (
         <CommentSide
+          id={(images || imagesProps)[id].id}
           text={(images || imagesProps)[id].comment}
           setDisplayClientComment={setDisplayClientComment}
         />
