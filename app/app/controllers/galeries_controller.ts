@@ -9,6 +9,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import db from '@adonisjs/lucid/services/db'
 import fs from 'node:fs'
+import { z } from 'zod'
 
 export default class GaleriesController {
   async show({ inertia, params }: HttpContext) {
@@ -71,7 +72,10 @@ export default class GaleriesController {
   }
 
   async addImage({ request, response, session }: HttpContext) {
-    const files = request.allFiles().files as MultipartFile[]
+    const { files } = z
+      .object({ files: z.array(z.instanceof(MultipartFile)) })
+      .parse(request.allFiles())
+
     const galeryName = request.only(['galeryName']).galeryName
     try {
       const url = await Url.findByOrFail('name', galeryName)
@@ -111,7 +115,12 @@ export default class GaleriesController {
 
   async comment({ request, response, params, inertia }: HttpContext) {
     const { comment } = request.only(['comment'])
-    const { groupe, imageId } = params
+    const { groupe, imageId } = z
+      .object({
+        groupe: z.string().transform((v) => v.trim().replaceAll(' ', '')),
+        imageId: z.number(),
+      })
+      .parse(params)
 
     const photo = await Photo.query().where('groupe', groupe).andWhere('id', imageId).first()
 

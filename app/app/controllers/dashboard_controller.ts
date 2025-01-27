@@ -1,5 +1,6 @@
 import Photo from '#models/photo'
 import Url from '#models/url'
+import { imageStoreSchema } from '#schemas/store_image.store'
 import { groupedGaleriesByName } from '#services/get_galery_dashboard'
 import { jwtMaker } from '#services/jwt_service'
 import { storeImages } from '#services/store_images'
@@ -22,6 +23,8 @@ export default class DashboardController {
     ]
 
     try {
+      await imageStoreSchema.parseAsync({ name, date, files })
+
       const images = await storeImages(name, files, false)
       const groupe = randomUUID()
       const jwt = await jwtMaker(groupe)

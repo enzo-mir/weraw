@@ -29,12 +29,22 @@ export const jwtVerifier = async (jwtToken: string) => {
   const promise = new Promise<jwt.VerifyErrors | PayloadType>((resolve, reject) =>
     jwt.verify(jwtToken, env.get('JWT_SECRET'), function (err, decoded) {
       if (err) {
-        return reject(err)
+        reject(err)
       } else {
-        return resolve(decoded as PayloadType)
+        resolve(decoded as PayloadType)
       }
     })
   )
 
-  return promise.then((data) => data.groupe)
+  return promise.then((d) => {
+    if ('groupe' in d) {
+      return {
+        groupe: d.groupe,
+        iat: d.iat,
+        exp: d.exp,
+      }
+    } else {
+      throw new Error('Invalid token')
+    }
+  })
 }

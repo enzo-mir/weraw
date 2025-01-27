@@ -9,12 +9,13 @@ export default class GaleryClientController {
     const verifier = await jwtVerifier(jwt)
 
     const urlData = await Url.query()
-      .where('groupe', verifier)
+      .where('groupe', verifier.groupe)
       .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe')
       .first()
 
     return inertia.render('client/galery', {
-      images: await getClientImages({ groupe: verifier as string }),
+      images: await getClientImages({ groupe: verifier.groupe }),
+      exp: new Date(verifier.exp * 1000),
       urlData,
     })
   }
