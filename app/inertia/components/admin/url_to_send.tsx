@@ -5,7 +5,6 @@ import { UrlDataType } from '~/utils/types/galery.type'
 
 const UrlToSend = () => {
   const { jwt } = usePage().props.urlData as unknown as UrlDataType
-
   const url = `${window.location.origin}/galery/${jwt}`
 
   function clipToKeyboard(e: MouseEvent) {
@@ -51,13 +50,15 @@ const UrlToSend = () => {
   }
 
   return (
-    <label>
-      <p>Lien :</p>
-      <input type="url" name="url" readOnly={true} disabled value={url} />
-      <button type="button" onClick={clipToKeyboard}>
-        Copier
-      </button>
-    </label>
+    <>
+      <label htmlFor="url">
+        <p>Lien</p>
+        <input type="url" name="url" readOnly={true} disabled value={url} />
+        <button type="button" onClick={clipToKeyboard}>
+          Copier
+        </button>
+      </label>
+    </>
   )
 }
 

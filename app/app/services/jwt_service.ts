@@ -6,22 +6,32 @@ export type PayloadType = {
   iat: number
   exp: number
 }
-export const jwtMaker = async (groupe: UUID, date?: Date) => {
+export const jwtMaker = async (groupe: UUID, date?: Date | string) => {
+  const payload: Record<string, any> = { groupe }
   return new Promise<string | Error>((resolve, reject) => {
-    jwt.sign(
-      { groupe, date },
-      env.get('JWT_SECRET'),
-      {
-        expiresIn: date ? Math.floor(date.getTime() / 1000) : '7d',
-      },
-      function (err, token) {
-        if (err) {
-          reject('Une errreur est survenue')
-        } else if (token) {
-          resolve(token)
-        }
+    if (!date) {
+      const currentDate = new Date()
+      const nextWeek = new Date(currentDate)
+      nextWeek.setDate(currentDate.getDate() + 7)
+
+      date = nextWeek.toISOString()
+    }
+    const expirationTimestamp = Math.floor(new Date(date).getTime() / 1000)
+
+    if (Number.isNaN(expirationTimestamp)) {
+      return reject(new Error('Invalid expiration date provided'))
+    }
+
+    payload.exp = expirationTimestamp
+    jwt.sign(payload, env.get('JWT_SECRET'), function (err, token) {
+      if (err) {
+        console.log(err)
+
+        reject('Une errreur est survenue')
+      } else if (token) {
+        resolve(token)
       }
-    )
+    })
   })
 }
 

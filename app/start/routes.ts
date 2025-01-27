@@ -1,10 +1,11 @@
 const AuthentificationsController = () => import('#controllers/authentifications_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const ImagesController = () => import('#controllers/images_controller')
 const EditAccountController = () => import('#controllers/admin/edit_account_controller')
 const GaleryClientController = () => import('#controllers/client/galery_client_controller')
 const UrlsController = () => import('#controllers/urls_controller')
-const GaleriesController = () => import('#controllers/galeries_controller')
+const GaleriesController = () => import('#controllers/galery_controller')
 const DashboardController = () => import('#controllers/dashboard_controller')
 
 router.on('/').renderInertia('home')
@@ -15,15 +16,15 @@ router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 
 router
   .group(() => {
-    router.post('/image/like/:groupe', [GaleriesController, 'like'])
-    router.post('/comment/:groupe/:imageId', [GaleriesController, 'comment'])
+    router.post('/image/like/:groupe', [ImagesController, 'like'])
+    router.post('/comment/:groupe/:imageId', [ImagesController, 'comment'])
   })
   .use(middleware.guest())
 
 router
   .group(() => {
-    router.post('/image/add', [GaleriesController, 'addImage'])
-    router.post('/image/:id', [GaleriesController, 'deleteImage'])
+    router.post('/image/add', [ImagesController, 'add'])
+    router.post('/image/:id', [ImagesController, 'delete'])
     router.post('/url/status', [UrlsController, 'changeStatus'])
     router.post('/edit', [EditAccountController, 'index'])
   })
@@ -36,8 +37,8 @@ router
       .group(() => {
         router.post('/add', [DashboardController, 'store'])
         router.get('/:id', [GaleriesController, 'show']).where('id', /^[0-9]+/)
-        router.post('/delete/:id', [GaleriesController, 'deleteGalery'])
-        router.post('/edit/:id', [GaleriesController, 'editGalery'])
+        router.post('/delete/:id', [GaleriesController, 'delete'])
+        router.post('/edit/:id', [GaleriesController, 'edit'])
       })
       .prefix('/admin')
       .use(middleware.auth())

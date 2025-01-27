@@ -7,6 +7,8 @@ export type GaleryType = {
   url: string
 }
 
+export type ExpType = { exp: number }
+
 export type UrlDataType = {
   id: number
   done: boolean

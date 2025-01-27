@@ -20,7 +20,9 @@ const Dashboard = ({ galeries }: { galeries: GaleriesType }) => {
         Ajouter une galerie +
       </button>
       <section className={style.galeries}>
-        {galeries.length ? galeries.map((galery) => <GaleryImage galery={galery} />) : null}
+        {galeries.length
+          ? galeries.map((galery) => <GaleryImage key={galery.id} galery={galery} />)
+          : null}
       </section>
     </main>
   )

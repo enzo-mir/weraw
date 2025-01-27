@@ -5,6 +5,7 @@ import { FileUploader } from 'react-drag-drop-files'
 import { Id, toast } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
 import UrlToSend from './admin/url_to_send'
+import { ExpType } from '~/utils/types/galery.type'
 
 const fileTypes = ['JPG', 'PNG', 'JPEG']
 
@@ -13,14 +14,19 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
   const props = usePage().props as unknown as { urlData: { id: string } }
   const { id } = isEditing ? props.urlData : { id: '' }
 
+  const exp = isEditing ? (usePage().props as unknown as ExpType).exp : undefined
+  const expDate = exp ? new Date(exp * 1000).toISOString() : undefined
+
   const { data, setData, post } = useForm<{
     name: string
     date: Date
+    exp?: string
     files: File[]
   }>({
     name: name || '',
     date: date || new Date(),
     files: [],
+    exp: expDate,
   })
   const setDialogElement = dialogState((state) => state.setDialogElement)
   const progressToastId = useRef<Id | null>(null)
@@ -32,8 +38,6 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
     })
 
   const loader = (percentage: number) => {
-    console.log(progressToastId.current)
-
     if (!progressToastId.current) {
       progressToastId.current = toast(
         `${isEditing ? 'Mise à jour' : 'Téléchargement'}: ${percentage}%`,
@@ -114,7 +118,22 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
               types={fileTypes}
             />
           ) : (
-            <UrlToSend />
+            <>
+              <UrlToSend />
+
+              <label htmlFor="date">
+                <p>Expiration</p>
+                <input
+                  type="date"
+                  name="date"
+                  id="date"
+                  onChange={(e) =>
+                    setData({ ...data, exp: new Date(e.currentTarget.value).toISOString() })
+                  }
+                  defaultValue={data.exp!.split('T')[0]}
+                />
+              </label>
+            </>
           )}
           <button type="submit">Valider</button>
         </form>
