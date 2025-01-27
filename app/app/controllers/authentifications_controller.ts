@@ -1,4 +1,5 @@
 import User from '#models/user'
+import { authSchema } from '#schemas/auth.schema'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class AuthentificationsController {
@@ -6,7 +7,8 @@ export default class AuthentificationsController {
     const { email, password } = request.all()
 
     try {
-      const user = await User.verifyCredentials(email, password)
+      const payload = authSchema.parse({ email, password })
+      const user = await User.verifyCredentials(payload.email, payload.password)
       await auth.use('web').login(user)
       return response.redirect('/dashboard')
     } catch (error) {

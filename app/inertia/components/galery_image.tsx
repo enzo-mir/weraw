@@ -5,8 +5,8 @@ const GaleryImage = ({ ...props }: { galery: GaleriesType[0] }) => {
   const handleClick = () => {
     router.visit(`/galery/admin/${props.galery.id}`)
   }
-  console.log(props.galery);
-  
+  console.log(props.galery)
+
   return (
     <article onClick={handleClick} key={props.galery.id} className={syle.article}>
       <h2>{props.galery.name}</h2>
@@ -15,11 +15,9 @@ const GaleryImage = ({ ...props }: { galery: GaleriesType[0] }) => {
       <p>Selection : {props.galery.end_selected ? 'Sélectionné' : 'En cours de selection'}</p>
       <div>
         {props.galery.url.length
-          ? props.galery.url
-              .slice(0, 3)
-              .map((url: string) => (
-                <img key={url} src={url} alt={props.galery.name} loading="lazy" />
-              ))
+          ? props.galery.url.map((url: string) => (
+              <img key={url} src={url} alt={props.galery.name} loading="lazy" />
+            ))
           : null}
       </div>
     </article>

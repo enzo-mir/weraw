@@ -17,7 +17,6 @@ export default defineConfig({
       '#assets': `${getDirname(import.meta.url)}/inertia/assets/`,
       '#css': `${getDirname(import.meta.url)}/inertia/css/`,
       '#types': `${getDirname(import.meta.url)}/inertia/utils/types/`,
-      '#schemas': `${getDirname(import.meta.url)}/app/schemas/`,
     },
   },
 })

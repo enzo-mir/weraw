@@ -5,7 +5,7 @@ import hash from '@adonisjs/core/services/hash'
 import { editAdminSchema } from '../../schemas/edit_admin.schema.js'
 
 export default class EditAccountController {
-  async index({ request, session, response, auth }: HttpContext) {
+  async index({ request, session, response }: HttpContext) {
     const payload = request.all()
 
     try {
@@ -14,9 +14,9 @@ export default class EditAccountController {
         .where('email', parsedPayload.email)
         .update({
           email: parsedPayload.newEmail || parsedPayload.email,
-          password: parsedPayload.password
-            ? await hash.make(parsedPayload.password)
-            : auth.user?.password,
+        })
+        .if(parsedPayload.password !== undefined, async (q) => {
+          return q.update({ password: await hash.make(parsedPayload.password!) })
         })
       return response.redirect().back()
     } catch (error) {

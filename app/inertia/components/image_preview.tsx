@@ -52,7 +52,7 @@ const ImagePreview = ({
 
   return (
     <>
-      <ToastContainer stacked={false} />
+      <ToastContainer />
       {displayClientComment ? (
         <CommentSide
           type={type}

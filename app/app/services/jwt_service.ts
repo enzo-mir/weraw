@@ -25,7 +25,7 @@ export const jwtMaker = async (groupe: UUID, date?: Date) => {
   })
 }
 
-export const jwtVerifier = (jwtToken: string) => {
+export const jwtVerifier = async (jwtToken: string) => {
   const promise = new Promise<jwt.VerifyErrors | PayloadType>((resolve, reject) =>
     jwt.verify(jwtToken, env.get('JWT_SECRET'), function (err, decoded) {
       if (err) {
