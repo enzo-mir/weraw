@@ -8,20 +8,15 @@ const Login = () => {
     email: '',
     password: '',
   })
-  const notify = (text: string) =>
-    toast(text, {
-      type: 'error',
-      autoClose: 2000,
-    })
 
   async function handlSubmit(e: FormEvent) {
     e.preventDefault()
     post('/auth/login', {
-      onSuccess: (e) => {
-        console.log(e)
-      },
       onError: (e) => {
-        notify(e.message)
+        toast(e.message, {
+          type: 'error',
+          autoClose: 2000,
+        })
       },
     })
   }
@@ -31,18 +26,24 @@ const Login = () => {
       <Head title="Login" />
       <ToastContainer />
       <form onSubmit={handlSubmit}>
-        <input
-          type="email"
-          onChange={(e) => setData({ email: e.currentTarget.value, password: data.password })}
-          name="email"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          onChange={(e) => setData({ email: data.email, password: e.currentTarget.value })}
-          required
-        />
+        <label htmlFor="email">
+          Email
+          <input
+            type="email"
+            onChange={(e) => setData({ email: e.currentTarget.value, password: data.password })}
+            name="email"
+            required
+          />
+        </label>
+        <label htmlFor="password">
+          Mot de passe
+          <input
+            type="password"
+            name="password"
+            onChange={(e) => setData({ email: data.email, password: e.currentTarget.value })}
+            required
+          />
+        </label>
         <button type="submit">Connexion</button>
       </form>
     </main>

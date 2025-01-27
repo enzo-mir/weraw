@@ -10,6 +10,7 @@ const appName = 'WeRaw'
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
+  progress: { color: '#ff6fff' },
 
   resolve: (name) => {
     return resolvePageComponent(`../pages/${name}.tsx`, import.meta.glob('../pages/**/*.tsx'))

@@ -4,7 +4,7 @@
   grid-template-rows: 100%;
   width: 100%;
   height: 100svh;
-  overflow-y: hidden;
+  overflow: hidden;
   padding: 5em 0 5em 7.5em;
 }
 
@@ -19,7 +19,7 @@
 .text_side h1 {
   font-family: var(--kg-font);
   font-weight: 200;
-  font-size: clamp(1.8em, 6vw, 4em);
+  font-size: clamp(2.5em, 6vw, 4em);
 }
 
 .text_side p {
@@ -72,6 +72,7 @@
   border-radius: 50%;
   background-color: var(--pink);
   transition: all 0.2s ease-out;
+  border: none;
 }
 .url_section > div input {
   height: 50px;
@@ -112,15 +113,16 @@
   rotate: -25deg;
   translate: 10%;
   aspect-ratio: 3 / 2;
-  width: clamp(200px, 25svw, 400px);
+  width: clamp(150px, 20svw, 400px);
 }
 .aside img:nth-child(2) {
   rotate: 20deg;
+  width: clamp(150px, 20svw, 400px);
   justify-self: center;
 }
 .aside img:last-child {
   translate: -30% -10%;
-  width: clamp(300px, 30svw, 550px);
+  width: clamp(200px, 25svw, 550px);
   height: auto;
   aspect-ratio: 1 / 1;
 }
@@ -137,9 +139,12 @@
   border: 0.5em solid white;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1000px) {
   .url_section {
     margin-top: 0em;
+  }
+  .text_side {
+    gap: 10px;
   }
   .main {
     grid-template-columns: 100%;
@@ -154,21 +159,16 @@
     max-width: 100%;
     grid-template-columns: 1fr 1fr;
   }
-  .aside img:first-child {
-    width: 125px;
-    height: 75px;
-  }
   .aside img:nth-child(2) {
-    width: 75px;
-    translate: 0% -10%;
+    translate: 0px;
   }
   .aside img:last-child {
-    width: 125px;
-    translate: -40% -10%;
+    translate: 0;
   }
-  .aside div {
-    width: 75px;
-    border: 0.25em solid #fff;
-    translate: 0% 100%;
+  .url_section > div {
+    max-width: 500px;
+  }
+  .url_section > div > button {
+    padding: 0.5em;
   }
 }

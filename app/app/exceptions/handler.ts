@@ -16,7 +16,6 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   }
 
   async handle(error: HttpError, ctx: HttpContext) {
-    console.log(error)
     if (error instanceof errors.E_ROUTE_NOT_FOUND) {
       const undefinedPage = await this.statusPages['404'](error, ctx)
 

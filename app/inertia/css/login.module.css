@@ -6,24 +6,55 @@
   padding: 1em;
   height: 100svh;
 }
-
+.main form {
+  position: relative;
+  display: grid;
+  width: clamp(300px, 50vw, 500px);
+  gap: 1em;
+  background-color: var(--bg);
+  z-index: 50;
+}
 .main form input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  border: 1px solid var(--pink);
-  border-radius: 5px;
-  background-color: transparent;
+  border: 2px solid var(--pink);
+  border-radius: 10px;
+  background-color: var(--bg);
   color: white;
 }
+.main form::after,
+.main form::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  translate: -50% -40%;
+  aspect-ratio: 1/1;
+  width: 100%;
+}
+.main form::after {
+  background-image: radial-gradient(var(--green) 2px, transparent 0px);
+  background-size: 20px 20px;
+  background-position: 0px 0px;
+  z-index: -2;
+  clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0% 100%);
+}
+.main form::before {
+  background: linear-gradient(var(--bg) 70%, transparent);
+}
 
+.main form input:-webkit-autofill,
+.main form input:-webkit-autofill:hover,
+.main form input:-webkit-autofill:focus {
+  outline: 0px;
+  border: 2px solid var(--pink);
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
 .main form button {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid var(--pink);
-  border-radius: 5px;
-  background-color: var(--pink);
-  color: white;
-  cursor: pointer;
 }
