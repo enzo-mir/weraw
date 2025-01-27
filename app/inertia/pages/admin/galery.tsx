@@ -12,7 +12,7 @@ import Dialog from '~/components/dialog'
 import ManageGalery from '~/components/manage_galery'
 import { FileUploader } from 'react-drag-drop-files'
 import addPhotos from '~/services/add_photos'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import DisplayGalery from '~/components/display_galery'
 const Galery = ({
   images,
@@ -31,8 +31,19 @@ const Galery = ({
   const [done, setDone] = useState<boolean>(!!urlData.done)
   const setDialogElement = dialogState((state) => state.setDialogElement)
   async function handleChangDone() {
-    setDone(!done)
-    await changeDone(!done, _csrf, urlData.id)
+    const response = await changeDone(!done, _csrf, urlData.id)
+    if (response.ok) {
+      setDone(!done)
+      toast.success('Changement effectué', {
+        autoClose: 2000,
+        hideProgressBar: true,
+      })
+    } else {
+      toast.error('Une erreur est survenue', {
+        autoClose: 2000,
+        hideProgressBar: true,
+      })
+    }
   }
   useEffect(() => {
     setImagesData(images.slice(0, splitNumber))
