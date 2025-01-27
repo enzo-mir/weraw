@@ -120,7 +120,6 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
           ) : (
             <>
               <UrlToSend />
-
               <label htmlFor="date">
                 <p>Expiration</p>
                 <input

@@ -9,18 +9,22 @@ import fs from 'node:fs'
 
 export default class GaleriesController {
   async show({ inertia, params }: HttpContext) {
-    const urlData = await Url.query()
-      .where('id', params.id)
-      .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe', 'jwt')
-      .first()
-    const jwt = await jwtVerifier(urlData!.jwt)
+    try {
+      const urlData = await Url.query()
+        .where('id', params.id)
+        .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe', 'jwt')
+        .first()
+      const token = await jwtVerifier(urlData!.jwt)
+        .then((e) => e.exp)
+        .catch((e) => new Date(e.expiredAt).getTime() / 1000)
 
-    const images = await getAdminImages(params as { id: string })
-    return inertia.render('admin/galery', {
-      images,
-      urlData,
-      exp: jwt.exp,
-    })
+      const images = await getAdminImages(params as { id: string })
+      return inertia.render('admin/galery', {
+        images,
+        urlData,
+        exp: token,
+      })
+    } catch (error) {}
   }
 
   async delete(ctx: HttpContext) {
@@ -38,18 +42,16 @@ export default class GaleriesController {
     const urlFind = await Url.find(id)
     if (!urlFind) return response.notFound()
 
-    console.log(exp)
+    const token = exp ? await jwtMaker(urlFind.groupe, exp) : undefined
 
-    const jwt = exp ? await jwtMaker(urlFind.groupe, exp) : undefined
-
-    if (typeof jwt !== 'string') return response.badRequest()
+    if (typeof token !== 'string') return response.badRequest()
 
     const query = `
        UPDATE photos
        SET url = REPLACE(url, '${urlFind.name}', '${name}')
        WHERE groupe = '${urlFind.groupe}';
     `
-    db.rawQuery(query).catch((e) => {
+    db.rawQuery(query).catch(() => {
       return response.badRequest()
     })
 
@@ -61,7 +63,7 @@ export default class GaleriesController {
       }
     )
 
-    await Url.updateOrCreate({ id }, { name, updatedAt: date, jwt })
+    await Url.updateOrCreate({ id }, { name, updatedAt: date, jwt: token })
 
     return response.redirect().back()
   }

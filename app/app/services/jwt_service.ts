@@ -39,7 +39,7 @@ export const jwtVerifier = async (jwtToken: string) => {
   const promise = new Promise<jwt.VerifyErrors | PayloadType>((resolve, reject) =>
     jwt.verify(jwtToken, env.get('JWT_SECRET'), function (err, decoded) {
       if (err) {
-        reject(err)
+        reject(err as jwt.VerifyErrors)
       } else {
         resolve(decoded as PayloadType)
       }
