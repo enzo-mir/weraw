@@ -4,7 +4,6 @@ import { usePage } from '@inertiajs/react'
 import { GaleryType } from '~/utils/types/galery.type'
 import arrow from '#assets/icons/arrow.svg'
 import { useEffect, useState } from 'react'
-import Comment from './comment'
 import CommentSide from './client/comment_side'
 import HeartIcon from '~/assets/icons/heart'
 import CommentIcon from '~/assets/icons/comment'
@@ -20,7 +19,6 @@ const ImagePreview = ({
   setImageId: (v: number | null) => void
   type: 'client' | 'admin'
 }) => {
-  const [openComment, setOpenComment] = useState<boolean>(false)
   const imagesProps = usePage().props.images as Array<GaleryType>
   const [displayClientComment, setDisplayClientComment] = useState<boolean>(false)
   const images: Array<GaleryType> = imagesStore(
@@ -81,9 +79,9 @@ const ImagePreview = ({
             src={(images || imagesProps)[id].url}
             alt={(images || imagesProps)[id].url}
             fetchPriority="high"
+            onClick={() => setDisplayClientComment(false)}
           />
         </article>
-        {openComment ? <Comment comment={(images || imagesProps)[id].comment} /> : null}
         <button
           className={style.before_btn}
           onClick={(e) => changeImage(e, 'prev')}

@@ -19,7 +19,7 @@ export const storeImages = (
     const sanitizedOriginalName = originalName
       .toLowerCase()
       .replace(/[^a-z0-9]/g, '-')
-      .substring(0, 50) // Limit the length of original name
+      .substring(0, 50)
 
     return `${timestamp}-${randomString}-${sanitizedOriginalName}.webp`
   }
