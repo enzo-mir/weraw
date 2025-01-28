@@ -12,8 +12,9 @@ import Dialog from '~/components/dialog'
 import ManageGalery from '~/components/manage_galery'
 import { FileUploader } from 'react-drag-drop-files'
 import addPhotos from '~/services/add_photos'
-import { toast, ToastContainer } from 'react-toastify'
+import { Id, ToastContainer } from 'react-toastify'
 import DisplayGalery from '~/components/display_galery'
+
 const Galery = ({
   images,
   urlData,
@@ -30,22 +31,7 @@ const Galery = ({
   const [imageId, setImageId] = useState<number | null>(null)
   const [done, setDone] = useState<boolean>(!!urlData.done)
   const setDialogElement = dialogState((state) => state.setDialogElement)
-
-  async function handleChangDone() {
-    const response = await changeDone(!done, _csrf, urlData.id)
-    if (response.ok) {
-      setDone(!done)
-      toast.success('Changement effectué', {
-        autoClose: 2000,
-        hideProgressBar: true,
-      })
-    } else {
-      toast.error('Une erreur est survenue', {
-        autoClose: 2000,
-        hideProgressBar: true,
-      })
-    }
-  }
+  const toastDoneId = useRef<Id>(null)
   useEffect(() => {
     setImagesData(images.slice(0, splitNumber))
     setHasMore(images.length > splitNumber)
@@ -104,7 +90,7 @@ const Galery = ({
           <div className={style.done}>
             <p>Terminé</p>
             <ValidateIcon
-              onClick={handleChangDone}
+              onClick={() => changeDone(!done, _csrf, urlData.id, setDone, done, toastDoneId)}
               className={style.validateSvg}
               data-validate={done ? '1' : '0'}
             />
@@ -145,27 +131,25 @@ const Galery = ({
         />
         <ul className={style.galery}>
           {imagesData.length
-            ? imagesData.map((image, id) => {
-                return (
-                  <DisplayGalery
-                    key={id + image.url}
-                    image={image}
-                    id={id}
-                    _csrf={_csrf}
-                    setImageId={setImageId}
-                    deleteBtn={
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image: image }} />)
-                        }}
-                      >
-                        <span>-</span>
-                      </button>
-                    }
-                  />
-                )
-              })
+            ? imagesData.map((image, id) => (
+                <DisplayGalery
+                  key={id + image.url}
+                  image={image}
+                  id={id}
+                  _csrf={_csrf}
+                  setImageId={setImageId}
+                  deleteBtn={
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image: image }} />)
+                      }}
+                    >
+                      <span>-</span>
+                    </button>
+                  }
+                />
+              ))
             : null}
         </ul>
         {hasMore && <div ref={loader} className={style.loader}></div>}

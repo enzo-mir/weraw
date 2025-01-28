@@ -5,6 +5,7 @@ import style from '#css/galery.module.css'
 import Header from './header'
 import { imagesStore } from '~/utils/stores/images.store'
 import { PropsType } from '~/utils/types/props.type'
+import { ToastContainer } from 'react-toastify'
 
 const Galery = (props: PropsType) => {
   const [imageId, setImageId] = useState<number | null>(null)
@@ -12,7 +13,8 @@ const Galery = (props: PropsType) => {
 
   return (
     <>
-      <Header urlData={props.urlData} />
+      <ToastContainer />
+      <Header />
       <main className={style.main}>
         {imageId !== null ? (
           <ImagePreview type="client" setImageId={setImageId} id={imageId} />

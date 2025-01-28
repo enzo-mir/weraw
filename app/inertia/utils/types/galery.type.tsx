@@ -15,6 +15,6 @@ export type UrlDataType = {
   name: string
   jwt: string
   createdAt: string
-  end_selected: boolean
+  endSelected: boolean
   groupe: UUID
 }

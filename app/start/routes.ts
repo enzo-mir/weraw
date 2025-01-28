@@ -17,8 +17,7 @@ router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 router.group(() => {
   router.post('/like/:groupe', [ImagesController, 'like'])
   router.post('/comment/:groupe/:imageId', [ImagesController, 'comment'])
-  /*     router.post('/end_selected/:groupe', [ImagesController, 'endSelected'])L
-   */
+  router.post('/end_selected/:groupe/:urlId', [ImagesController, 'end_selection'])
 })
 
 router

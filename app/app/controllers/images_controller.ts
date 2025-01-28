@@ -76,4 +76,25 @@ export default class ImagesController {
     })
     return response.redirect().back()
   }
+
+  async end_selection({ request, response, params }: HttpContext) {
+    try {
+      const { groupe, urlId } = await z
+        .object({
+          groupe: z.string().transform((v) => v.trim().replaceAll(' ', '')),
+          urlId: z.string().transform((v) => Number.parseInt(v.trim())),
+        })
+        .parseAsync(params)
+
+      const endSelected: boolean = request.only(['end_selected']).end_selected
+
+      const url = await Url.query().where('id', urlId).andWhere('groupe', groupe).first()
+
+      await Url.updateOrCreate({ id: url!.id }, { endSelected })
+
+      return response.redirect().back()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 }

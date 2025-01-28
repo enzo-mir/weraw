@@ -1,8 +1,7 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100px auto;
   height: 100%;
   padding: 1em 2em;
 }
@@ -19,12 +18,48 @@
   font-weight: lighter;
 }
 
+.header nav {
+  margin-block: auto;
+}
+
 .header aside p {
   color: var(--blue);
+  text-align: right;
   font-size: clamp(1em, 2vw, 1.3em);
   font-style: italic;
 }
 
+.cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1em;
+  color: white;
+  padding: 0.5em 1em;
+}
+
+.cta div button {
+  --clr: var(--green);
+  margin-block-start: 1em;
+}
+
+.cta div button[data-selected='true'] {
+  background-color: var(--clr);
+}
+
+.cta div button:last-child {
+  --clr: var(--pink);
+  margin-inline-start: 1em;
+  border: 2px solid var(--pink);
+
+  &:hover {
+    background-color: var(--pink);
+  }
+}
+
+.cta strong {
+  color: var(--pink);
+}
 @media screen and (max-width: 750px) {
   .header a p {
     display: none;
