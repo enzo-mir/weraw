@@ -1,7 +1,6 @@
 import overlayStyle from '#css/dialog.module.css'
 import style from '#css/image_preview.module.css'
 import { usePage } from '@inertiajs/react'
-import { GaleryType } from '~/utils/types/galery.type'
 import arrow from '#assets/icons/arrow.svg'
 import { useEffect, useState } from 'react'
 import CommentSide from './client/comment_side'
@@ -19,11 +18,9 @@ const ImagePreview = ({
   setImageId: (v: number | null) => void
   type: 'client' | 'admin'
 }) => {
-  const imagesProps = usePage().props.images as Array<GaleryType>
+  const imagesProps = usePage().props.images
   const [displayClientComment, setDisplayClientComment] = useState<boolean>(false)
-  const images: Array<GaleryType> = imagesStore(
-    (state) => state.images
-  ) as unknown as Array<GaleryType>
+  const images = imagesStore((state) => state.images)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -52,7 +49,7 @@ const ImagePreview = ({
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer closeOnClick={true} />
       {displayClientComment ? (
         <CommentSide
           type={type}

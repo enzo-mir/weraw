@@ -2,12 +2,12 @@ import { JSX } from 'react'
 import DashboardLayout from './layout'
 import ManageGalery from '~/components/manage_galery'
 import { dialogState } from '~/utils/stores/dialog.store'
-import { GaleriesType } from '~/utils/types/galeries.type'
 import style from '#css/dashboard.module.css'
 import GaleryImage from '~/components/galery_image'
 import { ToastContainer } from 'react-toastify'
+import { PropsType } from '~/utils/types/props.type'
 
-const Dashboard = ({ galeries }: { galeries: GaleriesType }) => {
+const Dashboard = ({ galeries }: PropsType) => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
 
   return (

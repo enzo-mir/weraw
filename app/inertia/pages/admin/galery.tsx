@@ -30,6 +30,7 @@ const Galery = ({
   const [imageId, setImageId] = useState<number | null>(null)
   const [done, setDone] = useState<boolean>(!!urlData.done)
   const setDialogElement = dialogState((state) => state.setDialogElement)
+
   async function handleChangDone() {
     const response = await changeDone(!done, _csrf, urlData.id)
     if (response.ok) {

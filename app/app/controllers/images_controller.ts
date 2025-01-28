@@ -41,7 +41,7 @@ export default class ImagesController {
     return response.redirect().back()
   }
 
-  async like({ request, response, params }: HttpContext) {
+  async like({ request, response }: HttpContext) {
     const { id } = request.only(['id'])
     const photo = await Photo.query().where('id', id).first()
 
@@ -50,9 +50,7 @@ export default class ImagesController {
     }
     try {
       await Photo.updateOrCreate({ id }, { like: !photo.like })
-      return response.status(200).json({
-        images: await getClientImages(params as { groupe: string }),
-      })
+      return response.status(200).json({ images: await getClientImages({ groupe: photo.groupe }) })
     } catch (error) {
       return response.badRequest({ message: 'Une erreur est survenue' })
     }
@@ -63,7 +61,7 @@ export default class ImagesController {
     const { groupe, imageId } = z
       .object({
         groupe: z.string().transform((v) => v.trim().replaceAll(' ', '')),
-        imageId: z.number(),
+        imageId: z.string().transform((v) => Number.parseInt(v.trim())),
       })
       .parse(params)
 

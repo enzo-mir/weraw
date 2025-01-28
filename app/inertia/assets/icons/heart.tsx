@@ -1,6 +1,6 @@
 import style from '#css/image_preview.module.css'
 import { usePage } from '@inertiajs/react'
-
+import { toast } from 'react-toastify'
 import { likeImage } from '~/services/like_image'
 import { imagesStore } from '~/utils/stores/images.store'
 import { UrlDataType } from '~/utils/types/galery.type'
@@ -14,13 +14,25 @@ type HeartIconProps = {
 const HeartIcon: React.FC<HeartIconProps> = ({ id, liked, type }) => {
   const _csrf = usePage().props._csrf as string
   const group = (usePage().props as unknown as { urlData: UrlDataType }).urlData.groupe
-
   const setImages = imagesStore((state) => state.setImages)
 
   const handleClick = async () => {
     if (type === 'admin') return
-    const updatedImages = await likeImage(group, id, _csrf)
-    setImages(updatedImages)
+    try {
+      const response = await likeImage(group, id, _csrf)
+      const data = await response.json()
+      toast.success("Mise à jour de l'image effectuée !", {
+        autoClose: 2000,
+        hideProgressBar: true,
+      })
+
+      setImages(data.images)
+    } catch (error) {
+      toast.error("Une erreur s'est produite", {
+        autoClose: 2000,
+        hideProgressBar: true,
+      })
+    }
   }
 
   return liked ? (

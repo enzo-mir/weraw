@@ -21,7 +21,7 @@ export const storeImages = (
       .replace(/[^a-z0-9]/g, '-')
       .substring(0, 50)
 
-    return `${timestamp}-${randomString}-${sanitizedOriginalName}.webp`
+    return `${timestamp}-${randomString}-${sanitizedOriginalName}.jpeg`
   }
 
   const folderPath = app.publicPath(`images/${name.replaceAll(' ', '_')}`)
@@ -41,10 +41,8 @@ export const storeImages = (
     return new Promise(async (resolve, reject) => {
       try {
         const bufferedImage = await sharp(image.tmpPath)
-          .webp({
-            quality: 70,
-            effort: 4,
-            lossless: false,
+          .jpeg({
+            mozjpeg: true,
           })
           .resize(900, null, {
             withoutEnlargement: true,

@@ -8,7 +8,7 @@
   right: 0;
   height: 100%;
   width: 40%;
-  min-width: 400px;
+  min-width: 500px;
   z-index: 10000;
   background-color: var(--bg);
 }
@@ -54,4 +54,11 @@
   min-height: max-content;
   resize: vertical;
   color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+    min-width: 100%;
+  }
 }

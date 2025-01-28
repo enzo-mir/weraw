@@ -5,16 +5,15 @@ import { FileUploader } from 'react-drag-drop-files'
 import { Id, toast } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
 import UrlToSend from './admin/url_to_send'
-import { ExpType } from '~/utils/types/galery.type'
 
 const fileTypes = ['JPG', 'PNG', 'JPEG']
 
 const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }) => {
   const isEditing: boolean = name !== null
-  const props = usePage().props as unknown as { urlData: { id: string } }
+  const props = usePage().props
   const { id } = isEditing ? props.urlData : { id: '' }
 
-  const exp = isEditing ? (usePage().props as unknown as ExpType).exp : undefined
+  const exp = isEditing ? usePage().props.exp : undefined
   const expDate = exp ? new Date(exp * 1000).toISOString() : undefined
 
   const { data, setData, post } = useForm<{

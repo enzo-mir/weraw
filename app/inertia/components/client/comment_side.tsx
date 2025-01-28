@@ -2,7 +2,6 @@ import style from '#css/client_comment.module.css'
 import { useForm, usePage } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 import { imagesStore } from '~/utils/stores/images.store'
-import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
 
 const CommentSide = ({
   text,
@@ -19,7 +18,7 @@ const CommentSide = ({
     comment: text || '',
   })
   const setImages = imagesStore((state) => state.setImages)
-  const group = (usePage().props as unknown as { urlData: UrlDataType }).urlData.groupe
+  const group = usePage().props.urlData.groupe
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -30,7 +29,7 @@ const CommentSide = ({
           hideProgressBar: true,
         })
 
-        setImages(e.props.images as GaleryType[])
+        setImages(e.props.images)
 
         setDisplayClientComment(false)
       },

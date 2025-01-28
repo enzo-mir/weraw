@@ -1,15 +1,14 @@
-import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
 import DisplayGalery from '~/components/display_galery'
 import { useState } from 'react'
 import ImagePreview from '~/components/image_preview'
 import style from '#css/galery.module.css'
 import Header from './header'
 import { imagesStore } from '~/utils/stores/images.store'
+import { PropsType } from '~/utils/types/props.type'
 
-const Galery = (props: { images: Array<GaleryType>; urlData: UrlDataType; _csrf: string }) => {
+const Galery = (props: PropsType) => {
   const [imageId, setImageId] = useState<number | null>(null)
   const images = imagesStore((state) => state.images)
-  console.log(props.images)
 
   return (
     <>

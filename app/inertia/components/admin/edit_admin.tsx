@@ -5,7 +5,7 @@ import { dialogState } from '~/utils/stores/dialog.store'
 import style from '#css/manage_galery.module.css'
 
 const EditAdmin = () => {
-  const { user, _csrf } = usePage().props as unknown as { user: { email: string }; _csrf: string }
+  const { user, _csrf } = usePage().props
   const setDialogElement = dialogState((state) => state.setDialogElement)
   const { data, setData, post } = useForm<{
     email: string
@@ -13,7 +13,7 @@ const EditAdmin = () => {
     password?: string
     password_confirmation?: string
   }>({
-    email: user.email,
+    email: user!.email,
   })
 
   function handlSubmit(e: FormEvent) {
@@ -37,7 +37,7 @@ const EditAdmin = () => {
           className={style.input}
           type="email"
           name="email"
-          defaultValue={user.email}
+          defaultValue={user!.email}
           onChange={(e) => setData({ ...data, newEmail: e.target.value })}
           required
         />

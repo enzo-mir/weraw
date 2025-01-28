@@ -1,4 +1,4 @@
-import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
+import { GaleryType } from '~/utils/types/galery.type'
 import heart from '#assets/icons/heart.svg'
 import comment from '#assets/icons/comment.svg'
 import { usePage } from '@inertiajs/react'
@@ -11,7 +11,7 @@ const DisplayGalery = (props: {
   setImageId: (id: number) => void
   deleteBtn?: JSX.Element
 }) => {
-  const urlData = usePage().props.urlData as unknown as UrlDataType
+  const urlData = usePage().props.urlData
 
   return (
     <li onClick={() => props.setImageId(props.id)}>
