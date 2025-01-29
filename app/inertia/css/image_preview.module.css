@@ -9,13 +9,6 @@
   max-height: 100svh;
 }
 
-.container > div {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .before_btn,
 .after_btn {
   --clr: transparent;
@@ -46,12 +39,28 @@
 }
 
 .container > img:last-child {
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.container > div {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-  height: 80svh;
-  max-width: 80svw;
+  width: 80svw;
+  max-width: 900px;
 }
+
+.container > div img {
+  object-fit: contain;
+  object-position: center;
+  width: 100%;
+}
+
 .comment {
   height: 40px;
 }

@@ -3,6 +3,8 @@ import heart from '#assets/icons/heart.svg'
 import comment from '#assets/icons/comment.svg'
 import { usePage } from '@inertiajs/react'
 import { JSX } from 'react'
+import { motion } from 'motion/react'
+import { appearAnimation } from '~/utils/animations/appear'
 
 const DisplayGalery = (props: {
   image: GaleryType
@@ -14,7 +16,7 @@ const DisplayGalery = (props: {
   const urlData = usePage().props.urlData
 
   return (
-    <li onClick={() => props.setImageId(props.id)}>
+    <motion.li {...appearAnimation({ delay: 0.1 })} onClick={() => props.setImageId(props.id)}>
       {props.deleteBtn}
       <img
         width={250}
@@ -26,7 +28,7 @@ const DisplayGalery = (props: {
 
       {props.image.like ? <img src={heart} className="heart" alt="heart like" /> : null}
       {props.image.comment ? <img src={comment} className="comment" alt="comment" /> : null}
-    </li>
+    </motion.li>
   )
 }
 

@@ -1,5 +1,4 @@
-import { easeInOut } from 'framer-motion'
-import { Transition } from 'framer-motion'
+import { Transition } from 'motion/react'
 export const upToDownAnimation = (transition?: Transition) => {
   return {
     initial: {
@@ -15,8 +14,6 @@ export const upToDownAnimation = (transition?: Transition) => {
       y: -100,
     },
     transition: {
-      duration: 0.5,
-      easeInOut,
       ...transition,
     },
   }

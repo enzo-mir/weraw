@@ -7,7 +7,14 @@ import CommentSide from './client/comment_side'
 import HeartIcon from '~/assets/icons/heart'
 import CommentIcon from '~/assets/icons/comment'
 import { ToastContainer } from 'react-toastify'
-import { imagesStore } from '~/utils/stores/images.store'
+import { motion, AnimatePresence } from 'motion/react'
+import { wrap } from 'popmotion'
+import { upToDownAnimation } from '~/utils/animations/up_to_down'
+import {
+  imagePreviewVariants,
+  swipeConfidenceThreshold,
+  swipePower,
+} from '~/utils/animations/image_preview'
 
 const ImagePreview = ({
   id,
@@ -20,7 +27,15 @@ const ImagePreview = ({
 }) => {
   const imagesProps = usePage().props.images
   const [displayClientComment, setDisplayClientComment] = useState<boolean>(false)
-  const images = imagesStore((state) => state.images)
+  const [[page, direction], setPage] = useState([id, 0])
+
+  const imageIndex = wrap(0, imagesProps.length, page)
+  const paginate = (newDirection: number) => {
+    const newPage = page + newDirection
+    if (newPage < 0 || newPage >= imagesProps.length) return
+    setPage([newPage, newDirection])
+    setImageId(newPage)
+  }
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -28,23 +43,20 @@ const ImagePreview = ({
       document.body.style.overflow = 'auto'
     }
   }, [])
-
   document.onkeydown = (e) => {
-    if (e.code === 'ArrowRight') changeImage(e, 'next')
-    if (e.code === 'ArrowLeft') changeImage(e, 'prev')
+    e.stopPropagation()
+    if (e.code === 'ArrowRight') {
+      paginate(1)
+    }
+    if (e.code === 'ArrowLeft') {
+      paginate(-1)
+    }
     if (e.code === 'Escape') setImageId(null)
     return
   }
 
-  const goBack = () => setImageId(null)
-
-  const changeImage = (e: React.MouseEvent | KeyboardEvent, mode: 'prev' | 'next') => {
-    e.stopPropagation()
-    if (mode === 'prev' && id > 0) {
-      setImageId(id - 1)
-    } else if (mode === 'next' && id < (images || imagesProps).length - 1) {
-      setImageId(id + 1)
-    }
+  const goBack = () => {
+    setImageId(null)
   }
 
   return (
@@ -53,46 +65,77 @@ const ImagePreview = ({
       {displayClientComment ? (
         <CommentSide
           type={type}
-          id={(images || imagesProps)[id].id}
-          text={(images || imagesProps)[id].comment}
+          id={imagesProps[id].id}
+          text={imagesProps[id].comment}
           setDisplayClientComment={setDisplayClientComment}
         />
       ) : null}
       <div className={overlayStyle.overlay} onClick={goBack}>
         <article className={style.container} onClick={(e) => e.stopPropagation()}>
-          <div>
+          <motion.div {...upToDownAnimation()}>
             {type === 'client' ? null : <p>Image n°{id! + 1}</p>}
-            <HeartIcon
-              liked={(images || imagesProps)[id].like}
-              id={(images || imagesProps)[id].id}
-              type={type}
-            />
+            <HeartIcon liked={imagesProps[id].like} id={imagesProps[id].id} type={type} />
             <CommentIcon
-              commented={!!(images || imagesProps)[id].comment}
+              commented={!!imagesProps[id].comment}
               onClick={() => setDisplayClientComment(true)}
             />
-          </div>
-          <img
-            src={(images || imagesProps)[id].url}
-            alt={(images || imagesProps)[id].url}
-            fetchPriority="high"
-            onClick={() => setDisplayClientComment(false)}
-          />
+          </motion.div>
+          <motion.div>
+            <AnimatePresence propagate mode="wait" custom={direction}>
+              <motion.img
+                property="image"
+                key={page}
+                src={imagesProps[imageIndex].url}
+                alt={imagesProps[id].url}
+                onClick={() => setDisplayClientComment(false)}
+                custom={direction}
+                variants={imagePreviewVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                width={900}
+                height={700}
+                transition={{
+                  x: { stiffness: 400, damping: 0 },
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={1}
+                onDragEnd={(e, { offset, velocity }) => {
+                  const swipe = swipePower(offset.x, velocity.x)
+
+                  if (swipe < -swipeConfidenceThreshold) {
+                    paginate(1)
+                  } else if (swipe > swipeConfidenceThreshold) {
+                    paginate(-1)
+                  }
+                }}
+              />
+            </AnimatePresence>
+          </motion.div>
         </article>
-        <button
+        <motion.button
+          {...upToDownAnimation()}
           className={style.before_btn}
-          onClick={(e) => changeImage(e, 'prev')}
-          disabled={id === 0}
+          disabled={page === 0}
+          onClick={(e) => {
+            e.stopPropagation()
+            paginate(-1)
+          }}
         >
           <img src={arrow} alt="previous image arrow" />
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          {...upToDownAnimation()}
           className={style.after_btn}
-          onClick={(e) => changeImage(e, 'next')}
-          disabled={id === (images || imagesProps).length - 1}
+          disabled={page === imagesProps.length - 1}
+          onClick={(e) => {
+            e.stopPropagation()
+            paginate(1)
+          }}
         >
           <img src={arrow} alt="next image arrow" />
-        </button>
+        </motion.button>
       </div>
     </>
   )

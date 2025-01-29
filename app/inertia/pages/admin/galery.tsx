@@ -14,6 +14,7 @@ import { FileUploader } from 'react-drag-drop-files'
 import addPhotos from '~/services/add_photos'
 import { Id, ToastContainer } from 'react-toastify'
 import DisplayGalery from '~/components/display_galery'
+import { AnimatePresence } from 'motion/react'
 
 const Galery = ({
   images,
@@ -32,6 +33,9 @@ const Galery = ({
   const [done, setDone] = useState<boolean>(!!urlData.done)
   const setDialogElement = dialogState((state) => state.setDialogElement)
   const toastDoneId = useRef<Id>(null)
+
+  console.log('images', images)
+
   useEffect(() => {
     setImagesData(images.slice(0, splitNumber))
     setHasMore(images.length > splitNumber)
@@ -56,7 +60,7 @@ const Galery = ({
           loadMoreImages()
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1 }
     )
 
     if (loader.current) {
@@ -94,7 +98,7 @@ const Galery = ({
               className={style.validateSvg}
               data-validate={done ? '1' : '0'}
             />
-            <p>{urlData.end_selected ? 'Selection finis' : 'Selection en cours'}</p>
+            <p>{urlData.endSelected ? 'Selection finis' : 'Selection en cours'}</p>
           </div>
 
           <aside className={style.edit}>

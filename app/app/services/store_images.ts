@@ -21,7 +21,7 @@ export const storeImages = (
       .replace(/[^a-z0-9]/g, '-')
       .substring(0, 50)
 
-    return `${timestamp}-${randomString}-${sanitizedOriginalName}.jpeg`
+    return `${timestamp}-${randomString}-${sanitizedOriginalName}.avif`
   }
 
   const folderPath = app.publicPath(`images/${name.replaceAll(' ', '_')}`)
@@ -41,10 +41,10 @@ export const storeImages = (
     return new Promise(async (resolve, reject) => {
       try {
         const bufferedImage = await sharp(image.tmpPath)
-          .jpeg({
-            mozjpeg: true,
+          .avif({
+            quality: 80,
           })
-          .resize(900, null, {
+          .resize(1200, null, {
             withoutEnlargement: true,
             fit: 'cover',
           })

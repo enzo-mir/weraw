@@ -1,6 +1,6 @@
-import { Transition } from 'framer-motion'
+import { Transition } from 'motion/react'
 
-export const popAnimation = (transition: Transition) => {
+export const popAnimation = (transition?: Transition) => {
   return {
     initial: {
       opacity: 0,

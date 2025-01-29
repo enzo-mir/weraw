@@ -1,6 +1,6 @@
 import style from '#css/dialog.module.css'
 import { dialogState } from '~/utils/stores/dialog.store'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import { upToDownAnimation } from '~/utils/animations/up_to_down'
 
 const Dialog = () => {

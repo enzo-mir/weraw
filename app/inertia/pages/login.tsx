@@ -3,7 +3,7 @@ import { FormValues } from '../utils/types/login.type'
 import { toast, ToastContainer } from 'react-toastify'
 import style from '#css/login.module.css'
 import { Head, useForm } from '@inertiajs/react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { leftToRightAnimation } from '~/utils/animations/left_to_right'
 
 const Login = () => {

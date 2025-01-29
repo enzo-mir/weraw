@@ -7,6 +7,8 @@ import GaleryImage from '~/components/galery_image'
 import { ToastContainer } from 'react-toastify'
 import { PropsType } from '~/utils/types/props.type'
 import { Head } from '@inertiajs/react'
+import { motion } from 'motion/react'
+import { leftToRightAnimation } from '~/utils/animations/left_to_right'
 
 const Dashboard = ({ galeries }: PropsType) => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
@@ -15,15 +17,16 @@ const Dashboard = ({ galeries }: PropsType) => {
     <main className={style.main}>
       <Head title="Dashboard" />
       <ToastContainer />
-      <button
+      <motion.button
+        {...leftToRightAnimation({ delay: 0.2 })}
         className={style.add_btn}
         onClick={() => setDialogElement(<ManageGalery name={null} date={null} />)}
       >
         Ajouter une galerie +
-      </button>
+      </motion.button>
       <section className={style.galeries}>
         {galeries.length
-          ? galeries.map((galery) => <GaleryImage key={galery.id} galery={galery} />)
+          ? galeries.map((galery, id) => <GaleryImage key={galery.id} id={id} galery={galery} />)
           : null}
       </section>
     </main>

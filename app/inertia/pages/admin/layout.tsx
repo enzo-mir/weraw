@@ -4,13 +4,16 @@ import { logout } from '~/services/logout.auth'
 import style from '#css/dashboard.module.css'
 import { dialogState } from '~/utils/stores/dialog.store'
 import EditAdmin from '~/components/admin/edit_admin'
+import { motion } from 'motion/react'
+import { upToDownAnimation } from '~/utils/animations/up_to_down'
 
 const DashboardLayout = ({ children }: { children: JSX.Element }) => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
 
   return (
     <>
-      <header className={style.layout}>
+      <Dialog />
+      <motion.header {...upToDownAnimation()} className={style.layout}>
         <nav>
           <h1>
             <em>WeRaw</em> - Dashboard
@@ -20,8 +23,7 @@ const DashboardLayout = ({ children }: { children: JSX.Element }) => {
             <button onClick={logout}>Déconnexion</button>
           </div>
         </nav>
-      </header>
-      <Dialog />
+      </motion.header>
       {children}
     </>
   )

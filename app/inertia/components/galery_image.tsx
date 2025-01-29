@@ -1,12 +1,20 @@
 import syle from '#css/galery_image.module.css'
 import { router } from '@inertiajs/react'
 import { GaleriesType } from '~/utils/types/galeries.type'
-const GaleryImage = ({ ...props }: { galery: GaleriesType[0] }) => {
+import { motion } from 'motion/react'
+import { appearAnimation } from '~/utils/animations/appear'
+
+const GaleryImage = ({ ...props }: { galery: GaleriesType[0]; id: number }) => {
   const handleClick = () => {
     router.visit(`/galery/admin/${props.galery.id}`)
   }
   return (
-    <article onClick={handleClick} key={props.galery.id} className={syle.article}>
+    <motion.article
+      {...appearAnimation({ delay: props.id * 0.1 })}
+      onClick={handleClick}
+      key={props.galery.id}
+      className={syle.article}
+    >
       <h2>{props.galery.name}</h2>
       <p>Date : {new Date(props.galery.created_at).toLocaleDateString()}</p>
       <p>Avancement : {props.galery.done ? 'Terminé' : 'En cours'}</p>
@@ -18,7 +26,7 @@ const GaleryImage = ({ ...props }: { galery: GaleriesType[0] }) => {
             ))
           : null}
       </div>
-    </article>
+    </motion.article>
   )
 }
 

@@ -3,13 +3,11 @@ import { useState } from 'react'
 import ImagePreview from '~/components/image_preview'
 import style from '#css/galery.module.css'
 import Header from './header'
-import { imagesStore } from '~/utils/stores/images.store'
 import { PropsType } from '~/utils/types/props.type'
 import { ToastContainer } from 'react-toastify'
 
 const Galery = (props: PropsType) => {
   const [imageId, setImageId] = useState<number | null>(null)
-  const images = imagesStore((state) => state.images)
 
   return (
     <>
@@ -20,7 +18,7 @@ const Galery = (props: PropsType) => {
           <ImagePreview type="client" setImageId={setImageId} id={imageId} />
         ) : null}
         <ul className={style.galery}>
-          {((images?.length && images) || props.images).map((image, id) => {
+          {props.images.map((image, id) => {
             return (
               <DisplayGalery
                 key={id + image.url}

@@ -13,6 +13,7 @@ const Header = () => {
     urlData: { endSelected, name, createdAt, groupe, id },
     _csrf,
   } = usePage().props
+  console.log(endSelected)
 
   const [endSelectedState, setEndSelectedState] = useState<boolean>(endSelected)
   const toastId = useRef<Id>(null)
