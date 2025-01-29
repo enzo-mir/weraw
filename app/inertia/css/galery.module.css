@@ -201,4 +201,7 @@
     flex-direction: column;
     justify-content: space-around;
   }
+  .edit > * {
+    width: 100%;
+  }
 }

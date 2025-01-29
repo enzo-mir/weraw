@@ -10,6 +10,9 @@ import { urlSchema } from '#types/url.type'
 import { ZodError } from 'zod'
 import { Head, router } from '@inertiajs/react'
 import { toast, ToastContainer } from 'react-toastify'
+import { motion } from 'framer-motion'
+import { leftToRightAnimation } from '~/utils/animations/left_to_right'
+import { popAnimation } from '~/utils/animations/pop'
 
 export default function Home() {
   const [url, setUrl] = useState<string>('')
@@ -30,7 +33,7 @@ export default function Home() {
       <ToastContainer />
       <Head title="homepage" />
       <main className={style.main}>
-        <div className={style.text_side}>
+        <motion.div {...leftToRightAnimation} className={style.text_side}>
           <h1>
             Welcome,
             <br />
@@ -64,12 +67,12 @@ export default function Home() {
               </button>
             </div>
           </section>
-        </div>
+        </motion.div>
         <aside className={style.aside}>
-          <img src={waterPink} alt="Water pink image" />
-          <img src={star} alt="Star image" width={275} />
-          <div className={style.square}></div>
-          <img src={starEye} alt="Star eye image" width={550} />
+          <motion.img {...popAnimation(0.25)} src={waterPink} alt="Water pink image" />
+          <motion.img {...popAnimation(0.35)} src={star} alt="Star image" width={275} />
+          <motion.div {...popAnimation(0.45)} className={style.square}></motion.div>
+          <motion.img {...popAnimation(0.55)} src={starEye} alt="Star eye image" width={550} />
         </aside>
       </main>
     </>

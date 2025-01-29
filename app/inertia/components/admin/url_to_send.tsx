@@ -9,8 +9,6 @@ const UrlToSend = () => {
 
   function clipToKeyboard(e: MouseEvent) {
     e.stopPropagation()
-    const button = e.currentTarget as HTMLButtonElement
-    button.focus()
 
     if (navigator.clipboard) {
       navigator.clipboard
