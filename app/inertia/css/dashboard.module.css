@@ -5,7 +5,11 @@
 .layout nav {
   display: grid;
   grid-template-columns: 1fr auto;
-  place-items: center;
+}
+.layout nav h1 {
+  font-size: 1.2em;
+  font-family: var(--kg-font);
+  font-weight: 100;
 }
 .profile {
   display: flex;

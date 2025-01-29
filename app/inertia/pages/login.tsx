@@ -3,6 +3,9 @@ import { FormValues } from '../utils/types/login.type'
 import { toast, ToastContainer } from 'react-toastify'
 import style from '#css/login.module.css'
 import { Head, useForm } from '@inertiajs/react'
+import { motion } from 'framer-motion'
+import { leftToRightAnimation } from '~/utils/animations/left_to_right'
+
 const Login = () => {
   const { data, setData, post } = useForm<FormValues>({
     email: '',
@@ -26,7 +29,7 @@ const Login = () => {
       <Head title="Login" />
       <ToastContainer />
       <form onSubmit={handlSubmit}>
-        <label htmlFor="email">
+        <motion.label htmlFor="email" {...leftToRightAnimation({ delay: 0.2 })}>
           Email
           <input
             type="email"
@@ -34,8 +37,8 @@ const Login = () => {
             name="email"
             required
           />
-        </label>
-        <label htmlFor="password">
+        </motion.label>
+        <motion.label htmlFor="password" {...leftToRightAnimation({ delay: 0.3 })}>
           Mot de passe
           <input
             type="password"
@@ -43,8 +46,10 @@ const Login = () => {
             onChange={(e) => setData({ email: data.email, password: e.currentTarget.value })}
             required
           />
-        </label>
-        <button type="submit">Connexion</button>
+        </motion.label>
+        <motion.button type="submit" {...leftToRightAnimation({ delay: 0.4 })}>
+          Connexion
+        </motion.button>
       </form>
     </main>
   )

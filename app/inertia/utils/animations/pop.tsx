@@ -1,4 +1,6 @@
-export const popAnimation = (delay: number) => {
+import { Transition } from 'framer-motion'
+
+export const popAnimation = (transition: Transition) => {
   return {
     initial: {
       opacity: 0,
@@ -14,7 +16,7 @@ export const popAnimation = (delay: number) => {
     },
     transition: {
       duration: 0.2,
-      delay,
+      ...transition,
     },
   }
 }

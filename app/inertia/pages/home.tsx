@@ -69,10 +69,15 @@ export default function Home() {
           </section>
         </motion.div>
         <aside className={style.aside}>
-          <motion.img {...popAnimation(0.25)} src={waterPink} alt="Water pink image" />
-          <motion.img {...popAnimation(0.35)} src={star} alt="Star image" width={275} />
-          <motion.div {...popAnimation(0.45)} className={style.square}></motion.div>
-          <motion.img {...popAnimation(0.55)} src={starEye} alt="Star eye image" width={550} />
+          <motion.img {...popAnimation({ delay: 0.25 })} src={waterPink} alt="Water pink image" />
+          <motion.img {...popAnimation({ delay: 0.35 })} src={star} alt="Star image"  />
+          <motion.div {...popAnimation({ delay: 0.45 })} className={style.square}></motion.div>
+          <motion.img
+            {...popAnimation({ delay: 0.55 })}
+            src={starEye}
+            alt="Star eye image"
+            width={550}
+          />
         </aside>
       </main>
     </>

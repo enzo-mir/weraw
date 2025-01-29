@@ -6,12 +6,14 @@ import style from '#css/dashboard.module.css'
 import GaleryImage from '~/components/galery_image'
 import { ToastContainer } from 'react-toastify'
 import { PropsType } from '~/utils/types/props.type'
+import { Head } from '@inertiajs/react'
 
 const Dashboard = ({ galeries }: PropsType) => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
 
   return (
     <main className={style.main}>
+      <Head title="Dashboard" />
       <ToastContainer />
       <button
         className={style.add_btn}
