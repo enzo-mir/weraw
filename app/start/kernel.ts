@@ -41,10 +41,6 @@ router.use([
   () => import('@adonisjs/auth/initialize_auth_middleware'),
 ])
 
-/**
- * Named middleware collection must be explicitly assigned to
- * the routes or the routes group.
- */
 export const middleware = router.named({
   jwt: () => import('#middleware/jwt_middleware'),
   guest: () => import('#middleware/guest_middleware'),
