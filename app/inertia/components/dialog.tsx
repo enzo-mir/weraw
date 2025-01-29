@@ -8,11 +8,11 @@ const Dialog = () => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {dialogElement !== null ? (
         <div onClick={() => setDialogElement(null)} className={style.overlay}>
           <motion.dialog
-            {...upToDownAnimation()}
+            {...upToDownAnimation({ duration: 0.5 })}
             className={style.dialog}
             onClick={(e) => e.stopPropagation()}
             open

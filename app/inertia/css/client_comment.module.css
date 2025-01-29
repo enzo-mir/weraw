@@ -43,6 +43,20 @@
   flex-direction: column;
   gap: 2em;
 }
+
+.cta {
+  display: flex;
+  gap: 1em;
+  justify-content: start;
+}
+
+.cta button:last-child {
+  border-color: var(--pink);
+}
+
+.cta button:last-child:hover {
+  background-color: var(--pink);
+}
 .container textarea {
   font-family: var(--bricolage--font);
   padding: 0.5em;

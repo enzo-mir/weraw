@@ -33,8 +33,8 @@ export default function Home() {
       <ToastContainer />
       <Head title="homepage" />
       <main className={style.main}>
-        <motion.div {...leftToRightAnimation} className={style.text_side}>
-          <h1>
+        <div className={style.text_side}>
+          <motion.h1 {...leftToRightAnimation()}>
             Welcome,
             <br />
             Bienvenue,
@@ -42,12 +42,12 @@ export default function Home() {
             Bienvenido,
             <br />
             <em>to WeRaw</em>
-          </h1>
-          <p>
+          </motion.h1>
+          <motion.p {...leftToRightAnimation({ delay: 0.5 })}>
             Votre espace dédié à la prévisualisation
             <br /> de votre shooting photo.
-          </p>
-          <section className={style.url_section}>
+          </motion.p>
+          <motion.section {...leftToRightAnimation({ delay: 0.75 })} className={style.url_section}>
             <h2>
               Rentrez votre url <em>WeRaw</em>
             </h2>
@@ -66,11 +66,11 @@ export default function Home() {
                 <img src={checkimg} alt="Check icon" width={25} height={25} />
               </button>
             </div>
-          </section>
-        </motion.div>
+          </motion.section>
+        </div>
         <aside className={style.aside}>
           <motion.img {...popAnimation({ delay: 0.25 })} src={waterPink} alt="Water pink image" />
-          <motion.img {...popAnimation({ delay: 0.35 })} src={star} alt="Star image"  />
+          <motion.img {...popAnimation({ delay: 0.35 })} src={star} alt="Star image" />
           <motion.div {...popAnimation({ delay: 0.45 })} className={style.square}></motion.div>
           <motion.img
             {...popAnimation({ delay: 0.55 })}

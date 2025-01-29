@@ -29,11 +29,8 @@
 }
 
 .container form button {
-  color: white;
   font-size: clamp(1em, 2vw, 1.2em);
-  cursor: pointer;
-  border: 3px solid var(--green);
-  transition: background-color 0.15s ease;
+  width: 100%;
 }
 .container form label:nth-child(4) > input {
   font-size: 1em;

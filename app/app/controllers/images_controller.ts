@@ -50,7 +50,7 @@ export default class ImagesController {
     }
     try {
       await Photo.updateOrCreate({ id }, { like: !photo.like })
-      return response.status(200).json({ images: await getClientImages({ groupe: photo.groupe }) })
+      return response.redirect().back()
     } catch (error) {
       return response.badRequest({ message: 'Une erreur est survenue' })
     }
@@ -71,9 +71,7 @@ export default class ImagesController {
       return response.badRequest({ message: 'Image introuvable' })
     }
     await Photo.updateOrCreate({ id: imageId }, { comment })
-    inertia.share({
-      images: await getClientImages(params as { groupe: string }),
-    })
+
     return response.redirect().back()
   }
 
@@ -94,7 +92,7 @@ export default class ImagesController {
 
       return response.redirect().back()
     } catch (error) {
-      console.log(error)
+      return response.badRequest({ message: 'Image introuvable' })
     }
   }
 }

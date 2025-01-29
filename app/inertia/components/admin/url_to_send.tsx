@@ -13,14 +13,14 @@ const UrlToSend = () => {
     if (navigator.clipboard) {
       navigator.clipboard
         .writeText(url)
-        .then(() =>
-          toast.success('Lien copié', {
+        .then(() => {
+          return toast.success('Lien copié', {
             autoClose: 1500,
             hideProgressBar: true,
           })
-        )
+        })
         .catch(() => {
-          toast.error('Impossible de copier le lien', {
+          return toast.error('Impossible de copier le lien', {
             autoClose: 1500,
             hideProgressBar: true,
           })

@@ -55,13 +55,10 @@ const ImagePreview = ({
     return
   }
 
-  const goBack = () => {
-    setImageId(null)
-  }
+  const goBack = () => setImageId(null)
 
   return (
     <>
-      <ToastContainer closeOnClick={true} />
       {displayClientComment ? (
         <CommentSide
           type={type}

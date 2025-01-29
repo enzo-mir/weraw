@@ -14,6 +14,8 @@ export const upToDownAnimation = (transition?: Transition) => {
       y: -100,
     },
     transition: {
+      type: 'spring',
+      bounce: 0,
       ...transition,
     },
   }

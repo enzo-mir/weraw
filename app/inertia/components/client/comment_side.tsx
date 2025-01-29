@@ -14,7 +14,7 @@ const CommentSide = ({
   id: number
   type: 'client' | 'admin'
 }) => {
-  const { data, setData, post } = useForm({
+  const { data, setData, post, reset } = useForm({
     comment: text || '',
   })
   const setImages = imagesStore((state) => state.setImages)
@@ -73,7 +73,12 @@ const CommentSide = ({
           onChange={(e) => setData({ ...data, comment: e.target.value })}
           readOnly={type === 'admin'}
         ></textarea>
-        {type === 'client' ? <button>Envoyer</button> : null}
+        <div className={style.cta}>
+          {type === 'client' ? <button>Envoyer</button> : null}
+          {type === 'client' ? (
+            <button onClick={() => setData({ comment: '' })}>Effacer</button>
+          ) : null}
+        </div>
       </form>
     </aside>
   )

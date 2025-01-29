@@ -2,7 +2,7 @@ import style from '#css/manage_galery.module.css'
 import { useForm, usePage } from '@inertiajs/react'
 import { FormEvent, useRef } from 'react'
 import { FileUploader } from 'react-drag-drop-files'
-import { Id, toast } from 'react-toastify'
+import { Id, toast, ToastContainer } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
 import UrlToSend from './admin/url_to_send'
 
