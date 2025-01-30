@@ -47,7 +47,10 @@ export default function Home() {
             Votre espace dédié à la prévisualisation
             <br /> de votre shooting photo.
           </motion.p>
-          <motion.section {...leftToRightAnimation({ delay: 0.75 })} className={style.url_section}>
+          <motion.section
+            {...leftToRightAnimation({ delay: 0.75, duration: 0.2 })}
+            className={style.url_section}
+          >
             <h2>
               Rentrez votre url <em>WeRaw</em>
             </h2>

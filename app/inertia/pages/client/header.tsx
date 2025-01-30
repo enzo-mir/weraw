@@ -41,9 +41,7 @@ const Header = () => {
 
       <div>
         <p>
-          *Les photos sont volontairement de moins bonne
-          <br />
-          qualité afin d'éviter tout risque de vol.
+          *Les photos sont volontairement de moins bonne qualité afin d'éviter tout risque de vol.
         </p>
         <aside
           className={openCta ? style.ctaOpen + ' ' + style.cta : style.cta}
