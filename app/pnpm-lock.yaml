@@ -39,6 +39,9 @@ dependencies:
   '@inertiajs/react':
     specifier: ^2.0.2
     version: 2.0.2(react@19.0.0)
+  '@types/gm':
+    specifier: ^1.25.4
+    version: 1.25.4
   '@types/jsonwebtoken':
     specifier: ^9.0.8
     version: 9.0.8
@@ -51,6 +54,9 @@ dependencies:
   edge.js:
     specifier: ^6.2.0
     version: 6.2.1
+  imagemagick-convert:
+    specifier: ^1.0.3
+    version: 1.0.3
   jsonwebtoken:
     specifier: ^9.0.2
     version: 9.0.2
@@ -66,6 +72,9 @@ dependencies:
   popmotion:
     specifier: ^11.0.5
     version: 11.0.5
+  rawtherapee:
+    specifier: ^1.0.0
+    version: 1.0.0
   react:
     specifier: ^19.0.0
     version: 19.0.0
@@ -2109,6 +2118,12 @@ packages:
   /@types/estree@1.0.6:
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
+  /@types/gm@1.25.4:
+    resolution: {integrity: sha512-123Spjn7f0eZZOiFlXCiloBRga+uczwAdZOlcgtva+I1h137ADcbC7I5B3SZToQBzYLMokYDlyPxRUozKSQ+Ow==}
+    dependencies:
+      '@types/node': 22.10.7
+    dev: false
+
   /@types/he@1.2.3:
     resolution: {integrity: sha512-q67/qwlxblDzEDvzHhVkwc1gzVWxaNxeyHUBF4xElrvjL11O+Ytze+1fGpBHlr/H9myiBUaUXNnNPmBHxxfAcA==}
 
@@ -4034,6 +4049,10 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
+  /imagemagick-convert@1.0.3:
+    resolution: {integrity: sha512-xkRM1qak1IiOmuNT00kQkWIISMR/MsvOYJBIiUVPBR0ucmvk1s0w44v3OL5QeObIkMA/tPCWUkrQnZD6EYBhCg==}
+    dev: false
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -5383,6 +5402,10 @@ packages:
       http-errors: 2.0.0
       iconv-lite: 0.4.24
       unpipe: 1.0.0
+
+  /rawtherapee@1.0.0:
+    resolution: {integrity: sha512-zHY1o3y/YAuYAQdrCuSCprdBmENTs0Mr7jgSWAOUaVIFyrw/KOA+5nzo7G8fP6TqnjbR4TXSqEw/hUkP8MWmsw==}
+    dev: false
 
   /react-dom@19.0.0(react@19.0.0):
     resolution: {integrity: sha512-4GV5sHFG0e/0AD4X+ySy6UJd3jVl1iNsNHdpad0qhABJ11twS3TTBnseqsKurKcsNqCEFeGL3uLpVChpIO3QfQ==}

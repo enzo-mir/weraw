@@ -57,6 +57,7 @@
 .cta button:last-child:hover {
   background-color: var(--pink);
 }
+
 .container textarea {
   font-family: var(--bricolage--font);
   padding: 0.5em;

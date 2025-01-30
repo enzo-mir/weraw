@@ -6,7 +6,8 @@ export default async function changeEndSeleced(
   _csrf: string,
   end_selected: boolean,
   setEndSelected: (endSelected: boolean) => void,
-  toastId: React.RefObject<Id | null>
+  toastId: React.RefObject<Id | null>,
+  setOpenCta: (openCta: boolean) => void
 ) {
   const response = await fetch(`/end_selected/${groupe}/${urlId}`, {
     method: 'POST',
@@ -28,6 +29,7 @@ export default async function changeEndSeleced(
       autoClose: 2000,
       hideProgressBar: true,
     })
+    setOpenCta(false)
     setEndSelected(end_selected)
   } else {
     toastId.current = toast.error('Erreur lors du changement', {

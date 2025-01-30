@@ -63,10 +63,13 @@
 }
 
 .galeries {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5em;
 }
-
+.galeries article {
+  max-width: 250px;
+}
 @media screen and (max-width: 500px) {
   .layout nav {
     display: grid;

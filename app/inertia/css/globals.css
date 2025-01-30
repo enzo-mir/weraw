@@ -1,6 +1,14 @@
 @font-face {
   font-family: 'bricolage-grotesque-condensed';
-  src: url('../assets/fonts/BricolageGrotesque_Condensed-Bold.ttf');
+  src: url('../assets/fonts/BricolageGrotesque_Condensed-Bold.ttf'),
+    url('../assets/fonts/BricolageGrotesque_Condensed-ExtraLight.ttf');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'bricolage-grotesque-condensed-light';
+  src: url('../assets/fonts/BricolageGrotesque_Condensed-ExtraLight.ttf');
   font-style: normal;
   font-weight: normal;
 }
@@ -27,6 +35,7 @@
   --red: #dc3434;
   --bricolage--font: 'bricolage-grotesque';
   --bricolage-condensed--font: 'bricolage-grotesque-condensed';
+  --bricolage-condensed-light--font: 'bricolage-grotesque-condensed-light';
   --kg-font: 'KGSecondChances';
 }
 

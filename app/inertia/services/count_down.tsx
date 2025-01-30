@@ -29,7 +29,7 @@ const CountDownTimer = ({ targetDate }: { targetDate: Date | number }) => {
   }
   return (
     <strong>
-      {`${timeLeft.days} j ${timeLeft.hours} h ${timeLeft.minutes} min ${timeLeft.seconds} s`}
+      {`${timeLeft.days}j ${timeLeft.hours}h ${timeLeft.minutes}min ${timeLeft.seconds}sec`}
     </strong>
   )
 }

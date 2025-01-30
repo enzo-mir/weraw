@@ -3,76 +3,75 @@ import pinkArrow from '#assets/icons/arrow_link.png'
 import styleback from '#css/galery.module.css'
 import style from '#css/header_client.module.css'
 import CountDownTimer from '~/services/count_down'
+import downArrow from '#assets/icons/down_arrow.svg'
 import changeEndSeleced from '~/services/change_end_selected'
 import { useRef, useState } from 'react'
 import { Id } from 'react-toastify'
 
 const Header = () => {
+  const [openCta, setOpenCta] = useState<boolean>(false)
   const {
     exp,
     urlData: { endSelected, name, createdAt, groupe, id },
     _csrf,
   } = usePage().props
-  console.log(endSelected)
 
-  const [endSelectedState, setEndSelectedState] = useState<boolean>(endSelected)
+  const [endSelectedState, setEndSelectedState] = useState<boolean>(Boolean(endSelected))
   const toastId = useRef<Id>(null)
 
   return (
     <header className={style.header}>
-      <nav>
-        <Link href="/" className={styleback.back}>
-          <img src={pinkArrow} alt="arrow back to menu" />
+      <div>
+        <nav>
+          <Link href="/" className={styleback.back}>
+            <img src={pinkArrow} alt="arrow back to menu" />
+            <p>
+              Revenir à l'accueil <em>WeRaw</em>
+            </p>
+          </Link>
           <p>
-            Revenir à l'accueil <em>WeRaw</em>
+            Le lien expire dans : <CountDownTimer targetDate={exp!} />
           </p>
-        </Link>
-      </nav>
-      <aside>
-        <h1>{name}</h1>
-        <p>{new Date(createdAt).toLocaleDateString()}</p>
-      </aside>
-      <div className={style.cta}>
+        </nav>
+        <aside>
+          <h1>{name}</h1>
+          <p>{new Date(createdAt).toLocaleDateString()}</p>
+        </aside>
+      </div>
+
+      <div>
         <p>
-          Le lien expire dans : <CountDownTimer targetDate={exp!} />
+          *Les photos sont volontairement de moins bonne
+          <br />
+          qualité afin d'éviter tout risque de vol.
         </p>
-        <div>
-          <p>Avez-vous fini de sélectionner vos photos ?</p>
-          <button
-            onClick={() =>
-              !endSelectedState
-                ? changeEndSeleced(
-                    groupe,
-                    id,
-                    _csrf,
-                    !endSelectedState,
-                    setEndSelectedState,
-                    toastId
-                  )
-                : null
-            }
-            data-selected={endSelectedState ? 'true' : undefined}
+        <aside
+          className={openCta ? style.ctaOpen + ' ' + style.cta : style.cta}
+          data-endselected={endSelectedState}
+          role="group"
+        >
+          <div>
+            <p>{endSelectedState ? 'Séléction terminé' : 'En cours de sélection'}</p>
+            <button onClick={() => setOpenCta(!openCta)}>
+              <img src={downArrow} alt="" />
+            </button>
+          </div>
+          <div
+            onClick={() => {
+              changeEndSeleced(
+                groupe,
+                id,
+                _csrf,
+                !endSelectedState,
+                setEndSelectedState,
+                toastId,
+                setOpenCta
+              )
+            }}
           >
-            Oui
-          </button>
-          <button
-            onClick={() =>
-              endSelectedState
-                ? changeEndSeleced(
-                    groupe,
-                    id,
-                    _csrf,
-                    !endSelectedState,
-                    setEndSelectedState,
-                    toastId
-                  )
-                : null
-            }
-            data-selected={!endSelectedState ? 'true' : undefined}
-          >
-            Non
-          </button>
-        </div>
+            <p>{!endSelectedState ? 'Séléction terminé' : 'En cours de sélection'}</p>
+          </div>
+        </aside>
       </div>
     </header>
   )

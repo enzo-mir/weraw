@@ -1,14 +1,37 @@
 .header {
+  --height: 45px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 100px auto;
+  grid-template-rows: 100px calc(var(--height) * 2);
   height: 100%;
+  gap: 1em;
   padding: 1em 2em;
 }
 
-.header aside {
+.header > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & strong {
+    color: var(--pink);
+  }
+
+  & aside p {
+    text-align: right;
+    font-size: clamp(1em, 2vw, 1.3em);
+    color: var(--blue);
+    font-family: var(--bricolage-condensed-light--font);
+  }
+}
+
+.header > div:last-child {
   display: grid;
+  grid-template-columns: auto 1fr;
   gap: 1em;
+
+  & > p {
+    align-self: end;
+  }
 }
 
 .header h1 {
@@ -19,46 +42,97 @@
 }
 
 .header nav {
-  margin-block: auto;
-}
-
-.header aside p {
-  color: var(--blue);
-  text-align: right;
-  font-size: clamp(1em, 2vw, 1.3em);
-  font-style: italic;
+  display: grid;
+  gap: 0.5em;
 }
 
 .cta {
+  position: relative;
+  display: grid;
+  justify-self: end;
+  width: clamp(200px, 20vw, 250px);
+  outline: 1px solid white;
+  border-radius: 1.5em;
+  height: var(--height);
+  transition: all 0.2s ease-out;
+}
+.cta > div {
+  height: var(--height);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1em;
-  color: white;
-  padding: 0.5em 1em;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1em;
 }
 
-.cta div button {
-  --clr: var(--green);
-  margin-block-start: 1em;
-}
-
-.cta div button[data-selected='true'] {
-  background-color: var(--clr);
-}
-
-.cta div button:last-child {
-  --clr: var(--pink);
-  margin-inline-start: 1em;
-  border: 2px solid var(--pink);
-
-  &:hover {
-    background-color: var(--pink);
+.cta > div:first-child {
+  border-radius: 3em;
+  & button {
+    display: grid;
+    place-items: center;
+    width: calc(var(--height) - 2px);
+    padding: 0;
+    outline: 2px solid white;
+    aspect-ratio: 1 / 1;
+    border: none;
   }
 }
 
-.cta strong {
-  color: var(--pink);
+.cta[data-endselected='true'] div:first-child {
+  background-color: var(--green);
+}
+
+.cta:is(.ctaOpen) {
+  & button {
+    &:hover {
+      background-color: var(--green);
+    }
+    & img {
+      rotate: 180deg;
+      transition: rotate 0.2s ease-out;
+    }
+  }
+}
+.cta[data-endselected='true'] div:last-child:hover {
+  background-color: var(--blue);
+}
+.cta:is(:not(.ctaOpen)) {
+  & button {
+    &:hover {
+      background-color: var(--blue);
+    }
+    & img {
+      rotate: 0;
+      transition: rotate 0.2s ease-out;
+    }
+  }
+}
+
+.cta > div:last-child {
+  border: 1px solid white;
+  border-radius: 3em;
+  transition:
+    visibility 0.15s ease-out,
+    opacity 0.15s ease-out,
+    height 0.2s ease-out;
+  cursor: pointer;
+  opacity: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+.ctaOpen > div:last-child {
+  opacity: 1;
+  height: var(--height);
+  visibility: visible;
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    background-color: var(--green);
+  }
+}
+
+.ctaOpen {
+  height: calc(var(--height) * 2);
 }
 
 @media screen and (max-width: 750px) {

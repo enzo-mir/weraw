@@ -1,6 +1,6 @@
 .main {
   display: grid;
-  padding: 2em;
+  padding-inline: 2em;
   gap: 1em;
   width: 100%;
 }
@@ -8,8 +8,7 @@
 .galery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  padding-top: 2em;
-  gap: 2em;
+  gap: 1em;
   width: 100%;
 }
 
@@ -76,7 +75,7 @@
   width: 100%;
   max-width: 250px;
   list-style-type: none;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 6;
 }
 
 .validateSvg {
