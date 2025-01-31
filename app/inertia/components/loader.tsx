@@ -8,8 +8,10 @@ const Loader = ({ children }: { children: JSX.Element }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    document.body.style.overflow = 'hidden'
     const timer = setTimeout(() => {
-      setIsLoading(false)
+    document.body.style.overflow = 'auto'
+    setIsLoading(false)
     }, 3500)
 
     return () => clearTimeout(timer)
