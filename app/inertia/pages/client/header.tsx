@@ -7,7 +7,8 @@ import downArrow from '#assets/icons/down_arrow.svg'
 import changeEndSeleced from '~/services/change_end_selected'
 import { useRef, useState } from 'react'
 import { Id } from 'react-toastify'
-
+import { motion } from 'motion/react'
+import { upToDownAnimation } from '~/utils/animations/up_to_down'
 const Header = () => {
   const [openCta, setOpenCta] = useState<boolean>(false)
   const {
@@ -20,7 +21,7 @@ const Header = () => {
   const toastId = useRef<Id>(null)
 
   return (
-    <header className={style.header}>
+    <motion.header {...upToDownAnimation({ delay: 3.5 })} className={style.header}>
       <div>
         <nav>
           <Link href="/" className={styleback.back}>
@@ -71,7 +72,7 @@ const Header = () => {
           </div>
         </aside>
       </div>
-    </header>
+    </motion.header>
   )
 }
 
