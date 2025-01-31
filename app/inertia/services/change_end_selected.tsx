@@ -1,3 +1,4 @@
+import { router } from '@inertiajs/react'
 import { Id, toast } from 'react-toastify'
 
 export default async function changeEndSeleced(
@@ -31,6 +32,9 @@ export default async function changeEndSeleced(
     })
     setOpenCta(false)
     setEndSelected(end_selected)
+    const data = await response.json()
+
+    return router.visit('/galery/' + data.token)
   } else {
     toastId.current = toast.error('Erreur lors du changement', {
       autoClose: 2000,

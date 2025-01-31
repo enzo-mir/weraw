@@ -5,7 +5,7 @@ import { storeImages } from '#services/store_images'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import { z } from 'zod'
 import Photo from '#models/photo'
-import { getClientImages } from '#services/get_images'
+import { jwtMaker } from '#services/jwt_service'
 
 export default class ImagesController {
   async add({ request, response, session }: HttpContext) {
@@ -87,10 +87,13 @@ export default class ImagesController {
       const endSelected: boolean = request.only(['end_selected']).end_selected
 
       const url = await Url.query().where('id', urlId).andWhere('groupe', groupe).first()
+      const newdate = new Date(new Date().setDate(new Date().getDate() + 1))
+      const token = await jwtMaker(url!.groupe, newdate.toISOString())
+      if (typeof token !== 'string') return response.badRequest()
 
-      await Url.updateOrCreate({ id: url!.id }, { endSelected })
+      await Url.updateOrCreate({ id: url!.id }, { endSelected, jwt: token })
 
-      return response.redirect().back()
+      return response.status(200).json({ token })
     } catch (error) {
       return response.badRequest({ message: 'Image introuvable' })
     }

@@ -5,12 +5,14 @@ import style from '#css/galery.module.css'
 import Header from './header'
 import { PropsType } from '~/utils/types/props.type'
 import { ToastContainer } from 'react-toastify'
+import Dialog from '~/components/dialog'
 
 const Galery = (props: PropsType) => {
   const [imageId, setImageId] = useState<number | null>(null)
 
   return (
     <>
+      <Dialog />
       <ToastContainer />
       <Header />
       <main className={style.main}>
