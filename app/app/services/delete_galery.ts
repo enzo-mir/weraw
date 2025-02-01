@@ -6,9 +6,7 @@ export const deleteGaleryService = async (id: number) => {
   const url = await Url.find(id)
   if (!url) return { error: 'Une erreur est survenue lors de la suppression de la galerie' }
 
-  fs.rm(app.publicPath('/images/' + url.name), { recursive: true }, (err) => {
-    if (err) return { error: 'Une erreur est survenue lors de la suppression de la' }
-  })
+  fs.rmSync(app.publicPath('/images/' + url.name.replaceAll(' ', '_')), { recursive: true })
 
   await url.delete()
 

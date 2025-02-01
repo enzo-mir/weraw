@@ -30,6 +30,7 @@ router
   .prefix('admin')
   .use(middleware.auth())
 
+router.get('/galery/:jwt', [GaleryClientController, 'show']).use(middleware.jwt())
 router
   .group(() => {
     router
@@ -43,5 +44,3 @@ router
       .use(middleware.auth())
   })
   .prefix('/galery')
-
-router.get('/galery/:jwt', [GaleryClientController, 'show']).use(middleware.jwt())

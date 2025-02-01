@@ -1,10 +1,9 @@
 import { usePage } from '@inertiajs/react'
 import { MouseEvent } from 'react'
 import { toast } from 'react-toastify'
-import { UrlDataType } from '~/utils/types/galery.type'
 
 const UrlToSend = () => {
-  const { jwt } = usePage().props.urlData as unknown as UrlDataType
+  const jwt = usePage().props.urlData?.jwt
   const url = `${window.location.origin}/galery/${jwt}`
 
   function clipToKeyboard(e: MouseEvent) {

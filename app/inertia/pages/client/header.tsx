@@ -93,7 +93,7 @@ const Header = () => {
               </button>
             </div>
 
-            <div onClick={() => /* !endSelected && */ setDialogElement(<ConfirmEndSelected />)}>
+            <div onClick={() => !endSelected && setDialogElement(<ConfirmEndSelected />)}>
               <p>{!endSelectedState ? 'Séléction terminé' : 'En cours de sélection'}</p>
             </div>
           </aside>

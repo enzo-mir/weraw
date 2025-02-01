@@ -21,6 +21,6 @@ export default async function addPhotos(files: File[], _csrf: string, galeryName
     error: "Erreur lors de l'ajout",
   })
   if ((await promise).ok) {
-    router.reload()
+    router.reload({ only: ['images', 'urlData', 'exp'] })
   }
 }

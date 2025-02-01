@@ -1,5 +1,5 @@
 import style from '#css/manage_galery.module.css'
-import { useForm, usePage } from '@inertiajs/react'
+import { router, useForm, usePage } from '@inertiajs/react'
 import { FormEvent, useRef } from 'react'
 import { FileUploader } from 'react-drag-drop-files'
 import { Id, toast } from 'react-toastify'
@@ -11,7 +11,7 @@ const fileTypes = ['JPG', 'PNG', 'JPEG']
 const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }) => {
   const isEditing: boolean = name !== null
   const props = usePage().props
-  const { id } = isEditing ? props.urlData : { id: '' }
+  const id = isEditing ? props.urlData?.id : ''
 
   const exp = isEditing ? usePage().props.exp : undefined
   const expDate = exp ? new Date(exp * 1000).toISOString() : undefined
@@ -82,6 +82,7 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
         })
         progressToastId.current = null
         setDialogElement(null)
+        router.reload({ only: ['urlData', 'exp'] })
       },
     })
   }

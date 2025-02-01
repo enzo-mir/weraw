@@ -1,18 +1,16 @@
+import Photo from '#models/photo'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import app from '@adonisjs/core/services/app'
-import { randomBytes } from 'node:crypto'
+import { randomBytes, UUID } from 'node:crypto'
 import fs from 'node:fs'
 import sharp from 'sharp'
 
 export const storeImages = (
   name: string,
-  images: MultipartFile[],
-  updating: boolean
-): Promise<
-  Array<{
-    url: string
-  }>
-> => {
+  images: MultipartFile[] | MultipartFile,
+  updating: boolean,
+  groupe: UUID
+): Promise<unknown> => {
   function generateUniqueFileName(originalName: string): string {
     const timestamp = new Date().getTime()
     const randomString = randomBytes(4).toString('hex')
@@ -21,7 +19,7 @@ export const storeImages = (
       .replace(/[^a-z0-9]/g, '-')
       .substring(0, 50)
 
-    return `${timestamp}-${randomString}-${sanitizedOriginalName}.avif`
+    return `${timestamp}-${randomString}-${sanitizedOriginalName}.webp`
   }
 
   const folderPath = app.publicPath(`images/${name.replaceAll(' ', '_')}`)
@@ -38,10 +36,10 @@ export const storeImages = (
 
   const uploadPromises = files.map((image) => {
     const fileName = generateUniqueFileName(image.clientName.replace(/\.[^/.]+$/, ''))
-    return new Promise(async (resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       try {
         const bufferedImage = await sharp(image.tmpPath)
-          .avif({
+          .webp({
             quality: 80,
           })
           .resize(1200, null, {
@@ -55,18 +53,17 @@ export const storeImages = (
 
         await sharp(bufferedImage).toFile(fullPath)
 
-        resolve({
+        await Photo.create({
           url: `/${filePath}`,
+          groupe,
         })
+
+        resolve()
       } catch (error) {
         reject(error)
       }
     })
   })
 
-  return Promise.all(uploadPromises) as Promise<
-    Array<{
-      url: string
-    }>
-  >
+  return Promise.all(uploadPromises)
 }

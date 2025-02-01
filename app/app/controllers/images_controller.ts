@@ -10,22 +10,17 @@ import { jwtMaker } from '#services/jwt_service'
 export default class ImagesController {
   async add({ request, response, session }: HttpContext) {
     const { files } = z
-      .object({ files: z.array(z.instanceof(MultipartFile)) })
+      .object({
+        files: z.union([z.array(z.instanceof(MultipartFile)), z.instanceof(MultipartFile)]),
+      })
       .parse(request.allFiles())
 
     const galeryName = request.only(['galeryName']).galeryName
     try {
       const url = await Url.findByOrFail('name', galeryName)
 
-      const images = await storeImages(galeryName, files, true)
-      const photoPromises = images.map(
-        async (image) =>
-          await Photo.create({
-            url: image.url,
-            groupe: url.groupe,
-          })
-      )
-      await Promise.all(photoPromises)
+      await storeImages(galeryName, files, true, url.groupe)
+
       return response.redirect().back()
     } catch (error) {
       session.flash({ errors: { message: error.message } })

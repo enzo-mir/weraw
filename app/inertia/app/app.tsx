@@ -5,7 +5,6 @@ import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import '#css/globals.css'
-import Loader from '~/components/loader'
 
 const appName = 'WeRaw'
 
@@ -18,10 +17,6 @@ createInertiaApp({
   },
 
   setup({ el, App, props }) {
-    createRoot(el).render(
-      <Loader>
-        <App {...props} />
-      </Loader>
-    )
+    createRoot(el).render(<App {...props} />)
   },
 })

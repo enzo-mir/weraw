@@ -21,8 +21,8 @@ const DisplayGalery = (props: {
       <img
         width={250}
         height={250}
-        src={props.image.url}
-        alt={urlData.name + props.id}
+        src={props.image?.url}
+        alt={urlData?.name + props.id}
         loading="lazy"
       />
 

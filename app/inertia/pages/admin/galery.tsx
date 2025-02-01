@@ -1,11 +1,11 @@
 import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
 import style from '#css/galery.module.css'
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, usePage } from '@inertiajs/react'
 import ImagePreview from '~/components/image_preview'
 import { changeDone } from '~/services/change_done'
 import pinkArrow from '#assets/icons/arrow_link.png'
 import { ValidateIcon } from '~/assets/icons/validate'
-import { useEffect, useRef, useState } from 'react'
+import { JSX, useEffect, useRef, useState } from 'react'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelete } from '~/components/admin/confirm_del'
 import Dialog from '~/components/dialog'
@@ -14,7 +14,7 @@ import { FileUploader } from 'react-drag-drop-files'
 import addPhotos from '~/services/add_photos'
 import { Id, ToastContainer } from 'react-toastify'
 import DisplayGalery from '~/components/display_galery'
-import { AnimatePresence } from 'motion/react'
+import DefferedLayout from '../layout/deffered_layout'
 
 const Galery = ({
   images,
@@ -25,16 +25,16 @@ const Galery = ({
   urlData: UrlDataType
   _csrf: string
 }) => {
+  console.log(usePage().props)
+
   const splitNumber = 50
   const [imagesData, setImagesData] = useState<Array<GaleryType>>(images.slice(0, splitNumber))
   const [hasMore, setHasMore] = useState(true)
-  const loader = useRef<HTMLDivElement | null>(null) // Ref to detect scrolling
+  const loader = useRef<HTMLDivElement | null>(null)
   const [imageId, setImageId] = useState<number | null>(null)
   const [done, setDone] = useState<boolean>(!!urlData.done)
   const setDialogElement = dialogState((state) => state.setDialogElement)
   const toastDoneId = useRef<Id>(null)
-
-  console.log('images', images)
 
   useEffect(() => {
     setImagesData(images.slice(0, splitNumber))
@@ -72,6 +72,7 @@ const Galery = ({
     }
   }, [hasMore, imagesData])
   const fileTypes = ['JPG', 'PNG', 'JPEG']
+
   return (
     <>
       <Head title="Galery" />
@@ -161,5 +162,7 @@ const Galery = ({
     </>
   )
 }
-
+Galery.layout = (page: JSX.Element) => (
+  <DefferedLayout children={page} data={['images', 'urlData', 'exp']} />
+)
 export default Galery

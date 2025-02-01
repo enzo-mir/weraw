@@ -1,7 +1,7 @@
-import Photo from '#models/photo'
 import Url from '#models/url'
 import { imageStoreSchema } from '#schemas/store_image.store'
 import { groupedGaleriesByName } from '#services/get_galery_dashboard'
+import { getAdminImages } from '#services/get_images'
 import { jwtMaker } from '#services/jwt_service'
 import { storeImages } from '#services/store_images'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -15,7 +15,7 @@ export default class DashboardController {
     return inertia.render('admin/dashboard', { galeries, user: { email } })
   }
 
-  public async store({ request, response, session }: HttpContext) {
+  public async store({ request, response, session, inertia, params }: HttpContext) {
     const [name, date, files] = [
       request.input('name'),
       request.input('date'),
@@ -25,20 +25,13 @@ export default class DashboardController {
     try {
       await imageStoreSchema.parseAsync({ name, date, files })
 
-      const images = await storeImages(name, files, false)
       const groupe = randomUUID()
       const jwt = await jwtMaker(groupe)
       const url = await Url.create({ name, createdAt: date, groupe, jwt: jwt as string })
+      await storeImages(name, files, false, url.groupe)
+      const images = await getAdminImages(params as { id: string })
 
-      const photoPromises = images.map(
-        async (image) =>
-          await Photo.create({
-            url: image.url,
-            groupe: url.groupe,
-          })
-      )
-      await Promise.all(photoPromises)
-      return response.redirect().back()
+      return inertia.share({ images })
     } catch (error) {
       session.flash({ errors: { message: error.message } })
       return response.redirect().back()

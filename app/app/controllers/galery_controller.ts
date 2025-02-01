@@ -8,23 +8,26 @@ import db from '@adonisjs/lucid/services/db'
 import fs from 'node:fs'
 
 export default class GaleriesController {
-  async show({ inertia, params }: HttpContext) {
+  async show(ctx: HttpContext) {
     try {
       const urlData = await Url.query()
-        .where('id', params.id)
+        .where('id', ctx.params.id)
         .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe', 'jwt')
         .first()
       const token = await jwtVerifier(urlData!.jwt)
         .then((e) => e.exp)
         .catch((e) => new Date(e.expiredAt).getTime() / 1000)
 
-      const images = await getAdminImages(params as { id: string })
-      return inertia.render('admin/galery', {
-        images,
-        urlData,
-        exp: token,
+      const images = await getAdminImages(ctx.params as { id: string })
+
+      return ctx.inertia.render('admin/galery', {
+        images: ctx.inertia.defer(() => images),
+        urlData: ctx.inertia.defer(() => urlData),
+        exp: ctx.inertia.defer(() => token),
       })
-    } catch (error) {}
+    } catch (error) {
+      return ctx.inertia.render('errors/not_found')
+    }
   }
 
   async delete(ctx: HttpContext) {
@@ -63,7 +66,7 @@ export default class GaleriesController {
       }
     )
 
-    await Url.updateOrCreate({ id }, { name, updatedAt: date, jwt: token })
+    await Url.updateOrCreate({ id }, { name, updatedAt: date, createdAt: date, jwt: token })
 
     return response.redirect().back()
   }
