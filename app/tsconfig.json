@@ -3,6 +3,9 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build",
+    "jsx": "react",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "paths": {
       "#schemas/*": ["./app/schemas/*.ts"]
     }

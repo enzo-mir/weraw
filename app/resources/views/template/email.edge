@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      Galerie finit!
+    </title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75,200&display=swap');
+      
+      body {
+        display: grid;
+        place-items: center;
+        font-family: "Bricolage Grotesque", serif;
+        background-color: #f7f7f7;
+        padding: 20px;
+      }
+      
+      body > * {
+        background-color: #ffffff;
+        border-radius: 4px;
+        padding: 20px;
+        max-width: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        La galerie de photo est finit!
+      </h1>
+      <p>
+        nom : {{ name }}
+      </p>
+      <p>
+        date : {{ createdAt }}
+      </p>
+    </header>
+    <main>
+      <p>
+        le client disposera de 24h durant lesquelles il pourra finaliser la sélection des photos.
+      </p>
+    </main>
+    <footer>
+      <a href="{{ url }}">Weraw</a>
+    </footer>
+  </body>
+</html>

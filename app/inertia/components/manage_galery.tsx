@@ -16,7 +16,7 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
   const exp = isEditing ? usePage().props.exp : undefined
   const expDate = exp ? new Date(exp * 1000).toISOString() : undefined
 
-  const { data, setData, post } = useForm<{
+  const { data, setData, post, processing } = useForm<{
     name: string
     date: Date
     exp?: string
@@ -134,7 +134,9 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
               </label>
             </>
           )}
-          <button type="submit">Valider</button>
+          <button type="submit" disabled={processing}>
+            Valider
+          </button>
         </form>
       </div>
     </>

@@ -6,6 +6,9 @@ import { MultipartFile } from '@adonisjs/core/bodyparser'
 import { z } from 'zod'
 import Photo from '#models/photo'
 import { jwtMaker } from '#services/jwt_service'
+import { mailerService } from '#services/mailer'
+import app from '@adonisjs/core/services/app'
+import env from '#start/env'
 
 export default class ImagesController {
   async add({ request, response, session }: HttpContext) {
@@ -51,7 +54,7 @@ export default class ImagesController {
     }
   }
 
-  async comment({ request, response, params, inertia }: HttpContext) {
+  async comment({ request, response, params }: HttpContext) {
     const { comment } = request.only(['comment'])
     const { groupe, imageId } = z
       .object({
@@ -86,7 +89,12 @@ export default class ImagesController {
       const token = await jwtMaker(url!.groupe, newdate.toISOString())
       if (typeof token !== 'string') return response.badRequest()
 
-      await Url.updateOrCreate({ id: url!.id }, { endSelected, jwt: token })
+      const urlUpdate = await Url.updateOrCreate({ id: url!.id }, { endSelected, jwt: token })
+      await mailerService({
+        name: urlUpdate.name,
+        createdAt: new Date(urlUpdate.createdAt?.toISO() ?? '').toLocaleDateString(),
+        url: app.inProduction ? env.get('BASE_URL') : 'http://127.0.0.1:3000/',
+      })
 
       return response.status(200).json({ token })
     } catch (error) {

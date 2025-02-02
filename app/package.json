@@ -66,6 +66,7 @@
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^4.0.0",
     "@inertiajs/react": "^2.0.2",
+    "@react-email/components": "^0.0.32",
     "@types/gm": "^1.25.4",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/react-lazy-load-image-component": "^1.6.4",

@@ -60,6 +60,8 @@ export const storeImages = (
 
         resolve()
       } catch (error) {
+        console.log(error)
+
         reject(error)
       }
     })
