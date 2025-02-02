@@ -1,16 +1,17 @@
 import Photo from '#models/photo'
+import { fileTypes } from '#schemas/file_extension'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import app from '@adonisjs/core/services/app'
 import { randomBytes, UUID } from 'node:crypto'
 import fs from 'node:fs'
 import sharp from 'sharp'
 
-export const storeImages = (
+export const storeImages = async (
   name: string,
   images: MultipartFile[] | MultipartFile,
   updating: boolean,
   groupe: UUID
-): Promise<unknown> => {
+): Promise<unknown | Error> => {
   function generateUniqueFileName(originalName: string): string {
     const timestamp = new Date().getTime()
     const randomString = randomBytes(4).toString('hex')
@@ -22,12 +23,25 @@ export const storeImages = (
     return `${timestamp}-${randomString}-${sanitizedOriginalName}.webp`
   }
 
+  const adjustWatermarkOpacity = async (watermarkPath: string, opacity: number) => {
+    const watermark = await sharp(watermarkPath).ensureAlpha(opacity).toBuffer()
+    return watermark
+  }
+
+  const getImageBrightness = async (imagePath: string) => {
+    const { channels } = await sharp(imagePath).stats()
+
+    return Math.round(
+      0.299 * channels[0].mean + 0.587 * channels[1].mean + 0.114 * channels[2].mean
+    )
+  }
+
   const folderPath = app.publicPath(`images/${name.replaceAll(' ', '_')}`)
 
   const files = Array.isArray(images) ? images : [images]
 
   if (!updating && fs.existsSync(folderPath)) {
-    throw new Error('Une galerie existe déjà avec ce nom')
+    return new Error('Une galerie existe déjà avec ce nom')
   }
 
   if (!fs.existsSync(folderPath)) {
@@ -35,23 +49,46 @@ export const storeImages = (
   }
 
   const uploadPromises = files.map((image) => {
+    if (!fileTypes.includes(image.extname!.toUpperCase())) {
+      return new Error('Type de fichier invalide')
+    }
+
     const fileName = generateUniqueFileName(image.clientName.replace(/\.[^/.]+$/, ''))
-    return new Promise<void>(async (resolve, reject) => {
+    return new Promise<void | Error>(async (resolve, reject) => {
       try {
-        const bufferedImage = await sharp(image.tmpPath)
+        const resizedImage = await sharp(image.tmpPath)
           .webp({
-            quality: 80,
+            quality: 90,
+            lossless: true,
           })
           .resize(1200, null, {
             withoutEnlargement: true,
             fit: 'cover',
           })
           .toBuffer()
+        const metadata = await sharp(resizedImage).metadata()
 
         const filePath = `images/${name.replaceAll(' ', '_')}/${fileName}`
         const fullPath = app.publicPath(filePath)
+        const brightness = await getImageBrightness(image.tmpPath!)
 
-        await sharp(bufferedImage).toFile(fullPath)
+        const watermarkBuffered = await sharp(
+          app.publicPath(
+            brightness / 255 > 0.5 ? 'watermark/watermark_80.png' : 'watermark/watermark.png'
+          )
+        )
+          .resize(metadata.width, metadata.height)
+          .toBuffer()
+
+        await sharp(resizedImage)
+          .composite([
+            {
+              input: watermarkBuffered,
+              gravity: 'center',
+              blend: 'over',
+            },
+          ])
+          .toFile(fullPath)
 
         await Photo.create({
           url: `/${filePath}`,

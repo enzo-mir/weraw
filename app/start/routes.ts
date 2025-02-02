@@ -35,7 +35,7 @@ router
   .group(() => {
     router
       .group(() => {
-        router.post('/add', [DashboardController, 'store'])
+        router.post('/add', [GaleriesController, 'create'])
         router.get('/:id', [GaleriesController, 'show']).where('id', /^[0-9]+/)
         router.post('/delete/:id', [GaleriesController, 'delete'])
         router.post('/edit/:id', [GaleriesController, 'edit'])

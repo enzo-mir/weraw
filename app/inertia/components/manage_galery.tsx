@@ -61,6 +61,7 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
 
   function validateGalery(e: FormEvent) {
     e.preventDefault()
+
     post(`/galery/admin/${isEditing ? `edit/${id}` : 'add'}`, {
       forceFormData: true,
       onError: (e) => {

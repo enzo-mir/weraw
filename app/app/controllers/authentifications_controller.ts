@@ -9,9 +9,12 @@ export default class AuthentificationsController {
     try {
       const payload = authSchema.parse({ email, password })
       const user = await User.verifyCredentials(payload.email, payload.password)
+
       await auth.use('web').login(user)
       return response.redirect('/dashboard')
     } catch (error) {
+      console.log(error)
+
       session.flash({ errors: { message: 'Email ou mot de passe incorrect' } })
       return response.redirect().back()
     }

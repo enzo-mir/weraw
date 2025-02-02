@@ -6,6 +6,9 @@ import type { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import db from '@adonisjs/lucid/services/db'
 import fs from 'node:fs'
+import { imageStoreSchema } from '#schemas/store_image.store'
+import { storeImages } from '#services/store_images'
+import { randomUUID } from 'node:crypto'
 
 export default class GaleriesController {
   async show(ctx: HttpContext) {
@@ -27,6 +30,29 @@ export default class GaleriesController {
       })
     } catch (error) {
       return ctx.inertia.render('errors/not_found')
+    }
+  }
+
+  public async create({ request, response, session }: HttpContext) {
+    const [name, date, files] = [
+      request.input('name'),
+      request.input('date'),
+      request.files('files'),
+    ]
+
+    try {
+      await imageStoreSchema.parseAsync({ name, date, files })
+
+      const groupe = randomUUID()
+      const jwt = await jwtMaker(groupe)
+
+      await Url.create({ name, createdAt: date, groupe, jwt: jwt as string })
+
+      await storeImages(name, files, false, groupe)
+      return response.redirect().back()
+    } catch (error) {
+      session.flash({ errors: { message: error.message } })
+      return response.redirect().back()
     }
   }
 
