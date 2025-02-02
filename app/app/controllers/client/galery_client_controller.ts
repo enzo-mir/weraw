@@ -12,11 +12,12 @@ export default class GaleryClientController {
       .where('groupe', verifier.groupe)
       .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe')
       .first()
+    const images = await getClientImages({ groupe: verifier.groupe })
 
     return inertia.render('client/galery', {
-      images: await getClientImages({ groupe: verifier.groupe }),
+      images: inertia.defer(() => images),
       exp: new Date(verifier.exp * 1000),
-      urlData,
+      urlData: inertia.defer(() => urlData),
     })
   }
 }

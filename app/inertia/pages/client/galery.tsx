@@ -1,11 +1,12 @@
 import DisplayGalery from '~/components/display_galery'
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 import ImagePreview from '~/components/image_preview'
 import style from '#css/galery.module.css'
 import Header from './header'
 import { PropsType } from '~/utils/types/props.type'
 import { ToastContainer } from 'react-toastify'
 import Dialog from '~/components/dialog'
+import DefferedLayout from '../layout/deffered_layout'
 
 const Galery = (props: PropsType) => {
   const [imageId, setImageId] = useState<number | null>(null)
@@ -37,5 +38,7 @@ const Galery = (props: PropsType) => {
     </>
   )
 }
-
+Galery.layout = (page: JSX.Element) => (
+  <DefferedLayout children={page} data={['images', 'urlData', 'exp']} />
+)
 export default Galery

@@ -94,7 +94,7 @@ const ImagePreview = ({
                 width={900}
                 height={700}
                 transition={{
-                  x: { stiffness: 400, damping: 0 },
+                  x: { type: 'keyframes', stiffness: 300, damping: 0, duration: 0.2 },
                 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
