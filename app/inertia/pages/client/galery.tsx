@@ -28,6 +28,7 @@ const Galery = (props: PropsType) => {
                 id={id}
                 _csrf={props._csrf}
                 setImageId={setImageId}
+                type="user"
               />
             )
           })}

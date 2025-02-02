@@ -2,7 +2,7 @@ import style from '#css/client_comment.module.css'
 import { useForm, usePage } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 import { imagesStore } from '~/utils/stores/images.store'
-
+import { motion } from 'motion/react'
 const CommentSide = ({
   text,
   setDisplayClientComment,
@@ -42,7 +42,12 @@ const CommentSide = ({
     })
   }
   return (
-    <aside className={style.container}>
+    <motion.aside
+      className={style.container}
+      initial={{ width: '0px', minWidth: '0px', paddingInline: 0 }}
+      animate={{ width: '40%', paddingInline: '3em' }}
+      exit={{ width: '0%', minWidth: '0px', paddingInline: 0 }}
+    >
       <button className={style.close_btn} onClick={() => setDisplayClientComment(false)}>
         <svg
           id="Calque_1"
@@ -80,7 +85,7 @@ const CommentSide = ({
           ) : null}
         </div>
       </form>
-    </aside>
+    </motion.aside>
   )
 }
 

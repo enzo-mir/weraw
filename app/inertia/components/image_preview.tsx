@@ -58,14 +58,16 @@ const ImagePreview = ({
 
   return (
     <>
-      {displayClientComment ? (
-        <CommentSide
-          type={type}
-          id={imagesProps[id].id}
-          text={imagesProps[id].comment}
-          setDisplayClientComment={setDisplayClientComment}
-        />
-      ) : null}
+      <AnimatePresence mode="wait" propagate>
+        {displayClientComment ? (
+          <CommentSide
+            type={type}
+            id={imagesProps[id].id}
+            text={imagesProps[id].comment}
+            setDisplayClientComment={setDisplayClientComment}
+          />
+        ) : null}
+      </AnimatePresence>
       <div className={overlayStyle.overlay} onClick={goBack}>
         <article className={style.container} onClick={(e) => e.stopPropagation()}>
           <motion.div {...upToDownAnimation()}>

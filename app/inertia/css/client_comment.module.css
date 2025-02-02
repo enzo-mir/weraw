@@ -11,6 +11,12 @@
   min-width: 500px;
   z-index: 10000;
   background-color: var(--bg);
+  overflow: hidden;
+}
+
+.container > *:not(.close_btn) {
+  white-space: nowrap;
+  min-width: 500px;
 }
 .close_btn {
   display: grid;
@@ -20,6 +26,7 @@
   right: 10px;
   background-color: transparent;
   border: unset;
+  min-width: none;
   color: white;
   font-size: 1em;
   cursor: pointer;

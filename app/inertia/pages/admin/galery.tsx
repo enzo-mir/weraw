@@ -143,16 +143,7 @@ const Galery = ({
                   id={id}
                   _csrf={_csrf}
                   setImageId={setImageId}
-                  deleteBtn={
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image: image }} />)
-                      }}
-                    >
-                      <span>-</span>
-                    </button>
-                  }
+                  type="admin"
                 />
               ))
             : null}
