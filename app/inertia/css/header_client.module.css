@@ -7,6 +7,44 @@
   padding: 1em 2em;
 }
 
+.back > img {
+  position: absolute;
+  rotate: 100deg;
+  scale: -1 1;
+  left: 2em;
+  top: 0px;
+  width: 36px;
+}
+
+.header nav {
+  display: grid;
+  gap: 0.5em;
+  font-size: clamp(1.2em, 2vw, 1.3em);
+  padding-left: 3em;
+}
+
+.header nav > p {
+  font-weight: 100;
+
+  font-family: var(--bricolage-semi-condensed-light--font);
+
+  & strong {
+    font-family: var(--bricolage-condensed-light--font);
+  }
+}
+
+.back > p {
+  font-weight: 600;
+  font-size: clamp(1.3em, 2.2vw, 1.6em);
+
+  font-family: var(--bricolage-condensed-light--font);
+
+  & em {
+    font-style: normal;
+    color: var(--blue);
+  }
+}
+
 .header > div:first-child {
   display: flex;
   align-items: center;
@@ -21,6 +59,7 @@
     font-size: clamp(1.2em, 2vw, 1.3em);
     color: var(--blue);
     font-family: var(--bricolage-condensed-light--font);
+    font-weight: 800;
   }
 }
 
@@ -35,15 +74,10 @@
 }
 
 .header h1 {
-  font-size: clamp(2em, 3vw, 3.5em);
+  font-size: clamp(2em, 3vw, 3em);
   font-family: var(--kg-font);
   text-align: right;
   font-weight: lighter;
-}
-
-.header nav {
-  display: grid;
-  gap: 0.5em;
 }
 
 .cta {
@@ -141,6 +175,7 @@
   }
 
   .header nav {
+    padding: 0;
     gap: 2em;
   }
 

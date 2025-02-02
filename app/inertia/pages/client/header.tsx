@@ -1,6 +1,6 @@
 import { Link, usePage } from '@inertiajs/react'
 import pinkArrow from '#assets/icons/arrow_link.png'
-import styleback from '#css/galery.module.css'
+import styleback from '#css/header_client.module.css'
 import style from '#css/header_client.module.css'
 import CountDownTimer from '~/services/count_down'
 import downArrow from '#assets/icons/down_arrow.svg'

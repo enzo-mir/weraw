@@ -21,6 +21,13 @@
 }
 
 @font-face {
+  font-family: 'semi-condensed-bricolage-grotesque';
+  src: url('../assets/fonts/BricolageGrotesque_SemiCondensed-ExtraLight.ttf');
+  font-style: normal;
+  font-weight: 200;
+}
+
+@font-face {
   font-family: 'KGSecondChances';
   src: url('../assets/fonts/KGSecondChancesSketch.ttf');
   font-style: normal;
@@ -36,6 +43,7 @@
   --bricolage--font: 'bricolage-grotesque';
   --bricolage-condensed--font: 'bricolage-grotesque-condensed';
   --bricolage-condensed-light--font: 'bricolage-grotesque-condensed-light';
+  --bricolage-semi-condensed-light--font: 'semi-condensed-bricolage-grotesque';
   --kg-font: 'KGSecondChances';
 }
 
@@ -46,7 +54,6 @@ body {
   font-family: var(--bricolage--font);
   background-color: var(--bg);
   color: white;
-  font-family: var(--bricolage--font);
 }
 
 * {
@@ -58,6 +65,7 @@ body {
 button {
   background-color: inherit;
   border: inherit;
+  font-family: var(--bricolage--font);
   cursor: pointer;
 }
 image {

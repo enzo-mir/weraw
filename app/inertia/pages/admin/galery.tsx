@@ -2,9 +2,7 @@ import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
 import style from '#css/galery.module.css'
 import { Head, Link, usePage } from '@inertiajs/react'
 import ImagePreview from '~/components/image_preview'
-import { changeDone } from '~/services/change_done'
 import pinkArrow from '#assets/icons/arrow_link.png'
-import { ValidateIcon } from '~/assets/icons/validate'
 import { JSX, useEffect, useRef, useState } from 'react'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelete } from '~/components/admin/confirm_del'
@@ -32,9 +30,7 @@ const Galery = ({
   const [hasMore, setHasMore] = useState(true)
   const loader = useRef<HTMLDivElement | null>(null)
   const [imageId, setImageId] = useState<number | null>(null)
-  const [done, setDone] = useState<boolean>(!!urlData.done)
   const setDialogElement = dialogState((state) => state.setDialogElement)
-  const toastDoneId = useRef<Id>(null)
 
   useEffect(() => {
     setImagesData(images.slice(0, splitNumber))
@@ -93,13 +89,14 @@ const Galery = ({
           </aside>
 
           <div className={style.done}>
-            <p>Terminé</p>
-            <ValidateIcon
-              onClick={() => changeDone(!done, _csrf, urlData.id, setDone, done, toastDoneId)}
-              className={style.validateSvg}
-              data-validate={done ? '1' : '0'}
+            <FileUploader
+              className={style.drag_div}
+              handleChange={async (file: File[]) => await addPhotos(file, _csrf, urlData.name)}
+              multiple={true}
+              name="file"
+              types={fileTypes}
             />
-            <p>{urlData.endSelected ? 'Selection finis' : 'Selection en cours'}</p>
+            <p>{urlData.endSelected ? 'Terminé' : 'En cours de selection'}</p>
           </div>
 
           <aside className={style.edit}>
@@ -127,13 +124,7 @@ const Galery = ({
             </button>
           </aside>
         </div>
-        <FileUploader
-          className={style.drag_div}
-          handleChange={async (file: File[]) => await addPhotos(file, _csrf, urlData.name)}
-          multiple={true}
-          name="file"
-          types={fileTypes}
-        />
+
         <ul className={style.galery}>
           {imagesData.length
             ? imagesData.map((image, id) => (
