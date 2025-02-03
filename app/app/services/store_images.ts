@@ -74,7 +74,7 @@ export const storeImages = async (
 
       await Photo.create({ url: `/${filePath}`, groupe })
     } catch (error) {
-      throw new Error(`Failed to process image: ${error.message}`)
+      throw new Error()
     }
   })
 

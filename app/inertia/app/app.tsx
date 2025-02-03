@@ -6,6 +6,7 @@ import { createInertiaApp } from '@inertiajs/react'
 import '#css/globals.css'
 import { ToastContainer } from 'react-toastify'
 import Loader from '~/pages/loader_image'
+import { JSX } from 'react'
 
 const appName = 'WeRaw'
 
@@ -14,11 +15,10 @@ createInertiaApp({
   progress: { color: '#ff6fff' },
 
   resolve: (name) => {
-    /*     return resolvePageComponent(`../pages/${name}.tsx`, import.meta.glob('../pages/**\/*.tsx'))
-     */
     const pages = import.meta.glob('../pages/**\/*.tsx', { eager: true })
     let page = pages[`../pages/${name}.tsx`]
-    page.default.layout = page.default.layout || ((page) => <Loader children={page} />)
+    const typedPage = page as { default: { layout?: (page: JSX.Element) => JSX.Element } }
+    typedPage.default.layout = typedPage.default.layout || ((page) => <Loader children={page} />)
     return page
   },
 

@@ -50,7 +50,7 @@ export default class GaleriesController {
       await storeImages(name, files, false, groupe)
       return response.redirect().back()
     } catch (error) {
-      if (error.code === 'ER_DUP_ENTRY') {
+      if ((error as any).code === 'ER_DUP_ENTRY') {
         session.flash({ errors: { message: 'Ce nom est déjà utilisé' } })
       } else if (error instanceof z.ZodError) {
         session.flash({
@@ -60,7 +60,7 @@ export default class GaleriesController {
         })
       } else {
         session.flash({
-          errors: { message: error.message },
+          errors: { message: (error as any).message },
         })
       }
       return response.redirect().back()
@@ -76,7 +76,7 @@ export default class GaleriesController {
     return ctx.response.redirect().toPath('/dashboard')
   }
 
-  async edit({ request, response, params, session, inertia }: HttpContext) {
+  async edit({ request, response, params, session }: HttpContext) {
     const { name, date, exp, id } = editGalery.parse({ ...request.all(), ...params })
     try {
       const urlFind = await Url.findOrFail(id)

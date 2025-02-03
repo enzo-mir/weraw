@@ -1,14 +1,13 @@
 {
   "extends": "@adonisjs/tsconfig/tsconfig.app.json",
   "compilerOptions": {
-    "rootDir": "./",
     "outDir": "./build",
-    "jsx": "react",
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
+    "rootDir": "./",
+    "strict": true,
     "paths": {
       "#schemas/*": ["./app/schemas/*.ts"]
     }
   },
-  "exclude": ["./inertia/**/*", "node_modules", "build"]
+  "include": ["./**/*.ts"],
+  "exclude": ["./inertia/**/*", "node_modules"]
 }

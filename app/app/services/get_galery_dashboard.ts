@@ -14,7 +14,6 @@ export const groupedGaleriesByName = async () => {
         id: galery.id,
         name: galery.name,
         created_at: galery.createdAt,
-        done: galery.done,
         end_selected: galery.endSelected,
         url: photoUrls,
       }
