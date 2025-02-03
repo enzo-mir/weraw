@@ -3,11 +3,9 @@
   "compilerOptions": {
     "outDir": "./build",
     "rootDir": "./",
-    "strict": true,
     "paths": {
       "#schemas/*": ["./app/schemas/*.ts"]
     }
   },
-  "include": ["./**/*.ts"],
-  "exclude": ["./inertia/**/*", "node_modules"]
+  "exclude": ["./inertia/**/*", "node_modules", "build"]
 }

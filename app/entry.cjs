@@ -1,3 +1,3 @@
 ;(async () => {
-  await import('./bin/server.js')
+  await import('./build/bin/server.js')
 })()
