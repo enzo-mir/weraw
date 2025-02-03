@@ -3,9 +3,9 @@
 
 import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
-import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import '#css/globals.css'
 import { ToastContainer } from 'react-toastify'
+import Loader from '~/pages/loader_image'
 
 const appName = 'WeRaw'
 
@@ -14,7 +14,12 @@ createInertiaApp({
   progress: { color: '#ff6fff' },
 
   resolve: (name) => {
-    return resolvePageComponent(`../pages/${name}.tsx`, import.meta.glob('../pages/**/*.tsx'))
+    /*     return resolvePageComponent(`../pages/${name}.tsx`, import.meta.glob('../pages/**\/*.tsx'))
+     */
+    const pages = import.meta.glob('../pages/**\/*.tsx', { eager: true })
+    let page = pages[`../pages/${name}.tsx`]
+    page.default.layout = page.default.layout || ((page) => <Loader children={page} />)
+    return page
   },
 
   setup({ el, App, props }) {

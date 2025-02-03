@@ -1,6 +1,16 @@
 import style from '#css/loader_image.module.css'
 import { motion } from 'motion/react'
-const LoaderImage = () => {
+import { JSX, useEffect, useState } from 'react'
+const Loader = ({ children }: { children: JSX.Element }) => {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (!loading) return children
+
   return (
     <motion.div
       className={style.container}
@@ -45,4 +55,4 @@ const LoaderImage = () => {
   )
 }
 
-export default LoaderImage
+export default Loader
