@@ -94,12 +94,12 @@ const ImagePreview = ({
                 width={900}
                 height={700}
                 transition={{
-                  x: { type: 'keyframes', stiffness: 300, damping: 0, duration: 0.2 },
+                  x: { stiffness: 100, damping: 20, duration: 0.3 },
                 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={1}
-                onDragEnd={(e, { offset, velocity }) => {
+                dragElastic={0.6}
+                onDragEnd={(_, { offset, velocity }) => {
                   const swipe = swipePower(offset.x, velocity.x)
 
                   if (swipe < -swipeConfidenceThreshold) {

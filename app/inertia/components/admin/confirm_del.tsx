@@ -1,5 +1,5 @@
 import { router } from '@inertiajs/react'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { deleteImageService } from '~/services/delete_image'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { GaleryType } from '~/utils/types/galery.type'
@@ -35,7 +35,6 @@ export const ConfirmDelete = ({
   }
   return (
     <>
-      <ToastContainer />
       <div className={style.container}>
         <p>Voulez-vous vraiment supprimer {type.image ? "l'image" : 'la galerie'} ?</p>
         <div>

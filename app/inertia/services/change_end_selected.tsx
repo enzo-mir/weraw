@@ -29,11 +29,10 @@ export default async function changeEndSeleced(
       autoClose: 2000,
       hideProgressBar: true,
     })
+
     setOpenCta(false)
     setEndSelected(end_selected)
-    const data = await response.json()
-
-    return router.visit('/galery/' + data.token)
+    router.visit(response.url)
   } else {
     toastId.current = toast.error('Erreur lors du changement', {
       autoClose: 2000,

@@ -1,20 +1,21 @@
 import style from '#css/manage_galery.module.css'
-import { router, useForm, usePage } from '@inertiajs/react'
+import { useForm, usePage } from '@inertiajs/react'
 import { FormEvent, useRef } from 'react'
 import { FileUploader } from 'react-drag-drop-files'
 import { Id, toast } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
 import UrlToSend from './admin/url_to_send'
+import { PropsType } from '~/utils/types/props.type'
 
 const fileTypes = ['JPG', 'PNG', 'JPEG']
 
-const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }) => {
-  const isEditing: boolean = name !== null
-  const props = usePage().props
+const ManageGalery = ({ props }: { props: PropsType }) => {
+  const isEditing: boolean = !!props.urlData
+
   const id = isEditing ? props.urlData?.id : ''
 
   const exp = isEditing ? usePage().props.exp : undefined
-  const expDate = exp ? new Date(exp * 1000).toISOString() : undefined
+  const expDate = exp ? new Date(exp * 1000).toISOString() : new Date().toISOString()
 
   const { data, setData, post, processing } = useForm<{
     name: string
@@ -22,11 +23,12 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
     exp?: string
     files: File[]
   }>({
-    name: name || '',
-    date: date || new Date(),
+    name: props.urlData?.name || '',
+    date: props.urlData ? new Date(props.urlData?.createdAt) : new Date(),
     files: [],
-    exp: expDate,
+    exp: undefined,
   })
+
   const setDialogElement = dialogState((state) => state.setDialogElement)
   const progressToastId = useRef<Id | null>(null)
 
@@ -36,13 +38,14 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
         `${isEditing ? 'Mise à jour' : 'Téléchargement'}: ${percentage}%`,
         {
           type: 'info',
-          hideProgressBar: false,
-          autoClose: false,
+          hideProgressBar: true,
         }
       )
     } else {
       toast.update(progressToastId.current, {
         render: `${isEditing ? 'Mise à jour' : 'Téléchargement'}: ${percentage}%`,
+        type: 'info',
+        hideProgressBar: true,
       })
     }
   }
@@ -58,13 +61,22 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
 
     post(`/galery/admin/${isEditing ? `edit/${id}` : 'add'}`, {
       forceFormData: true,
+      preserveState: true,
+
       onError: (e) => {
-        toast.update(progressToastId.current!, {
-          render: e.message,
-          type: 'error',
-          autoClose: 2000,
-        })
-        progressToastId.current = null
+        if (e.message) {
+          if (!progressToastId.current) {
+            progressToastId.current = toast.error(e.message, {
+              autoClose: 2000,
+            })
+          } else {
+            toast.update(progressToastId.current, {
+              render: e.message,
+              type: 'error',
+              autoClose: 2000,
+            })
+          }
+        }
       },
 
       onProgress: (e) => {
@@ -74,14 +86,22 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
       },
 
       onSuccess: () => {
-        toast.update(progressToastId.current!, {
-          render: isEditing ? 'Mise à jour effectué' : 'Téléchargement terminé!',
-          type: 'success',
-          autoClose: 1500,
-        })
-        progressToastId.current = null
+        if (!progressToastId.current) {
+          progressToastId.current = toast.success(
+            isEditing ? 'Mise à jour effectué' : 'Téléchargement terminé!',
+            {
+              autoClose: 2000,
+            }
+          )
+        } else {
+          toast.update(progressToastId.current, {
+            render: isEditing ? 'Mise à jour effectué' : 'Téléchargement terminé!',
+            type: 'success',
+            autoClose: 2000,
+          })
+        }
+
         setDialogElement(null)
-        router.reload({ only: ['urlData', 'exp'] })
       },
     })
   }
@@ -102,9 +122,7 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
           <input
             className={style.input}
             type="date"
-            defaultValue={
-              date?.toISOString().split('T')[0] || data.date.toISOString().split('T')[0]
-            }
+            defaultValue={data.date.toISOString().split('T')[0]}
             onChange={(e) => setData({ ...data, date: new Date(e.currentTarget.value) })}
             required
           />
@@ -128,7 +146,7 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
                   onChange={(e) =>
                     setData({ ...data, exp: new Date(e.currentTarget.value).toISOString() })
                   }
-                  defaultValue={data.exp!.split('T')[0]}
+                  defaultValue={expDate?.split('T')[0]}
                 />
               </label>
             </>

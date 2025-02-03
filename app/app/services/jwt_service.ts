@@ -25,8 +25,6 @@ export const jwtMaker = async (groupe: UUID, date?: Date | string) => {
     payload.exp = expirationTimestamp
     jwt.sign(payload, env.get('JWT_SECRET'), function (err, token) {
       if (err) {
-        console.log(err)
-
         reject('Une errreur est survenue')
       } else if (token) {
         resolve(token)

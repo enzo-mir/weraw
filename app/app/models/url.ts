@@ -12,9 +12,6 @@ export default class Url extends BaseModel {
   declare name: string
 
   @column()
-  declare done: boolean
-
-  @column()
   declare endSelected: boolean
 
   @column()

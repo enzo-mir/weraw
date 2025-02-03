@@ -1,8 +1,6 @@
 import style from '#css/image_preview.module.css'
-import { router, usePage } from '@inertiajs/react'
-import { toast } from 'react-toastify'
+import { usePage } from '@inertiajs/react'
 import { likeImage } from '~/services/like_image'
-import { UrlDataType } from '~/utils/types/galery.type'
 
 type HeartIconProps = {
   id: number
@@ -12,24 +10,10 @@ type HeartIconProps = {
 
 const HeartIcon: React.FC<HeartIconProps> = ({ id, liked, type }) => {
   const _csrf = usePage().props._csrf as string
-  const group = (usePage().props as unknown as { urlData: UrlDataType }).urlData.groupe
 
   const handleClick = async () => {
     if (type === 'admin') return
-    try {
-      await likeImage(group, id, _csrf)
-
-      toast.success("Mise à jour de l'image effectuée !", {
-        autoClose: 2000,
-        hideProgressBar: true,
-      })
-      router.reload()
-    } catch (error) {
-      toast.error("Une erreur s'est produite", {
-        autoClose: 2000,
-        hideProgressBar: true,
-      })
-    }
+    await likeImage(id, _csrf)
   }
 
   return (

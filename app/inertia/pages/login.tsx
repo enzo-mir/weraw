@@ -1,6 +1,6 @@
 import { FormEvent } from 'react'
 import { FormValues } from '../utils/types/login.type'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import style from '#css/login.module.css'
 import { Head, useForm } from '@inertiajs/react'
 import { motion } from 'motion/react'
@@ -27,7 +27,6 @@ const Login = () => {
   return (
     <main className={style.main}>
       <Head title="Login" />
-      <ToastContainer />
       <form onSubmit={handlSubmit}>
         <motion.label htmlFor="email" {...leftToRightAnimation({ delay: 0.2 })}>
           Email

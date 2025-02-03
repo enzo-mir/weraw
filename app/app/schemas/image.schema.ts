@@ -5,15 +5,18 @@ export const deleteImageSchema = z.string().transform((val) => val.trim().replac
 
 export const commentImage = z.object({
   imageId: z.string().transform((v) => Number.parseInt(v.trim())),
-  comment: z
-    .string()
-    .transform((v) => v.trim())
-    .optional(),
+  comment: z.union([
+    z
+      .string()
+      .transform((v) => v.trim())
+      .optional(),
+    z.null(),
+  ]),
 })
 
 export const endSelection = z.object({
   urlId: z.string().transform((v) => Number.parseInt(v.trim())),
-  endSelected: z.string().transform((v) => Boolean(v.trim())),
+  end_selected: z.boolean(),
 })
 
 export const addImageSchema = z.object({

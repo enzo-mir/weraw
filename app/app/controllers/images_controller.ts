@@ -33,26 +33,25 @@ export default class ImagesController {
     return response.redirect().back()
   }
 
-  async like({ request, response, session }: HttpContext) {
+  async like({ request, response }: HttpContext) {
     const { id } = request.only(['id'])
     const photo = await Photo.query().where('id', id).first()
 
     if (!photo) {
-      session.flash({ errors: { message: 'Image introuvable' } })
-      return response.redirect().back()
+      return response.badRequest({ message: 'Image introuvable' })
     }
     try {
       await Photo.updateOrCreate({ id }, { like: !photo.like })
       return response.redirect().back()
     } catch (error) {
-      session.flash({ errors: { message: 'Une erreur est survenue' } })
-      return response.redirect().back()
+      return response.badRequest({ message: 'Une erreur est survenue' })
     }
   }
 
-  async comment({ request, response, params, session, inertia }: HttpContext) {
+  async comment({ request, response, params, session }: HttpContext) {
     try {
-      const { imageId, comment } = commentImage.parse({ ...params, ...request.only(['comment']) })
+      const { imageId, comment } = commentImage.parse({ ...params, ...request.all() })
+
       await Photo.updateOrCreate({ id: imageId }, { comment })
 
       return response.redirect().back()
@@ -66,9 +65,9 @@ export default class ImagesController {
 
   async end_selection({ request, response, params, session }: HttpContext) {
     try {
-      const { urlId, endSelected } = await endSelection.parseAsync({
+      const { urlId, end_selected: endSelected } = await endSelection.parseAsync({
         ...params,
-        ...request.only(['end_selected']),
+        ...request.all(),
       })
 
       const url = await Url.query().where('id', urlId).first()
@@ -80,17 +79,16 @@ export default class ImagesController {
       }
 
       const urlUpdate = await Url.updateOrCreate({ id: urlId }, { endSelected, jwt: token })
-
-      await mailerService({
+      const baseurl = app.inProduction ? env.get('BASE_URL') : 'http://127.0.0.1:3000/'
+      mailerService({
         name: urlUpdate.name,
         createdAt: new Date(urlUpdate.createdAt?.toISO() ?? '').toLocaleDateString(),
-        url: app.inProduction ? env.get('BASE_URL') : 'http://127.0.0.1:3000/',
+        url: baseurl + 'galery/admin/' + urlId,
       })
 
-      return response.status(200).json({ token })
+      return response.redirect().toRoute('client.galery', { jwt: token })
     } catch (error) {
-      session.flash({ errors: { message: 'Image introuvable' } })
-      return response.redirect().back()
+      return response.badRequest()
     }
   }
 }

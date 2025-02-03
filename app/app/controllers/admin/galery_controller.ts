@@ -26,9 +26,9 @@ export default class GaleriesController {
       const images = await getAdminImages(ctx.params as { id: string })
 
       return ctx.inertia.render('admin/galery', {
-        images: ctx.inertia.defer(() => images),
-        urlData: ctx.inertia.defer(() => urlData),
-        exp: ctx.inertia.defer(() => exp),
+        images,
+        urlData,
+        exp,
       })
     } catch (error) {
       return ctx.inertia.render('errors/not_found')
@@ -50,7 +50,9 @@ export default class GaleriesController {
       await storeImages(name, files, false, groupe)
       return response.redirect().back()
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        session.flash({ errors: { message: 'Ce nom est déjà utilisé' } })
+      } else if (error instanceof z.ZodError) {
         session.flash({
           errors: {
             message: error.issues[0].message,
@@ -58,7 +60,7 @@ export default class GaleriesController {
         })
       } else {
         session.flash({
-          errors: { message: 'Une erreur est surevnue lors de la création de la galerie ' },
+          errors: { message: error.message },
         })
       }
       return response.redirect().back()
@@ -74,14 +76,12 @@ export default class GaleriesController {
     return ctx.response.redirect().toPath('/dashboard')
   }
 
-  async edit({ request, response, params, session }: HttpContext) {
+  async edit({ request, response, params, session, inertia }: HttpContext) {
     const { name, date, exp, id } = editGalery.parse({ ...request.all(), ...params })
     try {
       const urlFind = await Url.findOrFail(id)
 
-      const token = exp ? await jwtMaker(urlFind.groupe, exp) : undefined
-
-      if (typeof token !== 'string') throw new Error('Token not created')
+      const token = exp && (await jwtMaker(urlFind.groupe, exp))
 
       const query = `
          UPDATE photos
@@ -98,7 +98,11 @@ export default class GaleriesController {
         }
       )
 
-      await Url.updateOrCreate({ id }, { name, updatedAt: date, createdAt: date, jwt: token })
+      if (typeof token === 'string') {
+        await Url.updateOrCreate({ id }, { name, updatedAt: date, createdAt: date, jwt: token })
+      } else {
+        await Url.updateOrCreate({ id }, { name, updatedAt: date, createdAt: date })
+      }
 
       return response.redirect().back()
     } catch (error) {

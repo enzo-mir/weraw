@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { urlSchema } from '#types/url.type'
 import { ZodError } from 'zod'
 import { Head, router } from '@inertiajs/react'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { motion } from 'motion/react'
 import { leftToRightAnimation } from '~/utils/animations/left_to_right'
 import { popAnimation } from '~/utils/animations/pop'
@@ -30,7 +30,6 @@ export default function Home() {
 
   return (
     <>
-      <ToastContainer />
       <Head title="homepage" />
       <main className={style.main}>
         <div className={style.text_side}>

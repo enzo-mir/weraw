@@ -1,7 +1,7 @@
 export const imagePreviewVariants = {
   enter: (direction: number) => {
     return {
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? 200 : -200,
       opacity: 0,
     }
   },
@@ -12,7 +12,7 @@ export const imagePreviewVariants = {
   },
   exit: (direction: number) => {
     return {
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? 200 : -200,
       opacity: 0,
     }
   },
