@@ -1,6 +1,7 @@
 import User from '#models/user'
 import { authSchema } from '#schemas/auth.schema'
 import type { HttpContext } from '@adonisjs/core/http'
+import { z } from 'zod'
 
 export default class AuthentificationsController {
   public async login({ auth, request, response, session }: HttpContext) {
@@ -13,9 +14,11 @@ export default class AuthentificationsController {
       await auth.use('web').login(user)
       return response.redirect('/dashboard')
     } catch (error) {
-      console.log(error)
-
-      session.flash({ errors: { message: 'Email ou mot de passe incorrect' } })
+      if (error instanceof z.ZodError) {
+        session.flash({ errors: { message: 'Veuillez entrez un email valide' } })
+      } else {
+        session.flash({ errors: { message: 'Adresse email ou mot de passe incorrect' } })
+      }
       return response.redirect().back()
     }
   }

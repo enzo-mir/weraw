@@ -23,11 +23,6 @@ export const storeImages = async (
     return `${timestamp}-${randomString}-${sanitizedOriginalName}.webp`
   }
 
-  const adjustWatermarkOpacity = async (watermarkPath: string, opacity: number) => {
-    const watermark = await sharp(watermarkPath).ensureAlpha(opacity).toBuffer()
-    return watermark
-  }
-
   const getImageBrightness = async (imagePath: string) => {
     const { channels } = await sharp(imagePath).stats()
 

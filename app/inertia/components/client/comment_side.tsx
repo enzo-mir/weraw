@@ -1,7 +1,6 @@
 import style from '#css/client_comment.module.css'
-import { useForm, usePage } from '@inertiajs/react'
+import { useForm } from '@inertiajs/react'
 import { toast } from 'react-toastify'
-import { imagesStore } from '~/utils/stores/images.store'
 import { motion } from 'motion/react'
 const CommentSide = ({
   text,
@@ -14,27 +13,22 @@ const CommentSide = ({
   id: number
   type: 'client' | 'admin'
 }) => {
-  const { data, setData, post, reset } = useForm({
+  const { data, setData, post } = useForm({
     comment: text || '',
   })
-  const setImages = imagesStore((state) => state.setImages)
-  const group = usePage().props.urlData.groupe
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    post(`/comment/${group}/${id}`, {
-      onSuccess: (e) => {
+    post(`/comment/${id}`, {
+      onSuccess: () => {
         toast.success('Commentaire mis à jour !', {
           autoClose: 2000,
           hideProgressBar: true,
         })
-
-        setImages(e.props.images)
-
         setDisplayClientComment(false)
       },
-      onError: () => {
-        toast.error('Erreur lors de la mise à jour du commentaire', {
+      onError: (e) => {
+        toast.error(e.message, {
           autoClose: 2000,
           hideProgressBar: true,
         })

@@ -2,7 +2,6 @@ import { router } from '@inertiajs/react'
 import { Id, toast } from 'react-toastify'
 
 export default async function changeEndSeleced(
-  groupe: string,
   urlId: number,
   _csrf: string,
   end_selected: boolean,
@@ -10,7 +9,7 @@ export default async function changeEndSeleced(
   toastId: React.RefObject<Id | null>,
   setOpenCta: (openCta: boolean) => void
 ) {
-  const response = await fetch(`/end_selected/${groupe}/${urlId}`, {
+  const response = await fetch(`/end_selected/${urlId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

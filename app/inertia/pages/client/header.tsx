@@ -5,18 +5,21 @@ import style from '#css/header_client.module.css'
 import CountDownTimer from '~/services/count_down'
 import downArrow from '#assets/icons/down_arrow.svg'
 import changeEndSeleced from '~/services/change_end_selected'
-import { useRef, useState } from 'react'
+import { JSX, useRef, useState } from 'react'
 import { Id, ToastContainer } from 'react-toastify'
 import { motion } from 'motion/react'
 import { upToDownAnimation } from '~/utils/animations/up_to_down'
 import confirmdelstyle from '#css/confirm_del.module.css'
 import { dialogState } from '~/utils/stores/dialog.store'
+import DefferedLayout from '../layout/deffered_layout'
 
 const Header = () => {
   const [openCta, setOpenCta] = useState<boolean>(false)
+  console.log(usePage().props)
+
   const {
     exp,
-    urlData: { endSelected, name, createdAt, groupe, id },
+    urlData: { endSelected, name, createdAt, id },
     _csrf,
   } = usePage().props
 
@@ -35,7 +38,6 @@ const Header = () => {
             <button
               onClick={() => {
                 changeEndSeleced(
-                  groupe,
                   id,
                   _csrf,
                   !endSelectedState,
@@ -103,4 +105,5 @@ const Header = () => {
   )
 }
 
+Header.layout = (page: JSX.Element) => <DefferedLayout children={page} data={['urlData', 'exp']} />
 export default Header

@@ -30,12 +30,6 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
   const setDialogElement = dialogState((state) => state.setDialogElement)
   const progressToastId = useRef<Id | null>(null)
 
-  const notifyError = (text: string) =>
-    toast(text, {
-      type: 'error',
-      autoClose: 2000,
-    })
-
   const loader = (percentage: number) => {
     if (!progressToastId.current) {
       progressToastId.current = toast(
@@ -65,7 +59,11 @@ const ManageGalery = ({ name, date }: { name: string | null; date: Date | null }
     post(`/galery/admin/${isEditing ? `edit/${id}` : 'add'}`, {
       forceFormData: true,
       onError: (e) => {
-        notifyError(e.message)
+        toast.update(progressToastId.current!, {
+          render: e.message,
+          type: 'error',
+          autoClose: 2000,
+        })
         progressToastId.current = null
       },
 

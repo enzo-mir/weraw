@@ -6,10 +6,8 @@ import { editAdminSchema } from '../../schemas/edit_admin.schema.js'
 
 export default class EditAccountController {
   async index({ request, session, response }: HttpContext) {
-    const payload = request.all()
-
     try {
-      const parsedPayload = await editAdminSchema.parseAsync(payload)
+      const parsedPayload = await editAdminSchema.parseAsync(request.all())
       await User.query()
         .where('email', parsedPayload.email)
         .update({
