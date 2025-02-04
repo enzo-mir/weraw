@@ -20,6 +20,9 @@ jobs:
 
     - name: Install pnpm
       run: npm install -g pnpm 
+
+    - name: Navigate to app directory
+      run: cd app 
       
     - name: List files (for debugging)
       run: ls -la
