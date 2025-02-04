@@ -13,6 +13,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Navigate to app directory
+      run: cd ./app 
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
