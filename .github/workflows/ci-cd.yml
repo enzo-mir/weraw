@@ -23,6 +23,9 @@ jobs:
 
     - name: Navigate to app directory
       run: cd ./app 
+      
+    - name: List files (for debugging)
+      run: ls -la
 
     - name: Install dependencies
       run: pnpm install
