@@ -26,3 +26,4 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+        working-directory: ./app 
