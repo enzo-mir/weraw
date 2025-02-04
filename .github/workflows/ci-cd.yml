@@ -46,6 +46,6 @@ jobs:
             git pull origin main
             cd ./app
             pnpm install
-            pnpm build -P
+            pnpm run build
             cd build
-            pm2 restart bin/server.js
+            pnpm i -P
