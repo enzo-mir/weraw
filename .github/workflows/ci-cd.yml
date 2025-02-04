@@ -3,49 +3,46 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Deploying
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Navigate to app directory
+        run: cd app
+
+      - name: Install dependencies
+        run: pnpm install
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            rm -rf my-project-repo-new
-            cp -r my-project-repo my-project-repo-new
-            cd my-project-repo-new
-            git checkout production
-            git reset --hard origin/production
-            git pull
-            pnpm rebuild
+            cd htdocs/www.weraw.fr
+            git pull origin main
             pnpm install
-
-            # Build the api
-
-            pnpm run build
-            cp .env build/.env
-
-            # Run migrations
-
-            node ace migration:run --force
-            node ace db:seed --force
-
-            # Replace current version with the new one
-
-            cd ..
-            mv my-project-repo my-project-repo-old
-            mv my-project-repo-new my-project-repo
-
-            # Restart server
-
-            cd my-project-repo
-            pm2 delete my-project-repo
-            pm2 start build/bin/server.js --name my-project-repo
-            rm -rf ../my-project-repo-old
+            pm2 restart my-adonis-app
