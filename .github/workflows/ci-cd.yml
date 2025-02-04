@@ -16,17 +16,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "22"
-          cache: "pnpm"
+          node-version: '22'  # Use Node.js 22
+          cache: 'pnpm'  # Cache pnpm dependencies
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        run: npm install -g pnpm  # Install pnpm globally
 
       - name: Navigate to app directory
-        run: cd app
+        run: cd app  # Change to the app directory
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install  # Install dependencies using pnpm
+
+      - name: Run tests
+        run: pnpm test  # Run tests (if applicable)
 
   deploy:
     runs-on: ubuntu-latest
@@ -42,7 +45,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd htdocs/www.weraw.fr
+            cd ~/apps/my-adonis-app/app  # Navigate to the app directory
             git pull origin main
             pnpm install
-            pm2 restart my-adonis-app
+            pm2 restart my-adonis-app  # Restart your app
