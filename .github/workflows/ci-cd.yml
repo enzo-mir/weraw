@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
+          
       - name: Update npm to latest version
         run: npm install -g npm@latest
 
@@ -59,13 +59,13 @@ jobs:
             pnpm install
             pnpm build
             cd build
-
+            
             # Create .env file
             cat > .env << 'EOL'
             NODE_ENV=production
             ${{ secrets.ENV_CONTENT }}
             EOL
-
+            
             pnpm i -P
             node ace migration:run --force
             pm2 restart bin/server.js
