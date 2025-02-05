@@ -71,12 +71,12 @@ export const storeImages = async (
       await sharp(resizedImage)
         .composite([{ input: watermarkBuffered, gravity: 'center', blend: 'over' }])
         .toFile(fullPath)
-
-      await Photo.create({ url: `/${filePath}`, groupe })
+        .then(async () => {
+          return await Photo.updateOrCreate({ url: `/${filePath}`, groupe }, { groupe })
+        })
     } catch (error) {
       throw new Error()
     }
   })
-
   return Promise.all(uploadPromises)
 }
