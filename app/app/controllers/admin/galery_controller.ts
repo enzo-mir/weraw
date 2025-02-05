@@ -16,7 +16,7 @@ export default class GaleriesController {
     try {
       const urlData = await Url.query()
         .where('id', ctx.params.id)
-        .select('end_selected', 'done', 'name', 'created_at', 'id', 'groupe', 'jwt')
+        .select('end_selected', 'name', 'created_at', 'id', 'groupe', 'jwt')
         .first()
 
       const exp = await jwtVerifier(urlData!.jwt)
