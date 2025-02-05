@@ -44,10 +44,11 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          password: kk
+          password: ${{ secrets.VPS_PASSWORD }}
           script: |
             cd ~/htdocs/www.weraw.fr
-            node -v
+            npm -v
+            pnpm -v
             git pull origin main
             cd app
             pnpm install
