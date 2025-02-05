@@ -64,13 +64,12 @@ jobs:
             pnpm install
             pnpm build
             cd build
+            pnpm i -P
 
             # Créer .env
             cat > .env << 'EOL'
-            NODE_ENV=production
             ${{ secrets.ENV_CONTENT }}
             EOL
 
-            pnpm i -P
             node ace migration:run --force
-            pm2 restart bin/server.js
+            pm2 restart ./bin/server.js
