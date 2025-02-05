@@ -49,15 +49,9 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            export PATH="$HOME/.local/share/pnpm:$PATH"
-            echo 'export PATH="$HOME/.local/share/pnpm:$PATH"' >> ~/.bashrc
-            source ~/.bashrc
-
+            which node
             cd ~/htdocs/www.weraw.fr
             npm install -g npm@latest
-            node -v
-            npm -v
-            pnpm -v
             git pull origin main
             cd app
             pnpm install
