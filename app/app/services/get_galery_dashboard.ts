@@ -3,7 +3,7 @@ import Url from '#models/url'
 
 export const groupedGaleriesByName = async () => {
   const galeries = await Url.query()
-    .select('id', 'name', 'created_at', 'done', 'end_selected', 'groupe')
+    .select('id', 'name', 'created_at', 'end_selected', 'groupe')
     .orderBy('id')
 
   const updatedGaleries = await Promise.all(
