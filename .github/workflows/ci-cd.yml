@@ -46,11 +46,12 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
+            sudo ls /root
             cd ~/htdocs/www.weraw.fr
             git pull origin main
             cd ./app
             pnpm install
-            node --experimental-json-modules ace build
+            pnpm build
             cd build
             pnpm i -P
             node ace migration:run --force
