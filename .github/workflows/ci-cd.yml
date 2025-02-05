@@ -49,3 +49,4 @@ jobs:
             pnpm run build
             cd build
             pnpm i -P
+            pm2 restart bin/server.js
