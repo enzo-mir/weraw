@@ -16,13 +16,16 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
-          version: 10.2
+          version: 8.15.6
           run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
+
+      - name: Update npm to latest version
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: pnpm install
@@ -44,19 +47,25 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          password: ${{ secrets.VPS_PASSWORD }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd ~/htdocs/www.weraw.fr
+            # Update npm to latest version
+            npm install -g npm@latest
+            node -v
             npm -v
-            pnpm -v
             git pull origin main
             cd app
             pnpm install
             pnpm build
             cd build
+
+            # Create .env file
             cat > .env << 'EOL'
+            NODE_ENV=production
             ${{ secrets.ENV_CONTENT }}
             EOL
+
             pnpm i -P
             node ace migration:run --force
             pm2 restart bin/server.js
