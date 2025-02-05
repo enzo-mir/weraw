@@ -49,10 +49,13 @@ jobs:
             cd ~/htdocs/www.weraw.fr
             node -v
             git pull origin main
-            cd ./app
+            cd app
             pnpm install
             pnpm build
             cd build
+            cat > .env << 'EOL'
+            ${{ secrets.ENV_CONTENT }}
+            EOL
             pnpm i -P
             node ace migration:run --force
             pm2 restart bin/server.js
