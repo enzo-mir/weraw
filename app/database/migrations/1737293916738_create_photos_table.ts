@@ -11,7 +11,7 @@ export default class extends BaseSchema {
       table.string('url', 255).notNullable()
       table.boolean('like').notNullable()
       table.string('comment', 255).nullable()
-      table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
+      table.timestamp('created_at', { useTz: true }).notNullable()
       table.timestamp('updated_at', { useTz: true }).nullable()
     })
   }
