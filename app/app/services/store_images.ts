@@ -71,12 +71,8 @@ export const storeImages = async (
       await sharp(resizedImage)
         .composite([{ input: watermarkBuffered, gravity: 'center', blend: 'over' }])
         .toFile(fullPath)
-        .then(async () => {
-          return await Photo.updateOrCreate({ url: `/${filePath}`, groupe }, { groupe })
-        })
-        .catch(() => {
-          throw new Error("Erreur lors de l'enregistrement de l'image")
-        })
+
+      await Photo.updateOrCreate({ url: `/${filePath}`, groupe }, { groupe })
     } catch (error) {
       throw new Error()
     }
