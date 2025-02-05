@@ -49,4 +49,5 @@ jobs:
             pnpm run build
             cd build
             pnpm i -P
+            node ace migration:run --force
             pm2 restart bin/server.js
