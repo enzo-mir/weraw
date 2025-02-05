@@ -46,13 +46,28 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+            nvm use 22
+
+            node -v  # Vérification que Node fonctionne
+            npm -v   # Vérification que npm fonctionne
+            pnpm -v  # Vérification que pnpm fonctionne
+
             cd ~/htdocs/www.weraw.fr
-            node -v
             git pull origin main
-            cd ./app
+            cd app
             pnpm install
             pnpm build
             cd build
+
+            # Créer .env
+            cat > .env << 'EOL'
+            NODE_ENV=production
+            ${{ secrets.ENV_CONTENT }}
+            EOL
+
             pnpm i -P
             node ace migration:run --force
             pm2 restart bin/server.js
