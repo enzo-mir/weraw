@@ -46,18 +46,6 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-            nvm use 22
-            
-            export PATH=$HOME/.nvm/versions/node/v22.13.1/bin:$PATH
-
-            node -v  # Vérification que Node fonctionne
-            npm -v   # Vérification que npm fonctionne
-            pnpm -v  # Vérification que pnpm fonctionne
-            pm2 -v   # Vérification que PM2 fonctionne
-
             cd ~/htdocs/www.weraw.fr
             git pull origin main
             cd app
