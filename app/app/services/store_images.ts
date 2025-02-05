@@ -74,6 +74,9 @@ export const storeImages = async (
         .then(async () => {
           return await Photo.updateOrCreate({ url: `/${filePath}`, groupe }, { groupe })
         })
+        .catch(() => {
+          throw new Error("Erreur lors de l'enregistrement de l'image")
+        })
     } catch (error) {
       throw new Error()
     }

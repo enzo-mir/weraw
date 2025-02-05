@@ -16,7 +16,7 @@ export default class Photo extends BaseModel {
   declare like: boolean
 
   @column()
-  declare comment: string
+  declare comment: string | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
