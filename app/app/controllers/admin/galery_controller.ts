@@ -45,9 +45,9 @@ export default class GaleriesController {
       const groupe = randomUUID()
       const jwt = await jwtMaker(groupe)
 
-      await Url.create({ name, createdAt: date, groupe, jwt: jwt as string })
+      const url = await Url.create({ name, createdAt: date, groupe, jwt: jwt as string })
 
-      await storeImages(name, files, false, groupe)
+      await storeImages(name, files, false, url.groupe)
       return response.redirect().back()
     } catch (error) {
       if ((error as any).code === 'ER_DUP_ENTRY') {
