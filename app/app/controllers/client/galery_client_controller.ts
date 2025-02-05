@@ -10,7 +10,7 @@ export default class GaleryClientController {
 
     const urlData = await Url.query()
       .where('groupe', verifier.groupe)
-      .select('end_selected', 'done', 'name', 'created_at', 'id')
+      .select('end_selected', 'name', 'created_at', 'id')
       .first()
     const images = await getClientImages({ groupe: verifier.groupe })
     const exp = new Date(verifier.exp * 1000)
