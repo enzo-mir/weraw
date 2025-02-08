@@ -45,3 +45,9 @@ router
       .use(middleware.auth())
   })
   .prefix('/galery')
+
+router
+  .get('/', ({ response }) => {
+    response.json({ message: 'Hello world' })
+  })
+  .domain('photos.localhost')
