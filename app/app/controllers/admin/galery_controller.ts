@@ -1,4 +1,3 @@
-import Url from '#models/url'
 import { deleteGaleryService } from '#services/delete_galery'
 import { getAdminImages } from '#services/get_images'
 import { jwtMaker, jwtVerifier } from '#services/jwt_service'
@@ -10,13 +9,15 @@ import { storeImages } from '#services/store_images'
 import { randomUUID } from 'node:crypto'
 import { addGalery, editGalery } from '#schemas/galery.schema'
 import { z } from 'zod'
+import env from '#start/env'
+import Galery from '#models/galery'
 
 export default class GaleriesController {
   async show(ctx: HttpContext) {
     try {
-      const urlData = await Url.query()
+      const urlData = await Galery.query()
         .where('id', ctx.params.id)
-        .select('end_selected', 'name', 'created_at', 'id', 'groupe', 'jwt')
+        .select('end_selected', 'name', 'url', 'created_at', 'id', 'groupe', 'jwt')
         .first()
 
       const exp = await jwtVerifier(urlData!.jwt)
@@ -44,10 +45,10 @@ export default class GaleriesController {
 
       const groupe = randomUUID()
       const jwt = await jwtMaker(groupe)
+      const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${jwt}`
+      const galery = await Galery.create({ name, createdAt: date, groupe, jwt: jwt as string, url })
 
-      const url = await Url.create({ name, createdAt: date, groupe, jwt: jwt as string })
-
-      await storeImages(name, files, false, url.groupe)
+      await storeImages(name, files, false, galery.groupe)
       return response.redirect().back()
     } catch (error) {
       if ((error as any).code === 'ER_DUP_ENTRY') {
@@ -79,7 +80,7 @@ export default class GaleriesController {
   async edit({ request, response, params, session }: HttpContext) {
     const { name, date, exp, id } = editGalery.parse({ ...request.all(), ...params })
     try {
-      const urlFind = await Url.findOrFail(id)
+      const urlFind = await Galery.findOrFail(id)
 
       const token = exp && (await jwtMaker(urlFind.groupe, exp))
 
@@ -99,9 +100,13 @@ export default class GaleriesController {
       )
 
       if (typeof token === 'string') {
-        await Url.updateOrCreate({ id }, { name, updatedAt: date, createdAt: date, jwt: token })
+        const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${token}`
+        await Galery.updateOrCreate(
+          { id },
+          { name, updatedAt: date, createdAt: date, jwt: token, url }
+        )
       } else {
-        await Url.updateOrCreate({ id }, { name, updatedAt: date, createdAt: date })
+        await Galery.updateOrCreate({ id }, { name, updatedAt: date, createdAt: date })
       }
 
       return response.redirect().back()

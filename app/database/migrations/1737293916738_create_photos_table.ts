@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.uuid('groupe').notNullable()
-      table.foreign('groupe').references('urls.groupe').onDelete('CASCADE').onUpdate('CASCADE')
+      table.foreign('groupe').references('galeries.groupe').onDelete('CASCADE').onUpdate('CASCADE')
       table.string('url', 255).notNullable()
       table.boolean('like').notNullable().defaultTo(false)
       table.string('comment', 255).nullable().defaultTo(null)

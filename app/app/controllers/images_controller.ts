@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Url from '#models/url'
+import Galery from '#models/galery'
 import { deleteImage } from '#services/delete_image'
 import { storeImages } from '#services/store_images'
 import Photo from '#models/photo'
@@ -14,7 +14,7 @@ export default class ImagesController {
     const { files, galeryName } = addImageSchema.parse({ ...request.allFiles(), ...request.all() })
 
     try {
-      const url = await Url.findByOrFail('name', galeryName)
+      const url = await Galery.findByOrFail('name', galeryName)
 
       await storeImages(galeryName, files, true, url.groupe)
 
@@ -70,7 +70,7 @@ export default class ImagesController {
         ...request.all(),
       })
 
-      const url = await Url.query().where('id', urlId).first()
+      const url = await Galery.query().where('id', urlId).first()
       const token = await jwtMaker(url!.groupe, this.nextDay.toISOString())
 
       if (typeof token !== 'string') {
@@ -78,7 +78,7 @@ export default class ImagesController {
         return response.badRequest()
       }
 
-      const urlUpdate = await Url.updateOrCreate({ id: urlId }, { endSelected, jwt: token })
+      const urlUpdate = await Galery.updateOrCreate({ id: urlId }, { endSelected, jwt: token })
       const baseurl = app.inProduction ? env.get('BASE_URL') : 'http://127.0.0.1:3000/'
       mailerService({
         name: urlUpdate.name,

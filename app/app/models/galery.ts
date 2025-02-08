@@ -1,15 +1,20 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import type { UUID } from 'node:crypto'
 import Photo from './photo.js'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
+import type { UUID } from 'node:crypto'
 
-export default class Url extends BaseModel {
+export default class Galery extends BaseModel {
+  static table = 'galeries'
+
   @column({ isPrimary: true })
   declare id: number
 
   @column()
   declare name: string
+
+  @column()
+  declare url: string
 
   @column()
   declare endSelected: boolean

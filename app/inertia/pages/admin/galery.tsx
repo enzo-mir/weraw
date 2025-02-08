@@ -14,8 +14,6 @@ import DisplayGalery from '~/components/display_galery'
 import { PropsType } from '~/utils/types/props.type'
 
 const Galery = ({ ...props }: PropsType) => {
-  console.log(props)
-
   const splitNumber = 50
   const [imagesData, setImagesData] = useState<Array<GaleryType>>(
     props.images.slice(0, splitNumber)

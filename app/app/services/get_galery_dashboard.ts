@@ -1,8 +1,8 @@
 import Photo from '#models/photo'
-import Url from '#models/url'
+import Galery from '#models/galery'
 
 export const groupedGaleriesByName = async () => {
-  const galeries = await Url.query()
+  const galeries = await Galery.query()
     .select('id', 'name', 'created_at', 'end_selected', 'groupe')
     .orderBy('id')
 

@@ -1,6 +1,8 @@
 const AuthentificationsController = () => import('#controllers/admin/authentifications_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+import app from '@adonisjs/core/services/app'
+import env from './env.js'
 const ImagesController = () => import('#controllers/images_controller')
 const EditAccountController = () => import('#controllers/admin/edit_account_controller')
 const GaleryClientController = () => import('#controllers/client/galery_client_controller')
@@ -29,10 +31,6 @@ router
   .use(middleware.auth())
 
 router
-  .get('/galery/:jwt', [GaleryClientController, 'show'])
-  .use(middleware.jwt())
-  .as('client.galery')
-router
   .group(() => {
     router
       .group(() => {
@@ -45,9 +43,14 @@ router
       .use(middleware.auth())
   })
   .prefix('/galery')
-
 router
   .get('/', ({ response }) => {
-    response.json({ message: 'Hello world' })
+    response.send('Hello world')
   })
-  .domain('photos.localhost')
+  .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
+
+router
+  .get('/:jwt', [GaleryClientController, 'show'])
+  .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
+  .use(middleware.jwt())
+  .as('client.galery')

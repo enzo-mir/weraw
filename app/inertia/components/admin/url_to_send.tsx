@@ -3,8 +3,8 @@ import { MouseEvent } from 'react'
 import { toast } from 'react-toastify'
 
 const UrlToSend = () => {
-  const jwt = usePage().props.urlData?.jwt
-  const url = `${window.location.origin}/galery/${jwt}`
+  
+  const { url } = usePage().props.urlData
 
   function clipToKeyboard(e: MouseEvent) {
     e.stopPropagation()

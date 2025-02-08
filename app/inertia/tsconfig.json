@@ -8,7 +8,8 @@
       "~/*": ["./*"],
       "#css/*": ["./css/*"],
       "#types/*": ["./utils/types/*"],
-      "#assets/*": ["./assets/*"]
+      "#assets/*": ["./assets/*"],
+      "#start/*": ["../start/*"]
     }
   },
   "include": ["./**/*.ts", "./**/*.tsx"]
