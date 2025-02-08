@@ -9,7 +9,7 @@ const GaleryClientController = () => import('#controllers/client/galery_client_c
 const GaleriesController = () => import('#controllers/admin/galery_controller')
 const DashboardController = () => import('#controllers/admin/dashboard_controller')
 
-router.on('/').renderInertia('home')
+router.on('/').renderInertia('home').as('home')
 router.on('/login').renderInertia('login')
 router.post('/auth/login', [AuthentificationsController, 'login'])
 router.post('/auth/logout', [AuthentificationsController, 'logout'])
@@ -43,14 +43,10 @@ router
       .use(middleware.auth())
   })
   .prefix('/galery')
-router
-  .get('/', ({ response }) => {
-    response.send('Hello world')
-  })
-  .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
 
 router
   .get('/:jwt', [GaleryClientController, 'show'])
   .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
+  .where('jwt', /([A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+)$/)
   .use(middleware.jwt())
   .as('client.galery')

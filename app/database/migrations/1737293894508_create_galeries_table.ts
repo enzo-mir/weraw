@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.string('url', 255).notNullable().unique()
       table.uuid('groupe').notNullable().unique()
       table.string('jwt').notNullable().unique()
+      table.integer('exp').notNullable()
       table.boolean('end_selected').notNullable().defaultTo(false)
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).nullable()

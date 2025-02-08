@@ -25,6 +25,9 @@ export default class Galery extends BaseModel {
   @column()
   declare jwt: string
 
+  @column()
+  declare exp: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

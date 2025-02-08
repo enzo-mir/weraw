@@ -1,12 +1,15 @@
-import { Exception } from '@adonisjs/core/exceptions'
-import { HttpContext } from '@adonisjs/core/http'
+import { ExceptionHandler, HttpContext } from '@adonisjs/core/http'
+import { HttpError } from '@adonisjs/core/types/http'
 
-export default class WrongJwtException extends Exception {
-  public async handle(ctx: HttpContext) {
-    return ctx.response.status(404)
-  }
+export default class WrongJwtException extends ExceptionHandler {
+  async handle(error: HttpError, ctx: HttpContext) {
+    if (ctx.response.headersSent) {
+      return
+    }
 
-  async report(error: this, ctx: HttpContext) {
-    ctx.logger.error({ err: error }, error.message)
+    ctx.response.status(error.status).send({
+      message: error.message,
+      status: error.status,
+    })
   }
 }

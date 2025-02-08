@@ -45,11 +45,23 @@ export default class GaleriesController {
 
       const groupe = randomUUID()
       const jwt = await jwtMaker(groupe)
-      const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${jwt}`
-      const galery = await Galery.create({ name, createdAt: date, groupe, jwt: jwt as string, url })
+      if (!(jwt instanceof Error) && jwt) {
+        const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${jwt.token}`
 
-      await storeImages(name, files, false, galery.groupe)
-      return response.redirect().back()
+        const galery = await Galery.create({
+          name,
+          createdAt: date,
+          groupe,
+          jwt: jwt.token,
+          url,
+          exp: jwt.exp,
+        })
+
+        await storeImages(name, files, false, galery.groupe)
+        return response.redirect().back()
+      } else {
+        throw new Error('Erreur lors de la création du token')
+      }
     } catch (error) {
       if ((error as any).code === 'ER_DUP_ENTRY') {
         session.flash({ errors: { message: 'Ce nom est déjà utilisé' } })
@@ -99,11 +111,11 @@ export default class GaleriesController {
         }
       )
 
-      if (typeof token === 'string') {
-        const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${token}`
+      if (!(token instanceof Error) && token) {
+        const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${token.token}`
         await Galery.updateOrCreate(
           { id },
-          { name, updatedAt: date, createdAt: date, jwt: token, url }
+          { name, updatedAt: date, createdAt: date, jwt: token.token, url, exp: token.exp }
         )
       } else {
         await Galery.updateOrCreate({ id }, { name, updatedAt: date, createdAt: date })

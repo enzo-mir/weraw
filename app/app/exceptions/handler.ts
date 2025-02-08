@@ -21,7 +21,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       const undefinedPage = await this.statusPages['404'](error, ctx)
 
       return ctx.response.status(error.status).send(undefinedPage)
-    } else if (error instanceof WrongJwtException) {
+    } else if (error instanceof WrongJwtException || error.message === 'invalid signature') {
       return ctx.response
         .status((error as { status: number }).status)
         .send(await this.statusPages['401'](error, ctx))

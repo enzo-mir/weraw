@@ -14,8 +14,6 @@ import { dialogState } from '~/utils/stores/dialog.store'
 
 const Header = () => {
   const [openCta, setOpenCta] = useState<boolean>(false)
-  console.log(usePage().props)
-
   const {
     exp,
     urlData: { endSelected, name, createdAt, id },
@@ -55,17 +53,19 @@ const Header = () => {
     )
   }
 
+  const homeUrl = location.origin.replace('photos.', '')
+
   return (
     <>
       <motion.header {...upToDownAnimation()} className={style.header}>
         <div>
           <nav>
-            <Link href="/" className={styleback.back}>
+            <a href={homeUrl} className={styleback.back}>
               <img src={pinkArrow} alt="arrow back to menu" />
               <p>
                 Revenir à l'accueil <em>WeRaw</em>
               </p>
-            </Link>
+            </a>
             <p>
               Le lien expire dans : <CountDownTimer targetDate={exp!} />
             </p>

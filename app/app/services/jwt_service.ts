@@ -8,7 +8,7 @@ export type PayloadType = {
 }
 export const jwtMaker = async (groupe: UUID, date?: Date | string) => {
   const payload: Record<string, any> = { groupe }
-  return new Promise<string | Error>((resolve, reject) => {
+  return new Promise<{ token: string; exp: number } | Error>((resolve, reject) => {
     if (!date) {
       const currentDate = new Date()
       const nextWeek = new Date(currentDate)
@@ -27,7 +27,7 @@ export const jwtMaker = async (groupe: UUID, date?: Date | string) => {
       if (err) {
         reject('Une errreur est survenue')
       } else if (token) {
-        resolve(token)
+        resolve({ token, exp: payload.exp })
       }
     })
   })
