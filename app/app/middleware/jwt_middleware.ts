@@ -7,7 +7,6 @@ import { NextFn } from '@adonisjs/core/types/http'
 export default class JwtMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     const jwt = ctx.params.jwt
-
     const verify = jwt && (await jwtVerifier(jwt))
     const galery = jwt && (await Galery.query().where('jwt', jwt).first())
 

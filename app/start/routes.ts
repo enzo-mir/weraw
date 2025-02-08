@@ -15,11 +15,14 @@ router.post('/auth/login', [AuthentificationsController, 'login'])
 router.post('/auth/logout', [AuthentificationsController, 'logout'])
 router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 
-router.group(() => {
-  router.post('/like', [ImagesController, 'like'])
-  router.post('/comment/:imageId', [ImagesController, 'comment'])
-  router.post('/end_selected/:urlId', [ImagesController, 'end_selection'])
-})
+router
+  .group(() => {
+    router.get('/:jwt', [GaleryClientController, 'show']).use(middleware.jwt())
+    router.post('/like', [ImagesController, 'like'])
+    router.post('/comment/:imageId', [ImagesController, 'comment'])
+    router.post('/end_selected/:urlId', [ImagesController, 'end_selection'])
+  })
+  .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
 
 router
   .group(() => {
@@ -43,10 +46,3 @@ router
       .use(middleware.auth())
   })
   .prefix('/galery')
-
-router
-  .get('/:jwt', [GaleryClientController, 'show'])
-  .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
-  .where('jwt', /([A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+)$/)
-  .use(middleware.jwt())
-  .as('client.galery')

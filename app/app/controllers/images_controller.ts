@@ -70,23 +70,26 @@ export default class ImagesController {
         ...request.all(),
       })
 
-      const url = await Galery.query().where('id', urlId).first()
-      const token = await jwtMaker(url!.groupe, this.nextDay.toISOString())
+      const galery = await Galery.query().where('id', urlId).first()
+      const token = await jwtMaker(galery!.groupe, this.nextDay.toISOString())
 
-      if (typeof token !== 'string') {
+      if (token instanceof Error) {
         session.flash({ errors: { message: 'Une erreur est survenue' } })
         return response.badRequest()
       }
+      const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${token.token}`
 
-      const urlUpdate = await Galery.updateOrCreate({ id: urlId }, { endSelected, jwt: token })
-      const baseurl = app.inProduction ? env.get('BASE_URL') : 'http://127.0.0.1:3000/'
+      const urlUpdate = await Galery.updateOrCreate(
+        { id: galery?.id },
+        { endSelected, jwt: token.token, exp: token.exp, url: url }
+      )
       mailerService({
         name: urlUpdate.name,
         createdAt: new Date(urlUpdate.createdAt?.toISO() ?? '').toLocaleDateString(),
-        url: baseurl + 'galery/admin/' + urlId,
+        url,
       })
 
-      return response.redirect().toRoute('client.galery', { jwt: token })
+      return response.redirect().toPath(url)
     } catch (error) {
       return response.badRequest()
     }
