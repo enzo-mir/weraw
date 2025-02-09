@@ -49,8 +49,24 @@ jobs:
             cd ~/htdocs/weraw
             git pull origin main
             cd app
+
+            echo "Copying public/images from old build"
+            cp -r build/public/images tmp/images
+
+
+            echo "Removing old build and assets"
+
+            rm -rf build
+            rm -rf public/assets
+
+            echo "Installing dependencies and building the app"
+
             pnpm install
             pnpm build
+
+            echo "Moving public/images to new build"
+            mv tmp/images build/public/images
+
             cd build
             pnpm i -P
                     
