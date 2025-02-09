@@ -1,55 +1,114 @@
-import { GaleryType } from '~/utils/types/galery.type'
+import { GaleryType, UrlDataType } from '~/utils/types/galery.type'
 import heart from '#assets/icons/heart.svg'
 import preview from '#assets/icons/preview.svg'
 import comment from '#assets/icons/comment.svg'
-import { usePage } from '@inertiajs/react'
 import { motion } from 'motion/react'
 import { appearAnimation } from '~/utils/animations/appear'
 import deleteImage from '#assets/icons/delete.svg'
 import style from '#css/galery.module.css'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelete } from './admin/confirm_del'
+import { useEffect, useRef, useState } from 'react'
+import ImagePreview from './image_preview'
 
 const DisplayGalery = (props: {
-  image: GaleryType
+  images: GaleryType[]
   _csrf: string
-  id: number
-  setImageId: (id: number) => void
-  type: 'admin' | 'user'
+  type: 'admin' | 'client'
+  urlData: UrlDataType
 }) => {
-  const urlData = usePage().props.urlData
-  const _csrf = props._csrf
+  const splitNumber = 50
+  const [imagesData, setImagesData] = useState<Array<GaleryType>>(
+    props.images.slice(0, splitNumber)
+  )
+  const [hasMore, setHasMore] = useState(true)
+  const loader = useRef<HTMLDivElement | null>(null)
+  const [imageId, setImageId] = useState<number | null>(null)
   const setDialogElement = dialogState((state) => state.setDialogElement)
+
+  useEffect(() => {
+    setImagesData(props.images.slice(0, splitNumber))
+    setHasMore(props.images.length > splitNumber)
+  }, [props.images])
+
+  const loadMoreImages = () => {
+    const currentLength = imagesData.length
+
+    if (currentLength >= props.images.length) {
+      setHasMore(false)
+      return
+    }
+
+    const nextBatch = props.images.slice(currentLength, currentLength + splitNumber)
+    setImagesData((prevImages) => [...prevImages, ...nextBatch])
+  }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMoreImages()
+        }
+      },
+      { threshold: 1 }
+    )
+
+    if (loader.current) {
+      observer.observe(loader.current)
+    }
+
+    return () => {
+      if (loader.current) observer.unobserve(loader.current)
+    }
+  }, [hasMore, imagesData])
+
   return (
-    <motion.li
-      {...appearAnimation({ delay: 0.1 })}
-      onClick={() => props.type === 'user' && props.setImageId(props.id)}
-    >
-      <img
-        width={250}
-        height={250}
-        src={props.image?.url}
-        alt={urlData?.name + props.id}
-        loading="lazy"
-      />
-      {props.type === 'admin' ? (
-        <div className={style.action}>
-          <button onClick={() => props.setImageId(props.id)}>
-            <img src={preview} alt="eye preview" />
-          </button>
-          <button
-            onClick={() =>
-              setDialogElement(<ConfirmDelete _csrf={_csrf} type={{ image: props.image }} />)
-            }
-          >
-            <img src={deleteImage} alt="delet image" />
-          </button>
-        </div>
+    <>
+      {imageId !== null ? (
+        <ImagePreview
+          type={props.type}
+          setImageId={setImageId}
+          id={imageId}
+          images={props.images}
+        />
       ) : null}
 
-      {props.image.like ? <img src={heart} className="heart" alt="heart like" /> : null}
-      {props.image.comment ? <img src={comment} className="comment" alt="comment" /> : null}
-    </motion.li>
+      {imagesData.map((image, id) => {
+        return (
+          <motion.li
+            key={image.id}
+            {...appearAnimation({ delay: 0.1 })}
+            onClick={() => props.type === 'client' && setImageId(id)}
+          >
+            <img
+              width={150}
+              height={250}
+              src={image.url}
+              alt={props.urlData.name + id}
+              loading="lazy"
+            />
+            {props.type === 'admin' ? (
+              <div className={style.action}>
+                <button onClick={() => setImageId(id)}>
+                  <img src={preview} alt="eye preview" />
+                </button>
+                <button
+                  onClick={() =>
+                    setDialogElement(<ConfirmDelete _csrf={props._csrf} type={{ image }} />)
+                  }
+                >
+                  <img src={deleteImage} alt="delet image" />
+                </button>
+              </div>
+            ) : null}
+
+            {image.like ? <img src={heart} className="heart" alt="heart like" /> : null}
+            {image.comment ? <img src={comment} className="comment" alt="comment" /> : null}
+          </motion.li>
+        )
+      })}
+      {hasMore && <div ref={loader} className={style.loader}></div>}
+    </>
   )
 }
 

@@ -8,7 +8,7 @@ import style from '#css/home.module.css'
 import { useState } from 'react'
 import { urlSchema } from '#types/url.type'
 import { ZodError } from 'zod'
-import { Head, router } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 import { motion } from 'motion/react'
 import { leftToRightAnimation } from '~/utils/animations/left_to_right'
@@ -20,7 +20,7 @@ export default function Home() {
   const submitUrl = async () => {
     try {
       await urlSchema.parseAsync(url)
-      router.visit(url)
+      location.href = url
     } catch (error) {
       if (error instanceof ZodError) {
         toast.error(error.errors[0].message)
@@ -60,9 +60,9 @@ export default function Home() {
                 value={url}
                 onChange={(e) => setUrl(e.currentTarget.value)}
                 name="weraw_url"
-                placeholder="https://photos.weraw/..."
+                placeholder="https://photos.weraw.fr/..."
                 required
-                pattern="^https:\/\/photos\.weraw\/.*"
+                pattern="^https:\/\/photos\.weraw.fr\/.*"
               />
               <button onClick={submitUrl}>
                 <img src={checkimg} alt="Check icon" width={25} height={25} />
@@ -71,14 +71,28 @@ export default function Home() {
           </motion.section>
         </div>
         <aside className={style.aside}>
-          <motion.img {...popAnimation({ delay: 0.25 })} src={waterPink} alt="Water pink image" />
-          <motion.img {...popAnimation({ delay: 0.35 })} src={star} alt="Star image" />
+          <motion.img
+            {...popAnimation({ delay: 0.25 })}
+            src={waterPink}
+            alt="Water pink image"
+            fetchPriority="high"
+            loading="lazy"
+          />
+          <motion.img
+            {...popAnimation({ delay: 0.35 })}
+            src={star}
+            alt="Star image"
+            fetchPriority="high"
+            loading="lazy"
+          />
           <motion.div {...popAnimation({ delay: 0.45 })} className={style.square}></motion.div>
           <motion.img
             {...popAnimation({ delay: 0.55 })}
             src={starEye}
             alt="Star eye image"
             width={550}
+            fetchPriority="high"
+            loading="lazy"
           />
         </aside>
       </main>

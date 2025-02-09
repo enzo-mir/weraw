@@ -1,9 +1,6 @@
-import { GaleryType } from '~/utils/types/galery.type'
 import style from '#css/galery.module.css'
 import { Head, Link } from '@inertiajs/react'
-import ImagePreview from '~/components/image_preview'
 import pinkArrow from '#assets/icons/arrow_link.png'
-import { useEffect, useRef, useState } from 'react'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelete } from '~/components/admin/confirm_del'
 import Dialog from '~/components/dialog'
@@ -13,58 +10,14 @@ import addPhotos from '~/services/add_photos'
 import DisplayGalery from '~/components/display_galery'
 import { PropsType } from '~/utils/types/props.type'
 
-const Galery = ({ ...props }: PropsType) => {
-  const splitNumber = 50
-  const [imagesData, setImagesData] = useState<Array<GaleryType>>(
-    props.images.slice(0, splitNumber)
-  )
-  const [hasMore, setHasMore] = useState(true)
-  const loader = useRef<HTMLDivElement | null>(null)
-  const [imageId, setImageId] = useState<number | null>(null)
-  const setDialogElement = dialogState((state) => state.setDialogElement)
-
-  useEffect(() => {
-    setImagesData(props.images.slice(0, splitNumber))
-    setHasMore(props.images.length > splitNumber)
-  }, [props.images])
-
-  const loadMoreImages = () => {
-    const currentLength = imagesData.length
-
-    if (currentLength >= props.images.length) {
-      setHasMore(false)
-      return
-    }
-
-    const nextBatch = props.images.slice(currentLength, currentLength + splitNumber)
-    setImagesData((prevImages) => [...prevImages, ...nextBatch])
-  }
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadMoreImages()
-        }
-      },
-      { threshold: 1 }
-    )
-
-    if (loader.current) {
-      observer.observe(loader.current)
-    }
-
-    return () => {
-      if (loader.current) observer.unobserve(loader.current)
-    }
-  }, [hasMore, imagesData])
+const Galery = (props: PropsType) => {
   const fileTypes = ['JPG', 'PNG', 'JPEG']
+  const setDialogElement = dialogState((state) => state.setDialogElement)
 
   return (
     <>
       <Head title="Galery" />
       <Dialog />
-      {imageId !== null ? <ImagePreview type="admin" setImageId={setImageId} id={imageId} /> : null}
       <main className={style.main}>
         <div className={style.header}>
           <Link href="/dashboard" className={style.back}>
@@ -110,20 +63,13 @@ const Galery = ({ ...props }: PropsType) => {
         </div>
 
         <ul className={style.galery}>
-          {imagesData.length
-            ? imagesData.map((image, id) => (
-                <DisplayGalery
-                  key={id + image.url}
-                  image={image}
-                  id={id}
-                  _csrf={props._csrf}
-                  setImageId={setImageId}
-                  type="admin"
-                />
-              ))
-            : null}
+          <DisplayGalery
+            images={props.images}
+            _csrf={props._csrf}
+            type="admin"
+            urlData={props.urlData}
+          />
         </ul>
-        {hasMore && <div ref={loader} className={style.loader}></div>}
       </main>
     </>
   )
