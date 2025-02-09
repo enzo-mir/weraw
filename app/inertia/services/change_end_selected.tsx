@@ -10,7 +10,7 @@ export default async function changeEndSeleced(
   setOpenCta: (openCta: boolean) => void
 ) {
   const response = await fetch(`/end_selected/${urlId}`, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'Accept': '*',
@@ -29,10 +29,11 @@ export default async function changeEndSeleced(
       autoClose: 2000,
       hideProgressBar: true,
     })
+    const body = await response.json()
 
     setOpenCta(false)
     setEndSelected(end_selected)
-    router.visit(response.url)
+    router.visit(body.url)
   } else {
     toastId.current = toast.error('Erreur lors du changement', {
       autoClose: 2000,

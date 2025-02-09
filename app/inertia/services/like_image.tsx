@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 
 export const likeImage = async (id: number, _csrf: string) => {
   const response = await fetch(`/like`, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'accept': 'application/json',

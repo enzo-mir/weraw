@@ -1,13 +1,14 @@
+import React, { Suspense } from 'react'
 import style from '#css/galery.module.css'
 import { Head, Link } from '@inertiajs/react'
 import pinkArrow from '#assets/icons/arrow_link.png'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelete } from '~/components/admin/confirm_del'
-import Dialog from '~/components/dialog'
+const Dialog = React.lazy(() => import('~/components/dialog'))
 import ManageGalery from '~/components/manage_galery'
 import { FileUploader } from 'react-drag-drop-files'
 import addPhotos from '~/services/add_photos'
-import DisplayGalery from '~/components/display_galery'
+const DisplayGalery = React.lazy(() => import('~/components/display_galery'))
 import { PropsType } from '~/utils/types/props.type'
 
 const Galery = (props: PropsType) => {
@@ -17,7 +18,9 @@ const Galery = (props: PropsType) => {
   return (
     <>
       <Head title="Galery" />
-      <Dialog />
+      <Suspense fallback={<></>}>
+        <Dialog />
+      </Suspense>
       <main className={style.main}>
         <div className={style.header}>
           <Link href="/dashboard" className={style.back}>
@@ -45,14 +48,14 @@ const Galery = (props: PropsType) => {
           </div>
 
           <aside className={style.edit}>
-            <button onClick={() => setDialogElement(<ManageGalery props={props} />)}>Éditer</button>
+            <button onClick={() => setDialogElement(<ManageGalery {...props} />)}>Éditer</button>
             <button
               className={style.del}
               onClick={() => {
                 setDialogElement(
                   <ConfirmDelete
                     _csrf={props._csrf}
-                    type={{ url: `/galery/admin/delete/${props.urlData.id}` }}
+                    type={{ url: `/galery/${props.urlData.id}` }}
                   />
                 )
               }}
@@ -63,12 +66,14 @@ const Galery = (props: PropsType) => {
         </div>
 
         <ul className={style.galery}>
-          <DisplayGalery
-            images={props.images}
-            _csrf={props._csrf}
-            type="admin"
-            urlData={props.urlData}
-          />
+          <Suspense fallback={<></>}>
+            <DisplayGalery
+              images={props.images}
+              _csrf={props._csrf}
+              type="admin"
+              urlData={props.urlData}
+            />
+          </Suspense>
         </ul>
       </main>
     </>

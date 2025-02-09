@@ -1,38 +1,38 @@
 import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler, errors } from '@adonisjs/core/http'
-import { errors as authError } from '@adonisjs/auth'
-import type { HttpError, StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
-import WrongJwtException from './wrong_jwt_exception.js'
+import { errors as authErrors } from '@adonisjs/auth'
+import type { HttpError } from '@adonisjs/core/types/http'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   protected debug = !app.inProduction
-
   protected renderStatusPages = app.inProduction
 
-  protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
-    '404': (error, { inertia }) => inertia.render('errors/not_found', { error: error.message }),
-    '500..599': (error, { inertia }) =>
-      inertia.render('errors/server_error', { error: error.message }),
-    '401': (error, { inertia }) => inertia.render('errors/unauthorized', { error: error.message }),
+  private getErrorMessage(error: HttpError): string {
+    if (
+      error instanceof errors.E_ROUTE_NOT_FOUND ||
+      error instanceof authErrors.E_UNAUTHORIZED_ACCESS
+    ) {
+      return 'La page que vous cherchez est introuvable'
+    }
+
+    if (
+      error.message === 'invalid signature' ||
+      error.message === 'jwt expired' ||
+      error.message === 'invalid token'
+    ) {
+      return 'Le lien est invalide ou expiré'
+    }
+
+    return 'Une erreur serveur est survenue'
   }
 
+  protected page = (ctx: HttpContext, error: string) =>
+    ctx.inertia.render('errors/page', { error: error })
+
   async handle(error: HttpError, ctx: HttpContext) {
-    if (error instanceof errors.E_ROUTE_NOT_FOUND) {
-      const undefinedPage = await this.statusPages['404'](error, ctx)
-
-      return ctx.response.status(error.status).send(undefinedPage)
-    } else if (error instanceof WrongJwtException || error.message === 'invalid signature') {
-      return ctx.response
-        .status((error as { status: number }).status)
-        .send(await this.statusPages['401'](error, ctx))
-    } else if (error instanceof authError.E_UNAUTHORIZED_ACCESS) {
-      return ctx.response
-        .status((error as { status: number }).status)
-        .send(await this.statusPages['404'](error, ctx))
-    } else if (error) {
-      const errorPage = await this.statusPages['500..599'](error, ctx)
-
-      return ctx.response.status((error as { status: number }).status).send(errorPage)
+    const errorMessage = this.getErrorMessage(error)
+    if (errorMessage) {
+      return ctx.response.status(error.status).send(await this.page(ctx, errorMessage))
     }
     return super.handle(error, ctx)
   }

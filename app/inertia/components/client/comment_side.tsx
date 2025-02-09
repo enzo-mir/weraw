@@ -13,13 +13,13 @@ const CommentSide = ({
   id: number
   type: 'client' | 'admin'
 }) => {
-  const { data, setData, post } = useForm({
+  const { data, setData, put } = useForm({
     comment: text || '',
   })
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    post(`/comment/${id}`, {
+    put(`/comment/${id}`, {
       onSuccess: () => {
         toast.success('Commentaire mis à jour !', {
           autoClose: 2000,

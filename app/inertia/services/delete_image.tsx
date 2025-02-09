@@ -1,6 +1,6 @@
 export const deleteImageService = async (id: number, _csrf: string) => {
-  const response = await fetch(`/admin/image/${id}`, {
-    method: 'POST',
+  const response = await fetch(`/image/${id}`, {
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       'Accept': '*',
@@ -10,5 +10,7 @@ export const deleteImageService = async (id: number, _csrf: string) => {
       _csrf,
     }),
   })
+  console.log(response)
+
   return response
 }

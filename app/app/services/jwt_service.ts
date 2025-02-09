@@ -51,8 +51,6 @@ export const jwtVerifier = async (jwtToken: string) => {
         iat: d.iat,
         exp: d.exp,
       }
-    } else {
-      throw new Error('Invalid token')
     }
   })
 }

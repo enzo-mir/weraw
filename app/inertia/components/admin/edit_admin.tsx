@@ -1,24 +1,23 @@
-import { useForm, usePage } from '@inertiajs/react'
+import { useForm } from '@inertiajs/react'
 import { FormEvent } from 'react'
 import { toast } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
 import style from '#css/manage_galery.module.css'
 
-const EditAdmin = () => {
-  const { user, _csrf } = usePage().props
+const EditAdmin = ({ email, _csrf }: { email: string; _csrf: string }) => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
-  const { data, setData, post } = useForm<{
+  const { data, setData, put } = useForm<{
     email: string
     newEmail?: string
     password?: string
     password_confirmation?: string
   }>({
-    email: user!.email,
+    email,
   })
 
   function handlSubmit(e: FormEvent) {
     e.preventDefault()
-    post('/admin/edit', {
+    put('/edit', {
       onSuccess: () => {
         toast.success('Compte modifié')
         setDialogElement(null)
@@ -37,7 +36,7 @@ const EditAdmin = () => {
           className={style.input}
           type="email"
           name="email"
-          defaultValue={user!.email}
+          defaultValue={email}
           onChange={(e) => setData({ ...data, newEmail: e.target.value })}
           required
         />

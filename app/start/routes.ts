@@ -4,7 +4,6 @@ import { middleware } from './kernel.js'
 import app from '@adonisjs/core/services/app'
 import env from './env.js'
 const ImagesController = () => import('#controllers/images_controller')
-const EditAccountController = () => import('#controllers/admin/edit_account_controller')
 const GaleryClientController = () => import('#controllers/client/galery_client_controller')
 const GaleriesController = () => import('#controllers/admin/galery_controller')
 const DashboardController = () => import('#controllers/admin/dashboard_controller')
@@ -17,32 +16,29 @@ router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 
 router
   .group(() => {
-    router.get('/:jwt', [GaleryClientController, 'show']).use(middleware.jwt())
-    router.post('/like', [ImagesController, 'like'])
-    router.post('/comment/:imageId', [ImagesController, 'comment'])
-    router.post('/end_selected/:urlId', [ImagesController, 'end_selection'])
+    router.get('/galery/:jwt', [GaleryClientController, 'show']).use(middleware.jwt()).as('galery')
+    router.put('/like', [ImagesController, 'like'])
+    router.put('/comment/:imageId', [ImagesController, 'comment'])
+    router.put('/end_selected/:urlId', [ImagesController, 'end_selection'])
   })
   .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
 
 router
   .group(() => {
-    router.post('/image/add', [ImagesController, 'add'])
-    router.post('/image/:id', [ImagesController, 'delete'])
-    router.post('/edit', [EditAccountController, 'index'])
+    router.post('/add', [ImagesController, 'add'])
+    router.delete('/:id', [ImagesController, 'delete'])
   })
-  .prefix('admin')
+  .prefix('image')
   .use(middleware.auth())
+
+router.put('/account', [AuthentificationsController, 'edit']).use(middleware.auth())
 
 router
   .group(() => {
-    router
-      .group(() => {
-        router.post('/add', [GaleriesController, 'create'])
-        router.get('/:id', [GaleriesController, 'show']).where('id', /^[0-9]+/)
-        router.post('/delete/:id', [GaleriesController, 'delete'])
-        router.post('/edit/:id', [GaleriesController, 'edit'])
-      })
-      .prefix('/admin')
-      .use(middleware.auth())
+    router.post('/add', [GaleriesController, 'create'])
+    router.get('/:id', [GaleriesController, 'show']).where('id', /^[0-9]+/)
+    router.delete('/:id', [GaleriesController, 'delete'])
+    router.put('/:id', [GaleriesController, 'edit'])
   })
   .prefix('/galery')
+  .use(middleware.auth())

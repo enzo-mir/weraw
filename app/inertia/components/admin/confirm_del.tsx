@@ -16,11 +16,16 @@ export const ConfirmDelete = ({
   _csrf: string
 }) => {
   const setDialogElement = dialogState((state) => state.setDialogElement)
+  console.log(type.url)
+
   async function handleDeleteImage() {
     if (type.image !== undefined) {
       const response = await deleteImageService(type.image.id, _csrf)
       if (response.ok) {
         setDialogElement(null)
+        toast.success('Image supprimée avec succès', {
+          autoClose: 2000,
+        })
         router.reload()
       } else {
         toast('Une erreur est survenue', {
@@ -28,9 +33,10 @@ export const ConfirmDelete = ({
           autoClose: 2000,
         })
       }
-    } else {
+    }
+    if (type.url) {
+      router.delete(type.url)
       setDialogElement(null)
-      router.post(type.url as string)
     }
   }
   return (
@@ -38,7 +44,7 @@ export const ConfirmDelete = ({
       <div className={style.container}>
         <p>Voulez-vous vraiment supprimer {type.image ? "l'image" : 'la galerie'} ?</p>
         <div>
-          <button onClick={() => handleDeleteImage()}>Oui</button>
+          <button onClick={async () => await handleDeleteImage()}>Oui</button>
           <button onClick={() => setDialogElement(null)}>Non</button>
         </div>
       </div>

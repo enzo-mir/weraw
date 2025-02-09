@@ -6,7 +6,7 @@ import { appearAnimation } from '~/utils/animations/appear'
 
 const GaleryImage = ({ ...props }: { galery: GaleriesType[0]; id: number }) => {
   const handleClick = () => {
-    router.visit(`/galery/admin/${props.galery.id}`)
+    router.visit(`/galery/${props.galery.id}`)
   }
   return (
     <motion.article

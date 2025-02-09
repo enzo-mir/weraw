@@ -10,7 +10,7 @@ export default async function addPhotos(files: File[], _csrf: string, galeryName
   formData.append('_csrf', _csrf)
   formData.append('galeryName', galeryName)
 
-  const promise = fetch('/admin/image/add', {
+  const promise = fetch('/image/add', {
     method: 'POST',
     body: formData,
   })

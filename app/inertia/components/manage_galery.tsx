@@ -6,18 +6,17 @@ import { Id, toast } from 'react-toastify'
 import { dialogState } from '~/utils/stores/dialog.store'
 import UrlToSend from './admin/url_to_send'
 import { PropsType } from '~/utils/types/props.type'
-
 const fileTypes = ['JPG', 'PNG', 'JPEG']
 
-const ManageGalery = ({ props }: { props: PropsType }) => {
+const ManageGalery = (props: PropsType) => {
   const isEditing: boolean = !!props.urlData
 
   const id = isEditing ? props.urlData?.id : ''
 
   const exp = isEditing ? usePage().props.exp : undefined
-  const expDate = exp ? new Date(exp * 1000).toISOString() : new Date().toISOString()
+  const expDate = exp ? new Date(Number(exp) * 1000).toISOString() : new Date().toISOString()
 
-  const { data, setData, post, processing } = useForm<{
+  const { data, setData, post, put, processing } = useForm<{
     name: string
     date: Date
     exp?: string
@@ -58,12 +57,11 @@ const ManageGalery = ({ props }: { props: PropsType }) => {
 
   function validateGalery(e: FormEvent) {
     e.preventDefault()
-
-    post(`/galery/admin/${isEditing ? `edit/${id}` : 'add'}`, {
+    const formOptions = {
       forceFormData: true,
       preserveState: true,
 
-      onError: (e) => {
+      onError: (e: { message: string }) => {
         if (e.message) {
           if (!progressToastId.current) {
             progressToastId.current = toast.error(e.message, {
@@ -103,7 +101,13 @@ const ManageGalery = ({ props }: { props: PropsType }) => {
 
         setDialogElement(null)
       },
-    })
+    }
+
+    if (isEditing) {
+      put(`/galery/${id}`, formOptions)
+    } else {
+      post('/galery/add', formOptions)
+    }
   }
 
   return (

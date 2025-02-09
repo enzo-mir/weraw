@@ -21,7 +21,7 @@ export default class GaleriesController {
         .first()
 
       const exp = await jwtVerifier(urlData!.jwt)
-        .then((e) => e.exp)
+        .then((e) => e?.exp)
         .catch((e) => new Date(e.expiredAt).getTime() / 1000)
 
       const images = await getAdminImages(ctx.params as { id: string })
@@ -46,7 +46,7 @@ export default class GaleriesController {
       const groupe = randomUUID()
       const jwt = await jwtMaker(groupe)
       if (!(jwt instanceof Error) && jwt) {
-        const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${jwt.token}`
+        const url = `http${app.inDev ? '' : 's'}://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/galery/${jwt.token}`
 
         const galery = await Galery.create({
           name,
@@ -104,10 +104,12 @@ export default class GaleriesController {
       db.rawQuery(query).catch(() => new Error('Error while updating photos'))
 
       fs.rename(
-        app.publicPath(`/images/${urlFind.name}`),
-        app.publicPath(`/images/${name}`),
+        app.publicPath(`images/${urlFind.name}`),
+        app.publicPath(`images/${name}`),
         (err) => {
-          if (err) throw new Error('Error while updating photos')
+          console.log(err)
+
+          if (err) return new Error('Error while updating photos')
         }
       )
 

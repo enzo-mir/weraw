@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const CountDownTimer = ({ targetDate }: { targetDate: Date | number }) => {
+const CountDownTimer = ({ targetDate }: { targetDate: string }) => {
   const calculateTimeLeft = () => {
     const difference = new Date(targetDate).getTime() - new Date().getTime()
     if (difference <= 0) return null

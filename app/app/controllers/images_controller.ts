@@ -26,15 +26,17 @@ export default class ImagesController {
   }
   async delete({ session, response, params }: HttpContext) {
     const { error } = await deleteImage(params.id)
-    if (error) {
+
+    if (error !== undefined) {
       session.flash({ errors: { message: error } })
       return response.redirect().back()
     }
-    return response.redirect().back()
+    return response.ok({ message: 'Image supprimée avec succès' })
   }
 
   async like({ request, response }: HttpContext) {
-    const { id } = request.only(['id'])
+    const { id } = request.all()
+
     const photo = await Photo.query().where('id', id).first()
 
     if (!photo) {
@@ -42,7 +44,8 @@ export default class ImagesController {
     }
     try {
       await Photo.updateOrCreate({ id }, { like: !photo.like })
-      return response.redirect().back()
+
+      return response.ok({ message: 'Like mis à jour' })
     } catch (error) {
       return response.badRequest({ message: 'Une erreur est survenue' })
     }
@@ -77,8 +80,8 @@ export default class ImagesController {
         session.flash({ errors: { message: 'Une erreur est survenue' } })
         return response.badRequest()
       }
-      const url = `http://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/${token.token}`
-
+      const url = `http${app.inDev ? '' : 's'}://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/galery/${token.token}`
+      const urlMail = `http${app.inDev ? '' : 's'}://${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/galery/${galery!.id}`
       const urlUpdate = await Galery.updateOrCreate(
         { id: galery?.id },
         { endSelected, jwt: token.token, exp: token.exp, url: url }
@@ -86,10 +89,10 @@ export default class ImagesController {
       mailerService({
         name: urlUpdate.name,
         createdAt: new Date(urlUpdate.createdAt?.toISO() ?? '').toLocaleDateString(),
-        url,
+        url: urlMail,
       })
 
-      return response.redirect().toPath(url)
+      return response.ok({ url })
     } catch (error) {
       return response.badRequest()
     }

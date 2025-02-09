@@ -1,24 +1,25 @@
-import { Link, usePage } from '@inertiajs/react'
+import React, { Suspense, useRef, useState } from 'react'
 import pinkArrow from '#assets/icons/arrow_link.png'
 import styleback from '#css/header_client.module.css'
 import style from '#css/header_client.module.css'
-import CountDownTimer from '~/services/count_down'
+const CountDownTimer = React.lazy(() => import('~/services/count_down'))
 import downArrow from '#assets/icons/down_arrow.svg'
 import changeEndSeleced from '~/services/change_end_selected'
-import { useRef, useState } from 'react'
 import { Id } from 'react-toastify'
 import { motion } from 'motion/react'
 import { upToDownAnimation } from '~/utils/animations/up_to_down'
 import confirmdelstyle from '#css/confirm_del.module.css'
 import { dialogState } from '~/utils/stores/dialog.store'
+import { PropsType } from '~/utils/types/props.type'
 
-const Header = () => {
+const Header = (props: PropsType) => {
   const [openCta, setOpenCta] = useState<boolean>(false)
+
   const {
     exp,
     urlData: { endSelected, name, createdAt, id },
     _csrf,
-  } = usePage().props
+  } = props
 
   const [endSelectedState, setEndSelectedState] = useState<boolean>(Boolean(endSelected))
   const toastId = useRef<Id>(null)
@@ -67,7 +68,9 @@ const Header = () => {
               </p>
             </a>
             <p>
-              Le lien expire dans : <CountDownTimer targetDate={exp!} />
+              <Suspense fallback={<p>Chargement...</p>}>
+                Le lien expire dans : <CountDownTimer targetDate={exp!} />
+              </Suspense>
             </p>
           </nav>
           <aside>

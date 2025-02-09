@@ -1,4 +1,3 @@
-'use client'
 import checkimg from '#assets/icons/check.png'
 import arrowLink from '#assets/icons/arrow_link.png'
 import waterPink from '#assets/images/water_pink.png'
