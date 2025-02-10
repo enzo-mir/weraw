@@ -11,6 +11,7 @@ import { addGalery, editGalery } from '#schemas/galery.schema'
 import { z } from 'zod'
 import env from '#start/env'
 import Galery from '#models/galery'
+import Photo from '#models/photo'
 
 export default class GaleriesController {
   async show(ctx: HttpContext) {
@@ -57,7 +58,10 @@ export default class GaleriesController {
           exp: jwt.exp,
         })
 
-        await storeImages(name, files, false, galery.groupe)
+        const imagesUrl = await storeImages(name, files, false, galery.groupe)
+
+        await Photo.createMany(imagesUrl)
+
         return response.redirect().back()
       } else {
         throw new Error('Erreur lors de la création du token')
@@ -73,7 +77,7 @@ export default class GaleriesController {
         })
       } else {
         session.flash({
-          errors: { message: (error as any).message },
+          errors: { message: error.message },
         })
       }
       return response.redirect().back()

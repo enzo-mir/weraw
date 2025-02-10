@@ -1,4 +1,3 @@
-import Photo from '#models/photo'
 import { fileTypes } from '#schemas/file_extension'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import app from '@adonisjs/core/services/app'
@@ -11,7 +10,7 @@ export const storeImages = async (
   images: MultipartFile[] | MultipartFile,
   updating: boolean,
   groupe: UUID
-): Promise<unknown | Error> => {
+): Promise<{ url: string; groupe: UUID }[]> => {
   const generateUniqueFileName = (originalName: string): string => {
     const timestamp = Date.now()
     const randomString = randomBytes(4).toString('hex')
@@ -24,9 +23,14 @@ export const storeImages = async (
   }
 
   const getImageBrightness = async (imagePath: string): Promise<number> => {
-    const { channels } = await sharp(imagePath).stats()
+    const stats = await sharp(imagePath).stats()
+    if (stats.channels.length < 3) {
+      return Math.round(stats.channels[0].mean)
+    }
     return Math.round(
-      0.299 * channels[0].mean + 0.587 * channels[1].mean + 0.114 * channels[2].mean
+      0.299 * stats.channels[0].mean +
+        0.587 * stats.channels[1].mean +
+        0.114 * stats.channels[2].mean
     )
   }
 
@@ -64,6 +68,7 @@ export const storeImages = async (
       const watermarkPath = app.publicPath(
         brightness / 255 > 0.5 ? 'watermark/watermark_80.png' : 'watermark/watermark.png'
       )
+
       const watermarkBuffered = await sharp(watermarkPath)
         .resize(metadata.width, metadata.height)
         .toBuffer()
@@ -74,12 +79,12 @@ export const storeImages = async (
         .catch(() => {
           throw new Error("Erreur lors de l'enregistrement de l'image")
         })
-      return await Photo.create({
+      return Promise.resolve({
         url: `/${filePath}`,
         groupe,
       })
     } catch (error) {
-      throw new Error()
+      return Promise.reject(error)
     }
   })
 

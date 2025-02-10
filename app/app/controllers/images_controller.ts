@@ -16,7 +16,9 @@ export default class ImagesController {
     try {
       const url = await Galery.findByOrFail('name', galeryName)
 
-      await storeImages(galeryName, files, true, url.groupe)
+      const imagesUrl = await storeImages(galeryName, files, true, url.groupe)
+
+      await Photo.createMany(imagesUrl)
 
       return response.redirect().back()
     } catch (error) {
@@ -43,7 +45,7 @@ export default class ImagesController {
       return response.badRequest({ message: 'Image introuvable' })
     }
     try {
-      await Photo.updateOrCreate({ id }, { like: !photo.like })
+      await Photo.query().update({ like: !photo.like }).where('id', id)
 
       return response.ok({ message: 'Like mis à jour' })
     } catch (error) {
@@ -55,7 +57,7 @@ export default class ImagesController {
     try {
       const { imageId, comment } = commentImage.parse({ ...params, ...request.all() })
 
-      await Photo.updateOrCreate({ id: imageId }, { comment })
+      await Photo.query().update({ comment }).where('id', imageId)
 
       return response.redirect().back()
     } catch (error) {
