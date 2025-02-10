@@ -65,7 +65,7 @@ jobs:
             pnpm build
 
             echo "Moving public/images to new build"
-            mv public/images build/public/images
+            mv public/images build/public
 
             cd build
             pnpm i -P
