@@ -74,15 +74,14 @@ export const storeImages = async (
         .catch(() => {
           throw new Error("Erreur lors de l'enregistrement de l'image")
         })
-      return {
+      return await Photo.create({
         url: `/${filePath}`,
         groupe,
-      }
+      })
     } catch (error) {
       throw new Error()
     }
   })
 
-  const promise = await Promise.all(uploadPromises)
-  return await Photo.createMany(promise)
+  return await Promise.all(uploadPromises)
 }
