@@ -51,7 +51,7 @@ jobs:
             cd app
 
             echo "Copying public/images from old build"
-            cp -r build/public/images tmp/images
+            cp -r build/public/images public
 
 
             echo "Removing old build and assets"
@@ -65,7 +65,7 @@ jobs:
             pnpm build
 
             echo "Moving public/images to new build"
-            mv tmp/images build/public/images
+            mv public/images build/public/images
 
             cd build
             pnpm i -P
