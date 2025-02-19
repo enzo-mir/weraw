@@ -33,6 +33,7 @@ export default class AuthentificationsController {
   public async edit({ request, response, session }: HttpContext) {
     try {
       const parsedPayload = await editAdminSchema.parseAsync(request.all())
+
       await User.query()
         .where('email', parsedPayload.email)
         .update({

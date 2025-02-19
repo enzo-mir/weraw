@@ -17,7 +17,7 @@ const EditAdmin = ({ email, _csrf }: { email: string; _csrf: string }) => {
 
   function handlSubmit(e: FormEvent) {
     e.preventDefault()
-    put('/edit', {
+    put('/account', {
       onSuccess: () => {
         toast.success('Compte modifié')
         setDialogElement(null)

@@ -58,8 +58,9 @@ export const storeImages = async (
 
     try {
       const resizedImage = await sharp(image.tmpPath)
-        .webp({ quality: 90, lossless: true })
+        .webp({ quality: 100 })
         .resize(1200, null, { withoutEnlargement: true, fit: 'cover' })
+        .rotate()
         .toBuffer()
 
       const metadata = await sharp(resizedImage).metadata()
