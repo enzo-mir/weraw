@@ -13,6 +13,14 @@ export const getAdminImages = async (params: { id: string }) =>
     .select('photos.like')
     .select('photos.comment')
     .select('photos.id')
+    .orderBy('photos.id', 'asc')
 
-export const getClientImages = async (params: { groupe: string }) =>
-  await Photo.query().where('groupe', params.groupe).select('url', 'like', 'comment', 'id')
+export const getClientImages = async (
+  params: { groupe: string },
+  qs: 'all' | 'liked' | 'comment' | null
+) =>
+  await Photo.query()
+    .where('groupe', params.groupe)
+    .select('url', 'like', 'comment', 'id')
+    .if(qs === 'liked', (query) => query.where('like', true))
+    .if(qs === 'comment', (query) => query.whereNotNull('comment'))

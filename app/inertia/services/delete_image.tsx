@@ -10,7 +10,5 @@ export const deleteImageService = async (id: number, _csrf: string) => {
       _csrf,
     }),
   })
-  console.log(response)
-
   return response
 }

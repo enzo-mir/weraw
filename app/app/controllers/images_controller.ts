@@ -59,7 +59,7 @@ export default class ImagesController {
 
       await Photo.query().update({ comment }).where('id', imageId)
 
-      return response.redirect().back()
+      return response.ok({ message: 'Commentaire mis à jour' })
     } catch (error) {
       session.flash({ errors: { message: 'Image introuvable' } })
       return response.redirect().back()

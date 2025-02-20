@@ -12,6 +12,37 @@
   width: 100%;
 }
 
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 2em;
+}
+
+.filter select {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  width: 200px;
+  padding: 0.5em 1em;
+  border-radius: 50px;
+  border: 1px solid var(--pink);
+  cursor: pointer;
+  font-family: var(--bricolage-condensed--font);
+  font-size: 1.1em;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none; 
+    background-color: #fff;
+    background-image: url('../assets/icons/down_arrow_dark.svg') ;
+    background-repeat: no-repeat;
+    background-position: 90% center;
+}
+
+.header {
+  padding: 2em;
+}
+
 .galery li:hover {
   .action {
     visibility: visible;
@@ -88,6 +119,7 @@
   max-width: 250px;
   list-style-type: none;
   aspect-ratio: 4 / 6;
+  cursor: pointer;
 }
 
 .validateSvg {
@@ -211,6 +243,11 @@
 }
 
 @media screen and (max-width: 750px) {
+  .galery {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+
+  }
+  
   .header a p {
     display: none;
   }

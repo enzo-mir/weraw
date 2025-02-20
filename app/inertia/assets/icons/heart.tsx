@@ -1,5 +1,6 @@
 import style from '#css/image_preview.module.css'
 import { usePage } from '@inertiajs/react'
+import { MouseEvent } from 'react'
 import { likeImage } from '~/services/like_image'
 
 type HeartIconProps = {
@@ -11,7 +12,8 @@ type HeartIconProps = {
 const HeartIcon: React.FC<HeartIconProps> = ({ id, liked, type }) => {
   const _csrf = usePage().props._csrf as string
 
-  const handleClick = async () => {
+  const handleClick = async (e:MouseEvent) => {
+    e.stopPropagation()
     if (type === 'admin') return
     await likeImage(id, _csrf)
   }

@@ -1,6 +1,5 @@
 import overlayStyle from '#css/dialog.module.css'
 import style from '#css/image_preview.module.css'
-import { usePage } from '@inertiajs/react'
 import arrow from '#assets/icons/arrow.svg'
 import { useEffect, useState } from 'react'
 import CommentSide from './client/comment_side'
@@ -21,11 +20,13 @@ const ImagePreview = ({
   setImageId,
   type,
   images,
+  _csrf,
 }: {
   id: number
   setImageId: (v: number | null) => void
   type: 'client' | 'admin'
   images: GaleryType[]
+  _csrf: string
 }) => {
   const [displayClientComment, setDisplayClientComment] = useState<boolean>(false)
   const [[page, direction], setPage] = useState([id, 0])
@@ -63,6 +64,7 @@ const ImagePreview = ({
       <AnimatePresence mode="wait" propagate>
         {displayClientComment ? (
           <CommentSide
+            _csrf={_csrf}
             type={type}
             id={images[id].id}
             text={images[id].comment}
@@ -71,13 +73,13 @@ const ImagePreview = ({
         ) : null}
       </AnimatePresence>
       <div className={overlayStyle.overlay} onClick={goBack}>
-        <article className={style.container} onClick={(e) => e.stopPropagation()}>
+        <article className={style.container} onClick={() => setDisplayClientComment(false)}>
           <motion.div {...upToDownAnimation()}>
             {type === 'client' ? null : <p>Image n°{id! + 1}</p>}
             <HeartIcon liked={images[id].like} id={images[id].id} type={type} />
             <CommentIcon
               commented={!!images[id].comment}
-              onClick={() => setDisplayClientComment(true)}
+              onClick={(e) => {e.stopPropagation();setDisplayClientComment(true)}}
             />
           </motion.div>
           <motion.div>
@@ -92,7 +94,7 @@ const ImagePreview = ({
                 key={page}
                 src={images[imageIndex].url}
                 alt={images[id].url}
-                onClick={() => setDisplayClientComment(false)}
+                onClick={(e) => e.stopPropagation()}
                 custom={direction}
                 variants={imagePreviewVariants}
                 initial="enter"

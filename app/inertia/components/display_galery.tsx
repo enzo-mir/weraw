@@ -10,12 +10,14 @@ import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelete } from './admin/confirm_del'
 import { useEffect, useRef, useState } from 'react'
 import ImagePreview from './image_preview'
+import FlipMove from 'react-flip-move';
 
 const DisplayGalery = (props: {
   images: GaleryType[]
   _csrf: string
   type: 'admin' | 'client'
   urlData: UrlDataType
+  className:string
 }) => {
   const splitNumber = 50
   const [imagesData, setImagesData] = useState<Array<GaleryType>>(
@@ -64,15 +66,17 @@ const DisplayGalery = (props: {
 
   return (
     <>
-      {imageId !== null ? (
+      {imageId !== null && props.images.length ? (
         <ImagePreview
+          _csrf={props._csrf}
           type={props.type}
           setImageId={setImageId}
           id={imageId}
           images={props.images}
         />
       ) : null}
-
+      
+      <FlipMove className={props.className}>
       {imagesData.map((image, id) => {
         return (
           <motion.li
@@ -107,6 +111,8 @@ const DisplayGalery = (props: {
           </motion.li>
         )
       })}
+      </FlipMove>
+
       {hasMore && <div ref={loader} className={style.loader}></div>}
     </>
   )

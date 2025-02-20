@@ -26,7 +26,7 @@ export const ConfirmDelete = ({
         toast.success('Image supprimée avec succès', {
           autoClose: 2000,
         })
-        router.reload()
+        router.reload({only: ['images']})
       } else {
         toast('Une erreur est survenue', {
           type: 'error',

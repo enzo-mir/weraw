@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState } from 'react'
+import React, { Fragment, Suspense, useRef, useState } from 'react'
 import pinkArrow from '#assets/icons/arrow_link.png'
 import styleback from '#css/header_client.module.css'
 import style from '#css/header_client.module.css'
@@ -12,14 +12,13 @@ import confirmdelstyle from '#css/confirm_del.module.css'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { PropsType } from '~/utils/types/props.type'
 
-const Header = (props: PropsType) => {
+const Header = ({
+  exp,
+  urlData: { endSelected, name, createdAt, id },
+  _csrf,
+}: PropsType) => {
   const [openCta, setOpenCta] = useState<boolean>(false)
 
-  const {
-    exp,
-    urlData: { endSelected, name, createdAt, id },
-    _csrf,
-  } = props
 
   const [endSelectedState, setEndSelectedState] = useState<boolean>(Boolean(endSelected))
   const toastId = useRef<Id>(null)
@@ -57,7 +56,6 @@ const Header = (props: PropsType) => {
   const homeUrl = location.origin.replace('photos.', '')
 
   return (
-    <>
       <motion.header {...upToDownAnimation()} className={style.header}>
         <div>
           <nav>
@@ -90,7 +88,7 @@ const Header = (props: PropsType) => {
           >
             <div>
               <p>{endSelectedState ? 'Séléction terminé' : 'En cours de sélection'}</p>
-              <button onClick={() => setOpenCta(!openCta)}>
+              <button onClick={() => setOpenCta(!openCta)} >
                 <img src={downArrow} alt="" />
               </button>
             </div>
@@ -101,7 +99,6 @@ const Header = (props: PropsType) => {
           </aside>
         </div>
       </motion.header>
-    </>
   )
 }
 

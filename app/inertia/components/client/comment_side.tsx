@@ -1,39 +1,58 @@
 import style from '#css/client_comment.module.css'
-import { useForm } from '@inertiajs/react'
+import { router, useForm } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 import { motion } from 'motion/react'
+import { useState } from 'react'
+
 const CommentSide = ({
   text,
   setDisplayClientComment,
   id,
   type,
+  _csrf,
 }: {
   text?: string
   setDisplayClientComment: (v: boolean) => void
   id: number
   type: 'client' | 'admin'
+  _csrf: string
 }) => {
-  const { data, setData, put } = useForm({
-    comment: text || '',
-  })
+  const [data, setData] = useState({ comment: text || '' })
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    console.log(data)
+
     e.preventDefault()
-    put(`/comment/${id}`, {
-      onSuccess: () => {
-        toast.success('Commentaire mis à jour !', {
-          autoClose: 2000,
-          hideProgressBar: true,
-        })
-        setDisplayClientComment(false)
+    fetch(`/comment/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      onError: (e) => {
+      body: JSON.stringify({
+        ...data,
+        _csrf,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          toast.success('Commentaire mis à jour !', {
+            autoClose: 2000,
+            hideProgressBar: true,
+          })
+          setDisplayClientComment(false)
+          return router.reload({ only: ['images'] })
+        } else {
+          toast.error("Une erreur s'est produite", {
+            autoClose: 2000,
+          })
+        }
+      })
+      .catch((e) => {
         toast.error(e.message, {
           autoClose: 2000,
           hideProgressBar: true,
         })
-      },
-    })
+      })
   }
   return (
     <motion.aside
@@ -69,7 +88,7 @@ const CommentSide = ({
           name="comment"
           placeholder="..."
           defaultValue={text}
-          onChange={(e) => setData({ ...data, comment: e.target.value })}
+          onChange={(e) => setData({ comment: e.target.value })}
           readOnly={type === 'admin'}
         ></textarea>
         <div className={style.cta}>
