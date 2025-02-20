@@ -26,7 +26,7 @@ router
 router
   .group(() => {
     router.post('/add', [ImagesController, 'add'])
-    router.delete('/:id', [ImagesController, 'delete'])
+    router.delete('', [ImagesController, 'delete'])
   })
   .prefix('image')
   .use(middleware.auth())

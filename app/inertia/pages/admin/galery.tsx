@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react'
+import React, { KeyboardEvent, Suspense, useEffect, useState } from 'react'
 import style from '#css/galery.module.css'
 import { Head, Link } from '@inertiajs/react'
 import pinkArrow from '#assets/icons/arrow_link.png'
@@ -28,7 +28,6 @@ const Galery = (props: PropsType) => {
     })
     setImagesData(images)
   }
-
   return (
     <>
       <Head title="Galery" />
@@ -66,7 +65,10 @@ const Galery = (props: PropsType) => {
             className={style.del}
             onClick={() => {
               setDialogElement(
-                <ConfirmDelete _csrf={props._csrf} type={{ url: `/galery/${props.urlData.id}` }} />
+                <ConfirmDelete
+                  _csrf={props._csrf}
+                  type={{ galeryUrl: `/galery/${props.urlData.id}` }}
+                />
               )
             }}
           >
@@ -76,23 +78,23 @@ const Galery = (props: PropsType) => {
       </header>
 
       <label htmlFor="filter" className={style.filter}>
-        <select name="filter" onChange={changeFilter}> 
+        <select name="filter" onChange={changeFilter}>
           <option value="all">Tout</option>
           <option value="liked">Favoris</option>
           <option value="comment">Commentés</option>
         </select>
       </label>
+
       <main className={style.main}>
-          <Suspense fallback={<></>}>
-            <DisplayGalery
+        <Suspense fallback={<></>}>
+          <DisplayGalery
             className={style.galery}
-              images={imagesData || props.images}
-              _csrf={props._csrf}
-              type="admin"
-              urlData={props.urlData}
-            />
-          </Suspense>
-      
+            images={imagesData || props.images}
+            _csrf={props._csrf}
+            type="admin"
+            urlData={props.urlData}
+          />
+        </Suspense>
       </main>
     </>
   )

@@ -1,6 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Galery from '#models/galery'
-import { deleteImage } from '#services/delete_image'
 import { storeImages } from '#services/store_images'
 import Photo from '#models/photo'
 import { jwtMaker } from '#services/jwt_service'
@@ -8,6 +7,7 @@ import { mailerService } from '#services/mailer'
 import app from '@adonisjs/core/services/app'
 import env from '#start/env'
 import { addImageSchema, commentImage, endSelection } from '#schemas/image.schema'
+import { deleteImage } from '#services/delete_image'
 
 export default class ImagesController {
   async add({ request, response, session }: HttpContext) {
@@ -26,14 +26,16 @@ export default class ImagesController {
       return response.redirect().back()
     }
   }
-  async delete({ session, response, params }: HttpContext) {
-    const { error } = await deleteImage(params.id)
+  public async delete({ session, response, request }: HttpContext) {
+    const urls: Array<string> = request.only(['urls']).urls
 
-    if (error !== undefined) {
-      session.flash({ errors: { message: error } })
-      return response.redirect().back()
+    try {
+      await deleteImage(urls)
+      return response.ok({ message: 'Image supprimée avec succès' })
+    } catch (error) {
+      session.flash({ errors: { message: error.message } })
+      return response.status(400).send({ message: error.message })
     }
-    return response.ok({ message: 'Image supprimée avec succès' })
   }
 
   async like({ request, response }: HttpContext) {

@@ -3,7 +3,6 @@ import { MouseEvent } from 'react'
 import { toast } from 'react-toastify'
 
 const UrlToSend = () => {
-  
   const { url } = usePage().props.urlData
 
   function clipToKeyboard(e: MouseEvent) {

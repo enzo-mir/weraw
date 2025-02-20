@@ -3,19 +3,26 @@ import { deleteImageSchema } from '#schemas/image.schema'
 import app from '@adonisjs/core/services/app'
 import fs from 'node:fs'
 
-export const deleteImage = async (id: string) => {
+export const deleteImage = async (urls: Array<string>) => {
   try {
-    await deleteImageSchema.parseAsync(id)
-    const image = await Photo.query().select().where('id', id).firstOrFail()
-    const url = app.publicPath(image.url)
+    const urlParsed = await deleteImageSchema.parseAsync(urls)
 
-    if (!fs.existsSync(url)) {
-      return { error: "Une erreur est survenue lors de la suppression de l'image" }
-    }
-    fs.unlinkSync(url)
-    await Photo.query().where('id', id).delete()
-    return { success: "L'image a bien été supprimée" }
-  } catch (error) {
-    return { error: "Une erreur est survenue lors de la suppression de l'image" }
+    const promise = urlParsed.map(async (url) => {
+      const image = await Photo.query().select().where('url', url).first()
+      if (!image) return Promise.reject(`L'image n'existe pas`)
+      const urlPath = app.publicPath(url)
+
+      if (!fs.existsSync(urlPath)) {
+        return Promise.reject(`L'image n'existe pas`)
+      } else {
+        fs.unlinkSync(urlPath)
+        await image.delete()
+        return Promise.resolve({ url, message: 'Image supprimée avec succès' })
+      }
+    })
+
+    return await Promise.all(promise)
+  } catch (e) {
+    throw Error('Une erreur est survenue')
   }
 }

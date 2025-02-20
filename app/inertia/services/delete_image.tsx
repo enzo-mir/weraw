@@ -1,5 +1,5 @@
-export const deleteImageService = async (id: number, _csrf: string) => {
-  const response = await fetch(`/image/${id}`, {
+export const deleteImageService = async (urls: Array<string>, _csrf: string) => {
+  const response = fetch(`/image`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -7,8 +7,9 @@ export const deleteImageService = async (id: number, _csrf: string) => {
       'Access-Control-Allow-Origin': '*',
     },
     body: JSON.stringify({
+      urls,
       _csrf,
     }),
   })
-  return response
+  return await response
 }

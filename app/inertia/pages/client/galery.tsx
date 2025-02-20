@@ -32,15 +32,15 @@ const Galery = (props: PropsType) => {
         </select>
       </label>
       <main className={style.main}>
-          <Suspense fallback={<></>}>
-            <DisplayGalery
+        <Suspense fallback={<></>}>
+          <DisplayGalery
             className={style.galery}
-              images={props.images}
-              _csrf={props._csrf}
-              type="client"
-              urlData={props.urlData}
-            />
-          </Suspense>
+            images={props.images}
+            _csrf={props._csrf}
+            type="client"
+            urlData={props.urlData}
+          />
+        </Suspense>
       </main>
     </>
   )

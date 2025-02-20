@@ -30,13 +30,13 @@
   cursor: pointer;
   font-family: var(--bricolage-condensed--font);
   font-size: 1.1em;
-    appearance: none; 
-    -webkit-appearance: none;
-    -moz-appearance: none; 
-    background-color: #fff;
-    background-image: url('../assets/icons/down_arrow_dark.svg') ;
-    background-repeat: no-repeat;
-    background-position: 90% center;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  background-image: url('../assets/icons/down_arrow_dark.svg');
+  background-repeat: no-repeat;
+  background-position: 90% center;
 }
 
 .header {
@@ -111,6 +111,21 @@
   height: 100%;
   object-fit: cover;
   border-radius: 20px;
+}
+.selected {
+  position: relative;
+  border: 2px solid var(--green);
+}
+.galery > li:has(.selected)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background-color: var(--green);
+  filter: opacity(0.2);
 }
 
 .galery > li {
@@ -244,10 +259,9 @@
 
 @media screen and (max-width: 750px) {
   .galery {
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
-  
+
   .header a p {
     display: none;
   }

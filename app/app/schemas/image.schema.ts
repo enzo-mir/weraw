@@ -1,7 +1,7 @@
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import { z } from 'zod'
 
-export const deleteImageSchema = z.string().transform((val) => val.trim().replaceAll(' ', ''))
+export const deleteImageSchema = z.array(z.string())
 
 export const commentImage = z.object({
   imageId: z.string().transform((v) => Number.parseInt(v.trim())),

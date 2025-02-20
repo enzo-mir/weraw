@@ -12,13 +12,8 @@ import confirmdelstyle from '#css/confirm_del.module.css'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { PropsType } from '~/utils/types/props.type'
 
-const Header = ({
-  exp,
-  urlData: { endSelected, name, createdAt, id },
-  _csrf,
-}: PropsType) => {
+const Header = ({ exp, urlData: { endSelected, name, createdAt, id }, _csrf }: PropsType) => {
   const [openCta, setOpenCta] = useState<boolean>(false)
-
 
   const [endSelectedState, setEndSelectedState] = useState<boolean>(Boolean(endSelected))
   const toastId = useRef<Id>(null)
@@ -56,49 +51,49 @@ const Header = ({
   const homeUrl = location.origin.replace('photos.', '')
 
   return (
-      <motion.header {...upToDownAnimation()} className={style.header}>
-        <div>
-          <nav>
-            <a href={homeUrl} className={styleback.back}>
-              <img src={pinkArrow} alt="arrow back to menu" />
-              <p>
-                Revenir à l'accueil <em>WeRaw</em>
-              </p>
-            </a>
+    <motion.header {...upToDownAnimation()} className={style.header}>
+      <div>
+        <nav>
+          <a href={homeUrl} className={styleback.back}>
+            <img src={pinkArrow} alt="arrow back to menu" />
             <p>
-              <Suspense fallback={<p>Chargement...</p>}>
-                Le lien expire dans : <CountDownTimer targetDate={exp!} />
-              </Suspense>
+              Revenir à l'accueil <em>WeRaw</em>
             </p>
-          </nav>
-          <aside>
-            <h1>{name}</h1>
-            <p>{new Date(createdAt).toLocaleDateString()}</p>
-          </aside>
-        </div>
-
-        <div>
+          </a>
           <p>
-            *Les photos sont volontairement de moins bonne qualité afin d'éviter tout risque de vol.
+            <Suspense fallback={<p>Chargement...</p>}>
+              Le lien expire dans : <CountDownTimer targetDate={exp!} />
+            </Suspense>
           </p>
-          <aside
-            className={openCta ? style.ctaOpen + ' ' + style.cta : style.cta}
-            data-endselected={endSelectedState}
-            role="group"
-          >
-            <div>
-              <p>{endSelectedState ? 'Séléction terminé' : 'En cours de sélection'}</p>
-              <button onClick={() => setOpenCta(!openCta)} >
-                <img src={downArrow} alt="" />
-              </button>
-            </div>
+        </nav>
+        <aside>
+          <h1>{name}</h1>
+          <p>{new Date(createdAt).toLocaleDateString()}</p>
+        </aside>
+      </div>
 
-            <div onClick={() => !endSelected && setDialogElement(<ConfirmEndSelected />)}>
-              <p>{!endSelectedState ? 'Séléction terminé' : 'En cours de sélection'}</p>
-            </div>
-          </aside>
-        </div>
-      </motion.header>
+      <div>
+        <p>
+          *Les photos sont volontairement de moins bonne qualité afin d'éviter tout risque de vol.
+        </p>
+        <aside
+          className={openCta ? style.ctaOpen + ' ' + style.cta : style.cta}
+          data-endselected={endSelectedState}
+          role="group"
+        >
+          <div>
+            <p>{endSelectedState ? 'Séléction terminé' : 'En cours de sélection'}</p>
+            <button onClick={() => setOpenCta(!openCta)}>
+              <img src={downArrow} alt="" />
+            </button>
+          </div>
+
+          <div onClick={() => !endSelected && setDialogElement(<ConfirmEndSelected />)}>
+            <p>{!endSelectedState ? 'Séléction terminé' : 'En cours de sélection'}</p>
+          </div>
+        </aside>
+      </div>
+    </motion.header>
   )
 }
 

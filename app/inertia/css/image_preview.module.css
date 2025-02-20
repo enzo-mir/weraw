@@ -129,7 +129,7 @@
     padding: 2em;
   }
 
-  .container>div:first-child {
+  .container > div:first-child {
     justify-content: start;
   }
 

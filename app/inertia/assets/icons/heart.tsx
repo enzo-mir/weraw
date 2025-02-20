@@ -12,7 +12,7 @@ type HeartIconProps = {
 const HeartIcon: React.FC<HeartIconProps> = ({ id, liked, type }) => {
   const _csrf = usePage().props._csrf as string
 
-  const handleClick = async (e:MouseEvent) => {
+  const handleClick = async (e: MouseEvent) => {
     e.stopPropagation()
     if (type === 'admin') return
     await likeImage(id, _csrf)

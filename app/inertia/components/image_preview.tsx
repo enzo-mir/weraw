@@ -79,7 +79,10 @@ const ImagePreview = ({
             <HeartIcon liked={images[id].like} id={images[id].id} type={type} />
             <CommentIcon
               commented={!!images[id].comment}
-              onClick={(e) => {e.stopPropagation();setDisplayClientComment(true)}}
+              onClick={(e) => {
+                e.stopPropagation()
+                setDisplayClientComment(true)
+              }}
             />
           </motion.div>
           <motion.div>
