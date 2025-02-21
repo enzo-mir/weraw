@@ -1,7 +1,5 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import Photo from './photo.js'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
 import type { UUID } from 'node:crypto'
 
 export default class Galery extends BaseModel {
@@ -33,9 +31,4 @@ export default class Galery extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  @hasMany(() => Photo, {
-    foreignKey: 'groupe',
-  })
-  declare photos: HasMany<typeof Photo>
 }

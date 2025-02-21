@@ -22,4 +22,14 @@ export default class GaleryClientController {
       exp,
     })
   }
+
+  async guard({ inertia, params }: HttpContext) {
+    const jwt = params.jwt
+
+    const galery = await Galery.query().where('jwt', jwt).firstOrFail()
+
+    return inertia.render('client/guard', {
+      galeryName: galery.name,
+    })
+  }
 }

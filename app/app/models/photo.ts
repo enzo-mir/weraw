@@ -12,12 +12,6 @@ export default class Photo extends BaseModel {
   @column()
   declare url: string
 
-  @column()
-  declare like: boolean
-
-  @column()
-  declare comment: string | null
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

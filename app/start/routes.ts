@@ -16,10 +16,19 @@ router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
 
 router
   .group(() => {
-    router.get('/galery/:jwt', [GaleryClientController, 'show']).use(middleware.jwt()).as('galery')
-    router.put('/like', [ImagesController, 'like'])
-    router.put('/comment/:imageId', [ImagesController, 'comment'])
-    router.put('/end_selected/:urlId', [ImagesController, 'end_selection'])
+    router
+      .group(() => {
+        router
+          .get('/galery/:jwt', [GaleryClientController, 'show'])
+          .use(middleware.jwt())
+          .as('galery')
+        router.put('/like', [ImagesController, 'like'])
+        router.put('/comment/:imageId', [ImagesController, 'comment'])
+        router.put('/end_selected/:urlId', [ImagesController, 'end_selection'])
+      })
+      .use(middleware.session())
+
+    router.get('/galery/:jwt/guard', [GaleryClientController, 'guard']).as('guard')
   })
   .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
 
