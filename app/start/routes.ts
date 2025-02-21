@@ -28,8 +28,9 @@ router
       })
       .use(middleware.session())
 
-    router.get('/galery/:jwt/guard', [GaleryClientController, 'guard']).as('guard')
+    router.get('/galery/:jwt/guard', [GaleryClientController, 'guard'])
     router.post('/galery/:jwt/guard/profile', [GaleryClientController, 'create_profile'])
+    router.post('/galery/:jwt/load_session', [GaleryClientController, 'load_session'])
   })
   .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
 

@@ -8,6 +8,7 @@ import app from '@adonisjs/core/services/app'
 import env from '#start/env'
 import { addImageSchema, commentImage, endSelection } from '#schemas/image.schema'
 import { deleteImage } from '#services/delete_image'
+import PhotoActionsCustomer from '#models/photo_actions_customer'
 
 export default class ImagesController {
   async add({ request, response, session }: HttpContext) {
@@ -38,8 +39,8 @@ export default class ImagesController {
     }
   }
 
-  async like({ request, response }: HttpContext) {
-    const { id } = request.all()
+  async like({ request, response, session }: HttpContext) {
+    const { id, liked } = request.all()
 
     const photo = await Photo.query().where('id', id).first()
 
@@ -47,7 +48,20 @@ export default class ImagesController {
       return response.badRequest({ message: 'Image introuvable' })
     }
     try {
-      await Photo.query().update({ like: !photo.like }).where('id', id)
+      const sessionGuest = session.get('session_guest')
+      const t = await PhotoActionsCustomer.updateOrCreate(
+        {
+          photo_id: id,
+          customer_id: sessionGuest.id,
+        },
+        {
+          customer_id: sessionGuest.id,
+          photo_id: id,
+          like: Boolean(liked),
+        }
+      )
+
+      console.log(t)
 
       return response.ok({ message: 'Like mis à jour' })
     } catch (error) {

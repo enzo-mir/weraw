@@ -10,16 +10,14 @@ export default class GaleryClientController {
 
   public maxProfile = 8
 
-  async show({ inertia, params, request }: HttpContext) {
-    const qs: 'all' | 'liked' | 'comment' | null = request.qs().filter
-
+  async show({ inertia, params, session }: HttpContext) {
     const galery = await this.getGalery(params.jwt)
 
     const urlData = await Galery.query()
       .where('groupe', galery.groupe)
       .select('end_selected', 'url', 'name', 'created_at', 'id')
       .first()
-    const images = await getClientImages({ groupe: galery.groupe }, qs)
+    const images = await getClientImages({ groupe: galery.groupe }, session)
     const exp = new Date(galery.exp * 1000)
     return inertia.render('client/galery', {
       images,
@@ -37,6 +35,28 @@ export default class GaleryClientController {
       galeryName: name,
       profiles,
     })
+  }
+
+  async load_session({ session, request, response, params }: HttpContext) {
+    try {
+      const { name, color } = request.only(['name', 'color'])
+
+      const customer = await Customer.query().where({ name, color }).firstOrFail()
+
+      const { jwt } = await this.getGalery(params.jwt)
+
+      session.put('session_guest', {
+        id: customer.id,
+        name,
+        color,
+        jwt,
+      })
+
+      return response.redirect(`/galery/${jwt}`)
+    } catch (error) {
+      session.flash('errors', { message: 'Le profil ne peut pas charger' })
+      return response.redirect().back()
+    }
   }
 
   async create_profile({ request, response, params, session }: HttpContext) {

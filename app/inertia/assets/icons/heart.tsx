@@ -15,7 +15,7 @@ const HeartIcon: React.FC<HeartIconProps> = ({ id, liked, type }) => {
   const handleClick = async (e: MouseEvent) => {
     e.stopPropagation()
     if (type === 'admin') return
-    await likeImage(id, _csrf)
+    await likeImage(id, _csrf, liked)
   }
 
   return (

@@ -6,6 +6,9 @@ import type { HasOne } from '@adonisjs/lucid/types/relations'
 export default class PhotoActionsCustomer extends BaseModel {
   static table = 'photo_actions_customers'
 
+  @column({ isPrimary: true })
+  declare id: number
+
   @column()
   declare photo_id: number
 

@@ -5,13 +5,42 @@ import { useState } from 'react'
 import NewProfile from '~/components/client/new_profile'
 import arrowRight from '#assets/icons/down_arrow.svg'
 import { optionColor } from '~/utils/static/option_color'
+import { router, usePage } from '@inertiajs/react'
+import { toast } from 'react-toastify'
 
-const Guard = ({ galeryName, profiles }: { galeryName: string; profiles: ProfilesType }) => {
+const Guard = ({
+  galeryName,
+  profiles,
+  _csrf,
+}: {
+  galeryName: string
+  profiles: ProfilesType
+  _csrf: string
+}) => {
   const [newProfile, setNewProfile] = useState(false)
+
+  const url = location.origin + usePage().url.replace('/guard', '')
 
   const colors = optionColor.filter((color) => {
     return !profiles.some((profile) => profile.color.includes(color.value))
   })
+
+  function handlLoadSession(name: string, color: string) {
+    fetch(`${url}/load_session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+      },
+      body: JSON.stringify({ _csrf, name, color }),
+    })
+      .then((data) => {
+        router.visit(data.url)
+      })
+      .catch(() => {
+        toast.error('Le profil ne peut pas charger')
+      })
+  }
 
   return (
     <Dialog>
@@ -26,7 +55,7 @@ const Guard = ({ galeryName, profiles }: { galeryName: string; profiles: Profile
               <ul className={style.profiles}>
                 {profiles.map((profile, index) => (
                   <li key={index}>
-                    <button>
+                    <button onClick={() => handlLoadSession(profile.name, profile.color)}>
                       <p>{profile.name}</p>
                       <span style={{ backgroundColor: profile.color }}></span>
                       <img src={arrowRight} alt="" />
