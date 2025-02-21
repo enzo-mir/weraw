@@ -9,7 +9,7 @@
       "#css/*": ["./css/*"],
       "#types/*": ["./utils/types/*"],
       "#assets/*": ["./assets/*"],
-      "#start/*": ["../start/*"]
+      "#schemas/*": ["../app/schemas/*"]
     }
   },
   "include": ["./**/*.ts", "./**/*.tsx"]

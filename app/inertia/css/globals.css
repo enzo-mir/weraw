@@ -96,3 +96,7 @@ button:focus-visible {
 em {
   font-style: normal;
 }
+
+ul {
+  list-style-type: none;
+}

@@ -15,26 +15,22 @@ import Photo from '#models/photo'
 
 export default class GaleriesController {
   async show(ctx: HttpContext) {
-    try {
-      const urlData = await Galery.query()
-        .where('id', ctx.params.id)
-        .select('end_selected', 'name', 'url', 'created_at', 'id', 'groupe', 'jwt')
-        .first()
+    const urlData = await Galery.query()
+      .where('id', ctx.params.id)
+      .select('end_selected', 'name', 'url', 'created_at', 'id', 'groupe', 'jwt')
+      .first()
 
-      const exp = await jwtVerifier(urlData!.jwt)
-        .then((e) => e?.exp)
-        .catch((e) => new Date(e.expiredAt).getTime() / 1000)
+    const exp = await jwtVerifier(urlData!.jwt)
+      .then((e) => e?.exp)
+      .catch((e) => new Date(e.expiredAt).getTime() / 1000)
 
-      const images = await getAdminImages(ctx.params as { id: string })
+    const images = await getAdminImages(ctx.params as { id: string })
 
-      return ctx.inertia.render('admin/galery', {
-        images,
-        urlData,
-        exp,
-      })
-    } catch (error) {
-      return ctx.inertia.render('errors/not_found')
-    }
+    return ctx.inertia.render('admin/galery', {
+      images,
+      urlData,
+      exp,
+    })
   }
 
   public async create({ request, response, session }: HttpContext) {

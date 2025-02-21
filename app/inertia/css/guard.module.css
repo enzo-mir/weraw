@@ -1,11 +1,150 @@
+:root {
+  --picker-width: 25px;
+}
+
 .container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+  max-width: 600px;
+}
+
+.container > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
 }
 
 .container span {
   font-weight: 100;
   color: var(--blue);
   font-family: var(--kg-font);
+}
+
+.container sub {
+  filter: brightness(0.7);
+}
+
+.new_profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.new_profile > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.new_profile > div input {
+  padding: 0.5em;
+  border: 2px solid white;
+  border-radius: 50px;
+  background-color: var(--bg);
+  color: white;
+  font-size: 16px;
+}
+
+.new_profile > button {
+  font-size: smaller;
+}
+
+.new_profile > div label {
+  font-size: smaller;
+}
+
+.color_picker {
+  position: relative;
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.color_picker button {
+  position: relative;
+  height: var(--picker-width);
+  padding: 0;
+  aspect-ratio: 1/1;
+  border: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+
+.color_picker button span {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.selector {
+  position: absolute;
+  transition: all 0.3s ease;
+  bottom: 0;
+  transform-box: fill-box;
+  transform: translate(calc((var(--picker-width) / 2) - 100%), 200%) rotate(45deg);
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  width: 10px;
+  aspect-ratio: 1/1;
+}
+
+.selected_color {
+}
+
+.profiles {
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+  max-height: 50svh;
+  overflow-y: auto;
+  width: 100%;
+}
+.profiles > li {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  background-color: hsl(0, 0%, 10%);
+  color: white;
+  font-size: 16px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+
+.profiles > li button {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1em;
+  width: 100%;
+  height: 100%;
+  border-radius: 0px;
+  background-color: transparent;
+  border: none;
+  padding-block: 2em;
+
+  & span {
+    width: 20px;
+    border-radius: 50%;
+  }
+
+  & img {
+    rotate: -90deg;
+  }
+}
+
+@media screen and (max-height: 900px) {
+  .profiles {
+    max-height: 300px;
+  }
 }

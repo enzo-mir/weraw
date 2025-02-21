@@ -6,11 +6,11 @@ import type { HasOne } from '@adonisjs/lucid/types/relations'
 export default class PhotoActionsCustomer extends BaseModel {
   static table = 'photo_actions_customers'
 
-  @hasOne(() => Photo)
-  declare photo_id: HasOne<typeof Photo>
+  @column()
+  declare photo_id: number
 
-  @hasOne(() => Photo)
-  declare customer_id: HasOne<typeof Photo>
+  @column()
+  declare customer_id: number
 
   @column()
   declare like: boolean
@@ -20,4 +20,10 @@ export default class PhotoActionsCustomer extends BaseModel {
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+
+  @hasOne(() => Photo)
+  declare photos: HasOne<typeof Photo>
+
+  @hasOne(() => Photo)
+  declare customers: HasOne<typeof Photo>
 }

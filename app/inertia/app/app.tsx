@@ -26,9 +26,9 @@ createInertiaApp({
       <>
         <Suspense fallback={<></>}>
           <ToastContainer />
-          <Loader>
-            <App {...props} />
-          </Loader>
+          {/*   <Loader>
+          </Loader> */}
+          <App {...props} />
         </Suspense>
       </>
     )

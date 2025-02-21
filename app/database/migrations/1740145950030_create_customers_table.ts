@@ -11,9 +11,6 @@ export default class extends BaseSchema {
       table.string('name', 255).notNullable()
       table.string('color', 16).notNullable()
       table.timestamp('created_at')
-    })
-
-    this.schema.alterTable(this.tableName, (table) => {
       table.unique(['groupe', 'color'])
     })
   }

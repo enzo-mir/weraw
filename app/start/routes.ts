@@ -29,6 +29,7 @@ router
       .use(middleware.session())
 
     router.get('/galery/:jwt/guard', [GaleryClientController, 'guard']).as('guard')
+    router.post('/galery/:jwt/guard/profile', [GaleryClientController, 'create_profile'])
   })
   .domain(`photos.${app.inDev ? 'localhost' : env.get('DOMAIN')}`)
 

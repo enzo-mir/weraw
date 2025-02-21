@@ -10,8 +10,6 @@ export const getAdminImages = async (params: { id: string }) =>
     })
     .where('galeries.id', params.id)
     .select('photos.url')
-    .select('photos.like')
-    .select('photos.comment')
     .select('photos.id')
     .orderBy('photos.id', 'asc')
 
