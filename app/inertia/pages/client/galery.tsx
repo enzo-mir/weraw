@@ -9,8 +9,6 @@ const Dialog = React.lazy(() => import('~/components/dialog'))
 const Galery = (props: PropsType) => {
   const filter = location.search.split('=')[1]
 
-  console.log(props.images)
-
   function changeFilter(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value
     if (value === 'all') return router.visit('?filter=all')

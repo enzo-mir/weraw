@@ -4,7 +4,7 @@ import { z } from 'zod'
 export const deleteImageSchema = z.array(z.string())
 
 export const commentImage = z.object({
-  imageId: z.string().transform((v) => Number.parseInt(v.trim())),
+  id: z.number(),
   comment: z.union([
     z
       .string()

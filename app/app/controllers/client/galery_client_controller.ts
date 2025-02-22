@@ -10,15 +10,19 @@ export default class GaleryClientController {
 
   public maxProfile = 8
 
-  async show({ inertia, params, session }: HttpContext) {
+  async show({ inertia, params, session, request }: HttpContext) {
     const galery = await this.getGalery(params.jwt)
+    const qs: 'all' | 'liked' | 'comment' | null = request.qs().filter
 
     const urlData = await Galery.query()
       .where('groupe', galery.groupe)
       .select('end_selected', 'url', 'name', 'created_at', 'id')
       .first()
-    const images = await getClientImages({ groupe: galery.groupe }, session)
+
+    const images = await getClientImages({ groupe: galery.groupe }, session, qs)
+
     const exp = new Date(galery.exp * 1000)
+
     return inertia.render('client/galery', {
       images,
       urlData,

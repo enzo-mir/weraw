@@ -1,13 +1,15 @@
+import { SessionGuestType } from '#schemas/types/session_guest.type'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 
 export default class SessionMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
-    if (ctx.session.get('session_guest') === undefined) {
-      const jwt = ctx.params.jwt
+    const guestSession: SessionGuestType | undefined = ctx.session.get('session_guest')
+    const jwt = ctx.params.jwt
+    if (guestSession === undefined || guestSession.jwt !== ctx.params.jwt) {
       return ctx.response.redirect(`/galery/${jwt}/guard`)
-    } else {
-      return next()
     }
+
+    return next()
   }
 }

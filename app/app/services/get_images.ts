@@ -14,7 +14,11 @@ export const getAdminImages = async (params: { id: string }) =>
     .select('photos.id')
     .orderBy('photos.id', 'asc')
 
-export const getClientImages = async (params: { groupe: string }, session: Session) => {
+export const getClientImages = async (
+  params: { groupe: string },
+  session: Session,
+  qs: 'all' | 'liked' | 'comment' | null
+) => {
   return await Photo.query()
     .select(
       'photos.url',
@@ -29,5 +33,11 @@ export const getClientImages = async (params: { groupe: string }, session: Sessi
       )
     })
     .where('photos.groupe', params.groupe)
-    .pojo() // Group by photo ID to avoid duplicates
+    .pojo()
+    .if(qs === 'liked', (q) => {
+      q.where('photo_actions_customers.like', true)
+    })
+    .if(qs === 'comment', (q) => {
+      q.whereNotNull('photo_actions_customers.comment')
+    })
 }

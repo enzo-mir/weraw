@@ -49,7 +49,7 @@ export default class ImagesController {
     }
     try {
       const sessionGuest = session.get('session_guest')
-      const t = await PhotoActionsCustomer.updateOrCreate(
+      await PhotoActionsCustomer.updateOrCreate(
         {
           photo_id: id,
           customer_id: sessionGuest.id,
@@ -60,24 +60,37 @@ export default class ImagesController {
           like: Boolean(liked),
         }
       )
-
-      console.log(t)
-
       return response.ok({ message: 'Like mis à jour' })
     } catch (error) {
       return response.badRequest({ message: 'Une erreur est survenue' })
     }
   }
 
-  async comment({ request, response, params, session }: HttpContext) {
+  async comment({ request, response, session }: HttpContext) {
     try {
-      const { imageId, comment } = commentImage.parse({ ...params, ...request.all() })
+      const { id, comment } = commentImage.parse(request.all())
 
-      await Photo.query().update({ comment }).where('id', imageId)
+      const photo = await Photo.query().where({ id }).first()
+
+      if (!photo) {
+        return response.badRequest({ message: 'Image introuvable' })
+      }
+      const sessionGuest = session.get('session_guest')
+      await PhotoActionsCustomer.updateOrCreate(
+        {
+          photo_id: id,
+          customer_id: sessionGuest.id,
+        },
+        {
+          customer_id: sessionGuest.id,
+          photo_id: id,
+          comment,
+        }
+      )
 
       return response.ok({ message: 'Commentaire mis à jour' })
     } catch (error) {
-      session.flash({ errors: { message: 'Image introuvable' } })
+      session.flash({ errors: { message: 'Erreur lors de la mise à jour du commentaire' } })
       return response.redirect().back()
     }
   }

@@ -1,5 +1,5 @@
 import style from '#css/client_comment.module.css'
-import { router, useForm } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 import { motion } from 'motion/react'
 import { useState } from 'react'
@@ -17,19 +17,21 @@ const CommentSide = ({
   type: 'client' | 'admin'
   _csrf: string
 }) => {
+  const url = usePage().url.replace('/galery', '').replace(location.search, '')
+  console.log(url)
+
   const [data, setData] = useState({ comment: text || '' })
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    console.log(data)
-
     e.preventDefault()
-    fetch(`/comment/${id}`, {
+    fetch(`${url}/comment`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         ...data,
+        id,
         _csrf,
       }),
     })
