@@ -9,6 +9,7 @@ import env from '#start/env'
 import { addImageSchema, commentImage, endSelection } from '#schemas/image.schema'
 import { deleteImage } from '#services/delete_image'
 import PhotoActionsCustomer from '#models/photo_actions_customer'
+import { SessionGuestType } from '#schemas/types/session_guest.type'
 
 export default class ImagesController {
   async add({ request, response, session }: HttpContext) {
@@ -97,12 +98,10 @@ export default class ImagesController {
 
   private nextDay = new Date(new Date().setDate(new Date().getDate() + 1))
 
-  async end_selection({ request, response, params, session }: HttpContext) {
+  async end_selection({ request, response, session }: HttpContext) {
+    const sessionGuest: SessionGuestType = session.get('session_guest')
     try {
-      const { urlId, end_selected: endSelected } = await endSelection.parseAsync({
-        ...params,
-        ...request.all(),
-      })
+      const { urlId, end_selected: endSelected } = await endSelection.parseAsync(request.all())
 
       const galery = await Galery.query().where('id', urlId).first()
       const token = await jwtMaker(galery!.groupe, this.nextDay.toISOString())
@@ -121,6 +120,10 @@ export default class ImagesController {
         name: urlUpdate.name,
         createdAt: new Date(urlUpdate.createdAt?.toISO() ?? '').toLocaleDateString(),
         url: urlMail,
+      })
+
+      session.put('session_guest', {
+        jwt: token.token,
       })
 
       return response.ok({ url })

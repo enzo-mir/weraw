@@ -7,9 +7,10 @@ export default async function changeEndSeleced(
   end_selected: boolean,
   setEndSelected: (endSelected: boolean) => void,
   toastId: React.RefObject<Id | null>,
-  setOpenCta: (openCta: boolean) => void
+  setOpenCta: (openCta: boolean) => void,
+  url: string
 ) {
-  const response = await fetch(`/end_selected/${urlId}`, {
+  const response = await fetch(`${url}/end_selected`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -18,6 +19,7 @@ export default async function changeEndSeleced(
     },
     body: JSON.stringify({
       end_selected,
+      urlId,
       _csrf,
     }),
   })

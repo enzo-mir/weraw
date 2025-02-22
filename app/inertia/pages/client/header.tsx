@@ -11,9 +11,11 @@ import { upToDownAnimation } from '~/utils/animations/up_to_down'
 import confirmdelstyle from '#css/confirm_del.module.css'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { PropsType } from '~/utils/types/props.type'
+import { usePage } from '@inertiajs/react'
 
 const Header = ({ exp, urlData: { endSelected, name, createdAt, id }, _csrf }: PropsType) => {
   const [openCta, setOpenCta] = useState<boolean>(false)
+  const url = usePage().url.replace('/galery', '').replace(location.search, '')
 
   const [endSelectedState, setEndSelectedState] = useState<boolean>(Boolean(endSelected))
   const toastId = useRef<Id>(null)
@@ -35,7 +37,8 @@ const Header = ({ exp, urlData: { endSelected, name, createdAt, id }, _csrf }: P
                   !endSelectedState,
                   setEndSelectedState,
                   toastId,
-                  setOpenCta
+                  setOpenCta,
+                  url
                 ).then(() => setDialogElement(null))
               }}
             >

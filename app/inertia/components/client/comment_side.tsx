@@ -18,7 +18,6 @@ const CommentSide = ({
   _csrf: string
 }) => {
   const url = usePage().url.replace('/galery', '').replace(location.search, '')
-  console.log(url)
 
   const [data, setData] = useState({ comment: text || '' })
 

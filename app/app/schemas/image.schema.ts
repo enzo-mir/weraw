@@ -15,7 +15,7 @@ export const commentImage = z.object({
 })
 
 export const endSelection = z.object({
-  urlId: z.string().transform((v) => Number.parseInt(v.trim())),
+  urlId: z.number(),
   end_selected: z.boolean(),
 })
 
