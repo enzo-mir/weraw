@@ -9,7 +9,6 @@ import env from '#start/env'
 import { addImageSchema, commentImage, endSelection } from '#schemas/image.schema'
 import { deleteImage } from '#services/delete_image'
 import PhotoActionsCustomer from '#models/photo_actions_customer'
-import { SessionGuestType } from '#schemas/types/session_guest.type'
 
 export default class ImagesController {
   async add({ request, response, session }: HttpContext) {
@@ -99,7 +98,6 @@ export default class ImagesController {
   private nextDay = new Date(new Date().setDate(new Date().getDate() + 1))
 
   async end_selection({ request, response, session }: HttpContext) {
-    const sessionGuest: SessionGuestType = session.get('session_guest')
     try {
       const { urlId, end_selected: endSelected } = await endSelection.parseAsync(request.all())
 
@@ -110,6 +108,7 @@ export default class ImagesController {
         session.flash({ errors: { message: 'Une erreur est survenue' } })
         return response.badRequest()
       }
+
       const url = `http${app.inDev ? '' : 's'}://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/galery/${token.token}`
       const urlMail = `http${app.inDev ? '' : 's'}://${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/galery/${galery!.id}`
       const urlUpdate = await Galery.updateOrCreate(

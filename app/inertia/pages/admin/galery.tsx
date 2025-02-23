@@ -1,6 +1,6 @@
-import React, { KeyboardEvent, Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import style from '#css/galery.module.css'
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import pinkArrow from '#assets/icons/arrow_link.png'
 import { dialogState } from '~/utils/stores/dialog.store'
 import { ConfirmDelete } from '~/components/admin/confirm_del'
@@ -15,6 +15,7 @@ import { GaleryType } from '~/utils/types/galery.type'
 const Galery = (props: PropsType) => {
   const fileTypes = ['JPG', 'PNG', 'JPEG']
   const setDialogElement = dialogState((state) => state.setDialogElement)
+  const qs = new URLSearchParams(window.location.search).get('customer') || props.profiles?.[0].id
 
   const [imagesData, setImagesData] = useState<GaleryType[] | null>(null)
 
@@ -28,6 +29,11 @@ const Galery = (props: PropsType) => {
     })
     setImagesData(images)
   }
+
+  function handlechangeProfile(id: number) {
+    router.visit('?customer=' + id)
+  }
+
   return (
     <>
       <Head title="Galery" />
@@ -75,6 +81,28 @@ const Galery = (props: PropsType) => {
             Supprimer
           </button>
         </aside>
+
+        {props.profiles?.length ? (
+          <>
+            <ul className={style.profiles}>
+              <p>Profils :</p>
+              {props.profiles?.map((profile) => {
+                return (
+                  <li
+                    onClick={() => handlechangeProfile(profile.id)}
+                    key={profile.id}
+                    className={
+                      Number.parseInt(qs as string) === profile.id ? style.selected : undefined
+                    }
+                  >
+                    <p>{profile.name}</p>
+                    <span style={{ backgroundColor: profile.color }}></span>
+                  </li>
+                )
+              })}
+            </ul>
+          </>
+        ) : null}
       </header>
 
       <label htmlFor="filter" className={style.filter}>

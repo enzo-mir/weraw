@@ -19,6 +19,43 @@
   padding: 2em;
 }
 
+.profiles {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+}
+
+.profiles li {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  background-color: hsl(0, 0%, 15%);
+  color: white;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  min-height: 50px;
+  padding: 0.5em;
+
+  &:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+  }
+}
+
+.profiles span {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+}
+
+.profile_selected {
+  border: 2px solid var(--green);
+}
+
 .filter select {
   display: flex;
   align-items: center;
@@ -159,7 +196,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 100px auto;
-  height: 200px;
+  gap: 1em;
+  min-height: 200px;
 }
 .back {
   position: relative;

@@ -12,6 +12,7 @@ export default class GaleryClientController {
 
   async show({ inertia, params, session, request }: HttpContext) {
     const galery = await this.getGalery(params.jwt)
+
     const qs: 'all' | 'liked' | 'comment' | null = request.qs().filter
 
     const urlData = await Galery.query()

@@ -1,18 +1,23 @@
 import Photo from '#models/photo'
-import db from '@adonisjs/lucid/services/db'
 import { Session } from '@adonisjs/session'
+import { UUID } from 'node:crypto'
 
-export const getAdminImages = async (params: { id: string }) =>
-  await db
-    .from('photos')
-    .as('photos')
-    .join('galeries', (q) => {
-      q.on('photos.groupe', 'galeries.groupe')
+export const getAdminImages = async (groupe: UUID, customer_id: string) =>
+  await Photo.query()
+    .select(
+      'photos.url',
+      'photos.id',
+      'photo_actions_customers.like',
+      'photo_actions_customers.comment'
+    )
+    .leftJoin('photo_actions_customers', (q) => {
+      q.on('photos.id', 'photo_actions_customers.photo_id').andOnVal(
+        'photo_actions_customers.customer_id',
+        customer_id
+      )
     })
-    .where('galeries.id', params.id)
-    .select('photos.url')
-    .select('photos.id')
-    .orderBy('photos.id', 'asc')
+    .where('photos.groupe', groupe)
+    .pojo()
 
 export const getClientImages = async (
   params: { groupe: string },

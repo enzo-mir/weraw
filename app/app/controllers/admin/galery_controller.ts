@@ -12,6 +12,7 @@ import { z } from 'zod'
 import env from '#start/env'
 import Galery from '#models/galery'
 import Photo from '#models/photo'
+import Customer from '#models/customer'
 
 export default class GaleriesController {
   async show(ctx: HttpContext) {
@@ -23,12 +24,16 @@ export default class GaleriesController {
     const exp = await jwtVerifier(urlData!.jwt)
       .then((e) => e?.exp)
       .catch((e) => new Date(e.expiredAt).getTime() / 1000)
+    const profiles = await Customer.query().select('*').where('groupe', urlData!.groupe)
 
-    const images = await getAdminImages(ctx.params as { id: string })
+    const customerIdQs: string = ctx.request.qs().customer || profiles[0].id
+
+    const images = await getAdminImages(urlData!.groupe, customerIdQs)
 
     return ctx.inertia.render('admin/galery', {
       images,
       urlData,
+      profiles,
       exp,
     })
   }
