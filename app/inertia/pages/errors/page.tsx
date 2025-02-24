@@ -1,7 +1,6 @@
 import style from '#css/error_page.module.css'
 const Page = ({ error }: { error: string }) => {
   const homeUrl = location.origin.replace('photos.', '')
-  console.log(error)
 
   return (
     <main className={style.container}>

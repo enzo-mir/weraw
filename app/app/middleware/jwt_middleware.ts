@@ -1,4 +1,4 @@
-import HttpExceptionHandler from '#exceptions/handler'
+import JwtException from '#exceptions/jwt_exception'
 import Galery from '#models/galery'
 import { jwtVerifier } from '#services/jwt_service'
 import { HttpContext } from '@adonisjs/core/http'
@@ -11,7 +11,9 @@ export default class JwtMiddleware {
     const galery = await Galery.query().where('jwt', jwt).first()
 
     if (!jwt || !verify || !galery) {
-      throw new HttpExceptionHandler().handle({ message: 'invalid signature', status: 401 }, ctx)
+      throw new JwtException('invalid signature', {
+        status: 401,
+      })
     }
 
     return next()

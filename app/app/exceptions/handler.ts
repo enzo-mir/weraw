@@ -21,9 +21,9 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       error.message === 'invalid token'
     ) {
       return 'Le lien est invalide ou expiré'
+    } else {
+      return 'Une erreur serveur est survenue'
     }
-
-    return 'Une erreur serveur est survenue'
   }
 
   protected page = (ctx: HttpContext, error: string) =>
@@ -31,6 +31,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 
   async handle(error: HttpError, ctx: HttpContext) {
     const errorMessage = this.getErrorMessage(error)
+
     if (errorMessage) {
       return ctx.response.status(error.status).send(await this.page(ctx, errorMessage))
     }

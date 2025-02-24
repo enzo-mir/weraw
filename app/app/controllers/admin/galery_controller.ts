@@ -26,9 +26,10 @@ export default class GaleriesController {
       .catch((e) => new Date(e.expiredAt).getTime() / 1000)
     const profiles = await Customer.query().select('*').where('groupe', urlData!.groupe)
 
-    const customerIdQs: string = ctx.request.qs().customer || profiles[0].id
+    const customerIdQs: string = ctx.request.qs().customer || profiles[0]?.id || undefined
 
     const images = await getAdminImages(urlData!.groupe, customerIdQs)
+    console.log(profiles)
 
     return ctx.inertia.render('admin/galery', {
       images,

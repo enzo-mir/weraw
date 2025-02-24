@@ -15,7 +15,9 @@ import { GaleryType } from '~/utils/types/galery.type'
 const Galery = (props: PropsType) => {
   const fileTypes = ['JPG', 'PNG', 'JPEG']
   const setDialogElement = dialogState((state) => state.setDialogElement)
-  const qs = new URLSearchParams(window.location.search).get('customer') || props.profiles?.[0].id
+  const qs =
+    new URLSearchParams(window.location.search).get('customer') ||
+    (props.profiles?.length && props.profiles?.[0].id)
 
   const [imagesData, setImagesData] = useState<GaleryType[] | null>(null)
 
@@ -83,25 +85,23 @@ const Galery = (props: PropsType) => {
         </aside>
 
         {props.profiles?.length ? (
-          <>
-            <ul className={style.profiles}>
-              <p>Profils :</p>
-              {props.profiles?.map((profile) => {
-                return (
-                  <li
-                    onClick={() => handlechangeProfile(profile.id)}
-                    key={profile.id}
-                    className={
-                      Number.parseInt(qs as string) === profile.id ? style.selected : undefined
-                    }
-                  >
-                    <p>{profile.name}</p>
-                    <span style={{ backgroundColor: profile.color }}></span>
-                  </li>
-                )
-              })}
-            </ul>
-          </>
+          <ul className={style.profiles}>
+            <p>Profils :</p>
+            {props.profiles?.map((profile) => {
+              return (
+                <li
+                  onClick={() => handlechangeProfile(profile.id)}
+                  key={profile.id}
+                  className={
+                    Number.parseInt(qs as string) === profile.id ? style.selected : undefined
+                  }
+                >
+                  <p>{profile.name}</p>
+                  <span style={{ backgroundColor: profile.color }}></span>
+                </li>
+              )
+            })}
+          </ul>
         ) : null}
       </header>
 

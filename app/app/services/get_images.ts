@@ -2,22 +2,27 @@ import Photo from '#models/photo'
 import { Session } from '@adonisjs/session'
 import { UUID } from 'node:crypto'
 
-export const getAdminImages = async (groupe: UUID, customer_id: string) =>
-  await Photo.query()
-    .select(
-      'photos.url',
-      'photos.id',
-      'photo_actions_customers.like',
-      'photo_actions_customers.comment'
-    )
-    .leftJoin('photo_actions_customers', (q) => {
-      q.on('photos.id', 'photo_actions_customers.photo_id').andOnVal(
-        'photo_actions_customers.customer_id',
-        customer_id
+export const getAdminImages = async (groupe: UUID, customer_id: string) => {
+  if (customer_id) {
+    return await Photo.query()
+      .select(
+        'photos.url',
+        'photos.id',
+        'photo_actions_customers.like',
+        'photo_actions_customers.comment'
       )
-    })
-    .where('photos.groupe', groupe)
-    .pojo()
+      .leftJoin('photo_actions_customers', (q) => {
+        q.on('photos.id', 'photo_actions_customers.photo_id').onVal(
+          'photo_actions_customers.customer_id',
+          customer_id
+        )
+      })
+      .where('photos.groupe', groupe)
+      .pojo()
+  } else {
+    return await Photo.query().select('photos.url', 'photos.id').where('photos.groupe', groupe)
+  }
+}
 
 export const getClientImages = async (
   params: { groupe: string },
