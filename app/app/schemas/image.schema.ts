@@ -14,11 +14,6 @@ export const commentImage = z.object({
   ]),
 })
 
-export const endSelection = z.object({
-  urlId: z.number(),
-  end_selected: z.boolean(),
-})
-
 export const addImageSchema = z.object({
   files: z.union([z.array(z.instanceof(MultipartFile)), z.instanceof(MultipartFile)]),
   galeryName: z.string().transform((v) => v.trim()),

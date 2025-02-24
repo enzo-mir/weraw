@@ -80,80 +80,6 @@
   font-weight: lighter;
 }
 
-.cta {
-  position: relative;
-  display: grid;
-  justify-self: end;
-  width: 250px;
-  outline: 1px solid white;
-  border-radius: 1.5em;
-  height: var(--height);
-  transition: all 0.2s ease-out;
-}
-.cta > div {
-  height: var(--height);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 1em;
-}
-
-.cta > div:first-child {
-  border-radius: 3em;
-  & button {
-    display: grid;
-    place-items: center;
-    width: calc(var(--height) - 2px);
-    padding: 0;
-    outline: 2px solid white;
-    aspect-ratio: 1 / 1;
-    border: none;
-  }
-}
-
-.cta[data-endselected='true'] div:first-child {
-  background-color: var(--green);
-}
-
-.cta:is(.ctaOpen) {
-  & button {
-    &:hover {
-      background-color: var(--green);
-    }
-    & img {
-      rotate: 180deg;
-      transition: rotate 0.2s ease-out;
-    }
-  }
-}
-.cta[data-endselected='true'] div:last-child:hover {
-  background-color: var(--blue);
-}
-.cta:is(:not(.ctaOpen)) {
-  & button {
-    &:hover {
-      background-color: var(--blue);
-    }
-    & img {
-      rotate: 0;
-      transition: rotate 0.2s ease-out;
-    }
-  }
-}
-
-.cta > div:last-child {
-  border: 1px solid white;
-  border-radius: 3em;
-  transition:
-    visibility 0.15s ease-out,
-    opacity 0.15s ease-out,
-    height 0.2s ease-out;
-  cursor: pointer;
-  opacity: 0;
-  height: 0;
-  visibility: hidden;
-}
-
 .ctaOpen > div:last-child {
   opacity: 1;
   height: var(--height);
@@ -171,7 +97,8 @@
 
 @media screen and (max-width: 750px) {
   .header {
-    grid-template-rows: auto calc(var(--height) * 2 + 2em + var(--height));
+    grid-template-rows: auto auto;
+    min-height: fit-content;
   }
 
   .header nav {
@@ -181,25 +108,6 @@
 
   .header a p {
     display: none;
-  }
-
-  .header > div:last-child {
-    gap: 2em;
-    grid-template-rows: auto 1fr;
-
-    & aside {
-      justify-self: start;
-      grid-area: 1 / 1 / 2 / 2;
-    }
-
-    & p {
-      grid-area: 2 / 1 / 3 / 2;
-    }
-  }
-
-  .cta {
-    grid-area: 2 / 1 / 3 / 3;
-    text-wrap: balance;
   }
 
   .header h1 {

@@ -24,7 +24,6 @@ router
           .as('galery')
         router.put('/:jwt/like', [ImagesController, 'like'])
         router.put('/:jwt/comment', [ImagesController, 'comment'])
-        router.put('/:jwt/end_selected', [ImagesController, 'end_selection'])
       })
       .use(middleware.session())
 

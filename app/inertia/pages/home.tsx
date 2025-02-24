@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <>
-      <Head title="homepage" />
+      <Head title="Accueil" />
       <main className={style.main}>
         <div className={style.text_side}>
           <motion.h1 {...leftToRightAnimation()}>

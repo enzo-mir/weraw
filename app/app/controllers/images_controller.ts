@@ -2,11 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Galery from '#models/galery'
 import { storeImages } from '#services/store_images'
 import Photo from '#models/photo'
-import { jwtMaker } from '#services/jwt_service'
-import { mailerService } from '#services/mailer'
-import app from '@adonisjs/core/services/app'
-import env from '#start/env'
-import { addImageSchema, commentImage, endSelection } from '#schemas/image.schema'
+import { addImageSchema, commentImage } from '#schemas/image.schema'
 import { deleteImage } from '#services/delete_image'
 import PhotoActionsCustomer from '#models/photo_actions_customer'
 
@@ -92,42 +88,6 @@ export default class ImagesController {
     } catch (error) {
       session.flash({ errors: { message: 'Erreur lors de la mise à jour du commentaire' } })
       return response.redirect().back()
-    }
-  }
-
-  private nextDay = new Date(new Date().setDate(new Date().getDate() + 1))
-
-  async end_selection({ request, response, session }: HttpContext) {
-    try {
-      const { urlId, end_selected: endSelected } = await endSelection.parseAsync(request.all())
-
-      const galery = await Galery.query().where('id', urlId).first()
-      const token = await jwtMaker(galery!.groupe, this.nextDay.toISOString())
-
-      if (token instanceof Error) {
-        session.flash({ errors: { message: 'Une erreur est survenue' } })
-        return response.badRequest()
-      }
-
-      const url = `http${app.inDev ? '' : 's'}://photos.${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/galery/${token.token}`
-      const urlMail = `http${app.inDev ? '' : 's'}://${app.inDev ? 'localhost:3000' : env.get('DOMAIN')}/galery/${galery!.id}`
-      const urlUpdate = await Galery.updateOrCreate(
-        { id: galery?.id },
-        { endSelected, jwt: token.token, exp: token.exp, url: url }
-      )
-      mailerService({
-        name: urlUpdate.name,
-        createdAt: new Date(urlUpdate.createdAt?.toISO() ?? '').toLocaleDateString(),
-        url: urlMail,
-      })
-
-      session.put('session_guest', {
-        jwt: token.token,
-      })
-
-      return response.ok({ url })
-    } catch (error) {
-      return response.badRequest()
     }
   }
 }
