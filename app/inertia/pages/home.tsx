@@ -29,7 +29,12 @@ export default function Home() {
 
   return (
     <>
-      <Head title="Accueil" />
+      <Head>
+        <title>Accueil</title>
+        <link rel="preload" href={waterPink} as="image" />
+        <link rel="preload" href={starEye} as="image" />
+        <link rel="preload" href={star} as="image" />
+      </Head>
       <main className={style.main}>
         <div className={style.text_side}>
           <motion.h1 {...leftToRightAnimation()}>

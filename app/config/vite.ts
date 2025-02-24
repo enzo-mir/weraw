@@ -19,9 +19,13 @@ const viteBackendConfig = defineConfig({
    * point to a CDN in production.
    */
   assetsUrl: '/assets',
+  styleAttributes: {
+    defer: true,
+  },
 
   scriptAttributes: {
     defer: true,
+    async: true,
   },
 })
 

@@ -36,6 +36,11 @@ const Galery = (props: PropsType) => {
     router.visit('?customer=' + id)
   }
 
+  function handleDeleteProfile(e: React.MouseEvent, id: number) {
+    e.stopPropagation()
+
+    setDialogElement(<ConfirmDelete _csrf={props._csrf} type={{ profileId: id }} />)
+  }
   return (
     <>
       <Head title="Galery" />
@@ -98,6 +103,9 @@ const Galery = (props: PropsType) => {
                 >
                   <p>{profile.name}</p>
                   <span style={{ backgroundColor: profile.color }}></span>
+                  <button onClick={(e) => handleDeleteProfile(e, profile.id)}>
+                    <span>x</span>
+                  </button>
                 </li>
               )
             })}

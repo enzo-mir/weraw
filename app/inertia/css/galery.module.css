@@ -43,6 +43,21 @@
     filter: brightness(0.8);
     cursor: pointer;
   }
+
+  & button {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 2px solid var(--red);
+    width: 30px;
+    height: 30px;
+    aspect-ratio: 1 / 1;
+
+    &:hover {
+      filter: brightness(1);
+      background-color: var(--red);
+    }
+  }
 }
 
 .profiles span {

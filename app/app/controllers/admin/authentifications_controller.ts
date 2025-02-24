@@ -4,6 +4,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { z } from 'zod'
 import hash from '@adonisjs/core/services/hash'
 import { editAdminSchema } from '../../schemas/edit_admin.schema.js'
+import Customer from '#models/customer'
 
 export default class AuthentificationsController {
   public async login({ auth, request, response, session }: HttpContext) {
@@ -51,6 +52,19 @@ export default class AuthentificationsController {
       }
 
       return response.redirect().back()
+    }
+  }
+
+  async delet_profile(ctx: HttpContext) {
+    const userId = ctx.params.id
+    try {
+      const customer = await Customer.findByOrFail({ id: userId })
+      await customer.delete()
+      ctx.session.flash({ success: 'Profil supprimé avec succès' })
+      return ctx.response.redirect().back()
+    } catch (error) {
+      ctx.session.flash({ errors: { message: 'Profil introuvable' } })
+      return ctx.response.redirect().back()
     }
   }
 }

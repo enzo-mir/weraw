@@ -4,7 +4,7 @@
 import React, { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
-import '#css/globals.css'
+
 const ToastContainer = React.lazy(() =>
   import('react-toastify').then((module) => ({ default: module.ToastContainer }))
 )
@@ -23,14 +23,12 @@ createInertiaApp({
 
   setup({ el, App, props }) {
     createRoot(el).render(
-      <>
-        <Suspense fallback={<></>}>
-          <ToastContainer />
-          {/*   <Loader>
-          </Loader> */}
+      <Suspense fallback={<></>}>
+        <ToastContainer />
+        <Loader>
           <App {...props} />
-        </Suspense>
-      </>
+        </Loader>
+      </Suspense>
     )
   },
 })

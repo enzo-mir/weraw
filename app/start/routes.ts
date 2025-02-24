@@ -42,7 +42,7 @@ router
   .use(middleware.auth())
 
 router.put('/account', [AuthentificationsController, 'edit']).use(middleware.auth())
-
+router.delete('/profile/:id', [AuthentificationsController, 'delet_profile']).use(middleware.auth())
 router
   .group(() => {
     router.post('/add', [GaleriesController, 'create'])

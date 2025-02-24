@@ -13,6 +13,7 @@ export const ConfirmDelete = ({
   type: {
     imageUrls?: Array<string>
     galeryUrl?: string
+    profileId?: number
   }
   setState?: React.Dispatch<React.SetStateAction<Array<string>>>
   _csrf: string
@@ -21,7 +22,9 @@ export const ConfirmDelete = ({
 
   function handleClick(e: globalThis.KeyboardEvent) {
     if (e.key === 'Escape') setDialogElement(null)
-    if (e.key === 'Enter') handleDeleteImage()
+    if (e.key === 'Enter') {
+      type.profileId ? handleDeleteProfile() : handleDeleteImage()
+    }
   }
   useEffect(() => {
     window.addEventListener('keydown', handleClick, { once: true })
@@ -29,6 +32,24 @@ export const ConfirmDelete = ({
       window.removeEventListener('keydown', handleClick)
     }
   }, [])
+
+  function handleDeleteProfile() {
+    router.delete(`/profile/${type.profileId}`, {
+      onSuccess: () => {
+        setDialogElement(null)
+        toast.success('Profil supprimé avec succès', {
+          autoClose: 2000,
+        })
+      },
+      onError: () => {
+        toast('Une erreur est survenue', {
+          type: 'error',
+          autoClose: 2000,
+        })
+        window.addEventListener('keydown', handleClick, { once: true })
+      },
+    })
+  }
 
   async function handleDeleteImage() {
     if (type.imageUrls !== undefined) {
@@ -56,9 +77,18 @@ export const ConfirmDelete = ({
   return (
     <>
       <div className={style.container}>
-        <p>Voulez-vous vraiment supprimer {type.imageUrls ? "l'image" : 'la galerie'} ?</p>
+        <p>
+          Voulez-vous vraiment supprimer{' '}
+          {type.profileId ? 'le profil' : type.imageUrls ? "l'image" : 'la galerie'} ?
+        </p>
         <div>
-          <button onClick={() => handleDeleteImage()}>Oui</button>
+          <button
+            onClick={() => {
+              type.profileId ? handleDeleteProfile() : handleDeleteImage()
+            }}
+          >
+            Oui
+          </button>
           <button onClick={() => setDialogElement(null)}>Non</button>
         </div>
       </div>
