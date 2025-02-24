@@ -75,4 +75,4 @@ jobs:
             EOL
                     
             node ace migration:run --force
-            pm2 start ../../encosytem.config.cjs
+            pm2 start ../../ecosystem.config.cjs
