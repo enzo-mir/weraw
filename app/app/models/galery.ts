@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import { BaseModel, column } from '@adonisjs/lucid/orm'
 import type { UUID } from 'node:crypto'
 
 export default class Galery extends BaseModel {

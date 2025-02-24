@@ -2,7 +2,6 @@ import { router } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 
 export const likeImage = async (id: number, _csrf: string, liked: boolean, url: string) => {
-  
   const response = await fetch(`/${url}/like`, {
     method: 'PUT',
     headers: {
