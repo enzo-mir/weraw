@@ -1,7 +1,7 @@
 import { fileTypes } from '#schemas/file_extension'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import app from '@adonisjs/core/services/app'
-import { randomBytes, UUID } from 'node:crypto'
+import { UUID } from 'node:crypto'
 import fs from 'node:fs/promises'
 import sharp from 'sharp'
 
@@ -11,17 +11,6 @@ export const storeImages = async (
   updating: boolean,
   groupe: UUID
 ): Promise<{ url: string; groupe: UUID }[]> => {
-  const generateUniqueFileName = (originalName: string): string => {
-    const timestamp = Date.now()
-    const randomString = randomBytes(4).toString('hex')
-    const sanitizedOriginalName = originalName
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, '-')
-      .substring(0, 50)
-
-    return `${timestamp}-${randomString}-${sanitizedOriginalName}.webp`
-  }
-
   const getImageBrightness = async (imagePath: string): Promise<number> => {
     const stats = await sharp(imagePath).stats()
     if (stats.channels.length < 3) {
@@ -52,7 +41,7 @@ export const storeImages = async (
       throw new Error('Type de fichier invalide')
     }
 
-    const fileName = generateUniqueFileName(image.clientName.replace(/\.[^/.]+$/, ''))
+    const fileName = image.clientName.replace(/\.[^/.]+$/, '')
     const filePath = `images/${name.replaceAll(' ', '_')}/${fileName}`
     const fullPath = app.publicPath(filePath)
 

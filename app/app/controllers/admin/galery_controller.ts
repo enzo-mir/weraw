@@ -29,7 +29,6 @@ export default class GaleriesController {
     const customerIdQs: string = ctx.request.qs().customer || profiles[0]?.id || undefined
 
     const images = await getAdminImages(urlData!.groupe, customerIdQs)
-    console.log(profiles)
 
     return ctx.inertia.render('admin/galery', {
       images,

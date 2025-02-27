@@ -28,6 +28,7 @@ const ImagePreview = ({
   images: GaleryType[]
   _csrf: string
 }) => {
+  const imageName = images[id].url.split('/').pop()
   const [displayClientComment, setDisplayClientComment] = useState<boolean>(false)
   const [[page, direction], setPage] = useState([id, 0])
 
@@ -75,7 +76,7 @@ const ImagePreview = ({
       <div className={overlayStyle.overlay} onClick={goBack}>
         <article className={style.container} onClick={() => setDisplayClientComment(false)}>
           <motion.div {...upToDownAnimation()}>
-            {type === 'client' ? null : <p>Image n°{id! + 1}</p>}
+            {type === 'client' ? null : <p>{imageName}</p>}
             <HeartIcon liked={images[id].like} id={images[id].id} type={type} />
             <CommentIcon
               commented={!!images[id].comment}
