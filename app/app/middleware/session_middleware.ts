@@ -7,9 +7,12 @@ export default class SessionMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     const guestSession: SessionGuestType | undefined = ctx.session.get('session_guest')
     const jwt = ctx.params.jwt
-    const customer = await Customer.findBy({ id: guestSession?.id })
 
-    if (guestSession === undefined || guestSession.jwt !== ctx.params.jwt || !customer) {
+    if (guestSession === undefined || guestSession.jwt !== ctx.params.jwt) {
+      return ctx.response.redirect(`/galery/${jwt}/guard`)
+    }
+    const customer = await Customer.findBy({ id: guestSession.id })
+    if (!customer) {
       return ctx.response.redirect(`/galery/${jwt}/guard`)
     }
 
