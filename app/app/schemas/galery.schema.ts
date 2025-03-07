@@ -25,7 +25,7 @@ export const addGalery = z.object({
 })
 
 export const editGalery = z.object({
-  name: z.string().transform((v) => v.trim().replaceAll(' ', '_')),
+  name: z.string(),
   exp: z.union([z.string(), z.null()]),
   date: z.string().transform((v) => DateTime.fromISO(v.trim())),
   id: z.string().transform((v) => Number.parseInt(v.trim())),

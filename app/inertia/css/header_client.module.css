@@ -1,18 +1,19 @@
 .header {
   --height: 45px;
   display: grid;
-  grid-template-rows: 100px calc(var(--height) * 2);
+  grid-template-rows: 100px;
+  align-items: center;
   height: 100%;
   gap: 1em;
-  padding: 1em 2em;
+  padding: 1em 4em 1em 5em;
 }
 
 .back > img {
   position: absolute;
   rotate: 100deg;
   scale: -1 1;
-  left: 2em;
-  top: 0px;
+  left: 1em;
+  top: 5px;
   width: 36px;
 }
 
@@ -20,7 +21,6 @@
   display: grid;
   gap: 0.5em;
   font-size: clamp(1.2em, 2vw, 1.3em);
-  padding-left: 3em;
 }
 
 .header nav > p {
@@ -58,13 +58,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.5em;
   }
 
   & aside a {
     padding-top: 2.5em;
     text-decoration: underline;
     color: var(--pink);
+    padding-bottom: 0.5em;
   }
 
   & aside p {
@@ -91,8 +91,20 @@
   font-family: var(--kg-font);
   text-align: right;
   font-weight: lighter;
+  z-index: -1;
 }
-
+.header div:has(h1) div {
+  position: relative;
+  & svg {
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%);
+    width: 120%;
+    max-height: 150%;
+    z-index: 50;
+  }
+}
 .ctaOpen > div:last-child {
   opacity: 1;
   height: var(--height);
@@ -116,7 +128,7 @@
 
   .header nav {
     padding: 0;
-    height: 100%  ;
+    height: 100%;
     gap: 2em;
 
     & > p {

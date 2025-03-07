@@ -7,6 +7,7 @@ import { motion } from 'motion/react'
 import { upToDownAnimation } from '~/utils/animations/up_to_down'
 import { PropsType } from '~/utils/types/props.type'
 import { Head, Link, usePage } from '@inertiajs/react'
+import Round from '~/assets/icons/round'
 
 const Header = ({ exp, urlData: { name, createdAt } }: PropsType) => {
   const homeUrl = location.origin.replace('photos.', '')
@@ -31,15 +32,14 @@ const Header = ({ exp, urlData: { name, createdAt } }: PropsType) => {
         </nav>
         <aside>
           <Link href={`${currentUrl}/guard`}>Changer de profil</Link>
-          <h1>{name}</h1>
+          <div>
+            <h1>
+              {name}
+            </h1>
+            <Round/>
+          </div>
           <p>{new Date(createdAt).toLocaleDateString()}</p>
         </aside>
-      </div>
-
-      <div>
-        <p>
-          *Les photos sont volontairement de moins bonne qualité afin d'éviter tout risque de vol.
-        </p>
       </div>
     </motion.header>
   )

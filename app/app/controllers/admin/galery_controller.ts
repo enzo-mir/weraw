@@ -100,7 +100,6 @@ export default class GaleriesController {
       const urlFind = await Galery.findOrFail(id)
 
       const token = exp && (await jwtMaker(urlFind.groupe, exp))
-
       const query = `
          UPDATE photos
          SET url = REPLACE(url, '${urlFind.name}', '${name}')

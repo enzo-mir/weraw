@@ -1,6 +1,6 @@
 .main {
   display: grid;
-  padding: 2em;
+  padding: 2em 5em;
   gap: 1em;
   width: 100%;
 }
@@ -13,10 +13,11 @@
 }
 
 .filter {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1em;
-  padding: 2em;
+  padding: 4em 5em 0em 5em;
 }
 
 .profiles {
@@ -72,23 +73,49 @@
 }
 
 .filter select {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1em;
   width: 200px;
   padding: 0.5em 1em;
   border-radius: 50px;
-  border: 1px solid var(--pink);
+  z-index: 1;
   cursor: pointer;
   font-family: var(--bricolage-condensed--font);
   font-size: 1.1em;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  color: var(--blue);
   background-color: #fff;
-  background-image: url('../assets/icons/down_arrow_dark.svg');
+  background-image: url('../assets/icons/down_arrow_blue.svg');
   background-repeat: no-repeat;
   background-position: 90% center;
+  
+}
+
+.filter:has(select:focus-within)::after {
+  bottom: 0;
+  left: 5em;
+}
+
+.filter select:focus-within {
+  background-image: url('../assets/icons/up_arrow_blue.svg');
+}
+
+.filter::after {
+  position: absolute;
+  bottom: -10px;
+  left: calc(5em + 5px);
+  content: '';
+  height: 38px;
+  width: 197px;
+  z-index: 0;
+  border-radius: 50px;
+  background-color: var(--blue);
+  border: 2px solid white;
+  transition: all 0.3s ease-out;
 }
 
 .header {

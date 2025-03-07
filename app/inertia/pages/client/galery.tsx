@@ -1,9 +1,10 @@
 import React, { Suspense } from 'react'
-const DisplayGalery = React.lazy(() => import('~/components/display_galery'))
 import style from '#css/galery.module.css'
 import Header from './header'
 import { PropsType } from '~/utils/types/props.type'
 import { router } from '@inertiajs/react'
+
+const DisplayGalery = React.lazy(() => import('~/components/display_galery'))
 const Dialog = React.lazy(() => import('~/components/dialog'))
 
 const Galery = (props: PropsType) => {
