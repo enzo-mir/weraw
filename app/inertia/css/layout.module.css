@@ -1,0 +1,30 @@
+.fade_in {
+  translate: 0svw;
+  opacity: 1;
+  animation: animate_in 0.5s ease forwards;
+}
+
+.fade_out {
+  position: relative;
+  translate: -10svw;
+  opacity: 0;
+  animation: animate 0.5s ease 0.5s forwards;
+}
+@keyframes animate_in {
+  100% {
+    translate: -10svw;
+    opacity: 0;
+  }
+}
+
+@keyframes animate {
+  100% {
+    translate: 0;
+    opacity: 1;
+  }
+}
+.animated {
+  position: relative;
+  transition: all 0.5s ease;
+  overflow: hidden;
+}

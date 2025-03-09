@@ -6,16 +6,23 @@
 .header img {
   rotate: 90deg;
 }
-.header a {
+.header button {
   display: flex;
   align-items: center;
   gap: 0.5em;
   width: fit-content;
+  border: none;
+  background-color: transparent;
   transition: all 0.3s ease;
 }
 
-.header a:hover {
+.header button:hover {
   gap: 0.2em;
+}
+
+.in_view {
+  filter: blur(10);
+  translate: 0;
 }
 
 .back_to_top {
@@ -44,7 +51,7 @@
   width: 100%;
   padding-inline: 4em;
   padding-block-end: 3em;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .main h1 {

@@ -1,19 +1,30 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 import greenSquare from '#assets/images/green_square.png'
 import pinkStart from '#assets/images/pink_star.png'
 import bee from '#assets/images/bee.png'
 import nono from '#assets/images/nono.png'
 import styles from '#css/projects.module.css'
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, Variants } from 'motion/react'
 import { upToDownAnimation } from '~/utils/animations/up_to_down'
 import Round from '#assets/icons/round'
 import arrowBlue from '#assets/icons/arrow_link_blue.png'
 import arrow from '#assets/icons/down_arrow.svg'
 import { leftToRightAnimation } from '~/utils/animations/left_to_right'
 import arrowBlack from '#assets/icons/down_arrow_dark.svg'
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 import { ProjectTypeProps } from '~/utils/types/projects.type'
-
+import Layout from './layout'
+const cardVariants: Variants = {
+  offscreen: {},
+  onscreen: {
+    rotate: -5,
+    transition: {
+      type: 'spring',
+      bounce: 0.5,
+      duration: 2,
+    },
+  },
+}
 const Projects = (props: ProjectTypeProps) => {
   const { scrollYProgress } = useScroll()
   const [scrollY, setScrollY] = useState(0)
@@ -21,6 +32,7 @@ const Projects = (props: ProjectTypeProps) => {
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
     setScrollY(latest)
   })
+
   return (
     <>
       <Head>
@@ -31,10 +43,10 @@ const Projects = (props: ProjectTypeProps) => {
         />
       </Head>
       <header className={styles.header}>
-        <Link href="/">
+        <button onClick={() => router.visit('/')}>
           <img src={arrow} />
           Accueil
-        </Link>
+        </button>
       </header>
 
       <main className={styles.main}>
@@ -91,17 +103,21 @@ const Projects = (props: ProjectTypeProps) => {
               </article>
               <ul className={styles.collection}>
                 {collection.map((photo) => (
-                  <li
+                  <motion.li
                     key={photo.asset_id}
                     style={{ gridColumn: `span ${photo.height / photo.width === 2 / 3 ? 2 : 1}` }}
+                    initial="offscreen"
+                    whileInView="onscreen"
+                    viewport={{ amount: 1 }}
                   >
-                    <img
+                    <motion.img
                       src={photo.secure_url}
                       loading="lazy"
                       alt={photo.metadata.title}
+                      variants={cardVariants}
                       height={400}
                     />
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
@@ -124,5 +140,6 @@ const Projects = (props: ProjectTypeProps) => {
     </>
   )
 }
+Projects.layout = (children: JSX.Element) => <Layout>{children}</Layout>
 
 export default Projects

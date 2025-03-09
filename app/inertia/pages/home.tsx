@@ -6,8 +6,10 @@ import { Head, router } from '@inertiajs/react'
 import { motion } from 'motion/react'
 import { leftToRightAnimation } from '~/utils/animations/left_to_right'
 import { popAnimation } from '~/utils/animations/pop'
+import { JSX } from 'react'
+import Layout from './client/layout'
 
-export default function Home() {
+function Home() {
   return (
     <>
       <Head>
@@ -15,7 +17,10 @@ export default function Home() {
         <link rel="preload" href={waterPink} as="image" />
         <link rel="preload" href={starEye} as="image" />
         <link rel="preload" href={star} as="image" />
-        <meta name="description" content="Weraw - une application qui facilite l'intéraction entre photographe et client !" />
+        <meta
+          name="description"
+          content="Weraw - une application qui facilite l'intéraction entre photographe et client !"
+        />
       </Head>
       <main className={style.main}>
         <div className={style.text_side}>
@@ -72,3 +77,6 @@ export default function Home() {
     </>
   )
 }
+
+Home.layout = (children: JSX.Element) => <Layout>{children}</Layout>
+export default Home
