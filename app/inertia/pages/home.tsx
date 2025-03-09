@@ -1,32 +1,13 @@
-import checkimg from '#assets/icons/check.png'
-import arrowLink from '#assets/icons/arrow_link.png'
 import waterPink from '#assets/images/water_pink.png'
 import starEye from '#assets/images/star_eye.png'
 import star from '#assets/images/star.png'
 import style from '#css/home.module.css'
-import { useState } from 'react'
-import { urlSchema } from '#types/url.type'
-import { ZodError } from 'zod'
-import { Head, Link, router } from '@inertiajs/react'
-import { toast } from 'react-toastify'
+import { Head, router } from '@inertiajs/react'
 import { motion } from 'motion/react'
 import { leftToRightAnimation } from '~/utils/animations/left_to_right'
 import { popAnimation } from '~/utils/animations/pop'
 
 export default function Home() {
-  const [url, setUrl] = useState<string>('')
-
-  const submitUrl = async () => {
-    try {
-      await urlSchema.parseAsync(url)
-      location.href = url
-    } catch (error) {
-      if (error instanceof ZodError) {
-        toast.error(error.errors[0].message)
-      }
-    }
-  }
-
   return (
     <>
       <Head>

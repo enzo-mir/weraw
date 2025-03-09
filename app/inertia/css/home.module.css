@@ -119,9 +119,6 @@
 }
 
 @media screen and (max-width: 1000px) {
-  .main {
-    overflow: hidden;
-  }
   .url_section {
     margin-top: 0em;
   }
@@ -133,7 +130,7 @@
   }
   .main {
     grid-template-columns: 100%;
-    gap: 2em;
+    gap: 5em;
     grid-template-rows: auto 1fr;
     padding: 2em;
     overflow: auto;

@@ -53,6 +53,7 @@ body {
   font-family: var(--bricolage--font);
   background-color: var(--bg);
   color: white;
+  scroll-behavior: smooth;
 }
 
 * {

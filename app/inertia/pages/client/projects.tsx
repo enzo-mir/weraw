@@ -1,41 +1,34 @@
-import { Link } from '@inertiajs/react'
-import arrow from '#assets/icons/down_arrow.svg'
+import { Head, Link } from '@inertiajs/react'
 import greenSquare from '#assets/images/green_square.png'
 import pinkStart from '#assets/images/pink_star.png'
 import bee from '#assets/images/bee.png'
 import nono from '#assets/images/nono.png'
 import styles from '#css/projects.module.css'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { upToDownAnimation } from '~/utils/animations/up_to_down'
-
-type ProjectTypeProps = {
-  collection: [
-    [
-      {
-        format: string
-        width: number
-        height: number
-        asset_id: string
-        secure_url: string
-        metadata: {
-          title: string
-          description: string
-          date: string
-          description_2?: string
-        }
-      },
-    ],
-  ]
-}
+import Round from '#assets/icons/round'
+import arrowBlue from '#assets/icons/arrow_link_blue.png'
+import arrow from '#assets/icons/down_arrow.svg'
+import { leftToRightAnimation } from '~/utils/animations/left_to_right'
+import arrowBlack from '#assets/icons/down_arrow_dark.svg'
+import { useState } from 'react'
+import { ProjectTypeProps } from '~/utils/types/projects.type'
 
 const Projects = (props: ProjectTypeProps) => {
-  console.log(props);
-  
+  const { scrollYProgress } = useScroll()
+  const [scrollY, setScrollY] = useState(0)
+
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    setScrollY(latest)
+  })
   return (
     <>
+      <Head>
+        <title>Ma pellicule</title>
+      </Head>
       <header className={styles.header}>
         <Link href="/">
-          <img src={arrow} alt="" />
+          <img src={arrow} />
           Accueil
         </Link>
       </header>
@@ -43,20 +36,26 @@ const Projects = (props: ProjectTypeProps) => {
       <main className={styles.main}>
         <section className={styles.head_section}>
           <div>
-            <h1>WeRaw</h1>
-            <p>
-              <em>//</em> Explorez la galerie de mes projets photographiques et plongez dans
-              l'univers visuel de chaque événement que j'ai capturé !
-            </p>
+            <motion.h1 {...upToDownAnimation({ easings: 'easeInOut' })}>
+              MA PELLICULE
+              <Round />
+              <motion.img src={arrowBlue} alt="arrow link" />
+            </motion.h1>
+            <div>
+              <motion.p {...leftToRightAnimation({ delay: 0.2 })}>
+                Explorez la galerie de mes projets photographiques et plongez dans l'univers visuel
+                de chaque événement que j'ai capturé !
+              </motion.p>
 
-            <p>
-              <em>//</em> Partager avec vous les clichés bruts de vos moments précieux, pour que
-              vous puissiez sélectionner ceux qui méritent d'être sublimés.
-            </p>
-            <p>
-              <em>//</em> Découvrez, choisissez et personnalisez vos souvenirs pour qu'ils reflètent
-              parfaitement votre vision.
-            </p>
+              <motion.p {...leftToRightAnimation({ delay: 0.3 })}>
+                Partager avec vous les clichés bruts de vos moments précieux, pour que vous puissiez
+                sélectionner ceux qui méritent d'être sublimés.
+              </motion.p>
+              <motion.p {...leftToRightAnimation({ delay: 0.4 })}>
+                Découvrez, choisissez et personnalisez vos souvenirs pour qu'ils reflètent
+                parfaitement votre vision.
+              </motion.p>
+            </div>
           </div>
 
           <aside>
@@ -66,7 +65,8 @@ const Projects = (props: ProjectTypeProps) => {
               src={greenSquare}
               alt="green square"
               {...upToDownAnimation()}
-              animate={{ rotate: -45, opacity: 1 }}
+              initial={{ rotate: -45, opacity: 0 }}
+              animate={{ rotate: -0, opacity: 1 }}
             />
             <motion.img src={bee} alt="bee in star" />
           </aside>
@@ -87,7 +87,10 @@ const Projects = (props: ProjectTypeProps) => {
               </article>
               <ul className={styles.collection}>
                 {collection.map((photo) => (
-                  <li key={photo.asset_id}>
+                  <li
+                    key={photo.asset_id}
+                    style={{ gridColumn: `span ${photo.height / photo.width === 2 / 3 ? 2 : 1}` }}
+                  >
                     <img
                       src={photo.secure_url}
                       loading="lazy"
@@ -100,6 +103,19 @@ const Projects = (props: ProjectTypeProps) => {
             </div>
           ))}
         </section>
+        <AnimatePresence>
+          {scrollY > 0.3 ? (
+            <motion.button
+              className={styles.back_to_top}
+              onClick={() => window.scrollTo(0, 0)}
+              initial={{ bottom: -100 }}
+              animate={{ bottom: 20, transition: { duration: 0.2 } }}
+              exit={{ bottom: -100 }}
+            >
+              <img src={arrowBlack} property="high" width={20} height={20} />
+            </motion.button>
+          ) : null}
+        </AnimatePresence>
       </main>
     </>
   )

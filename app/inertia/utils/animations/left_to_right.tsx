@@ -15,7 +15,7 @@ export const leftToRightAnimation = (transition?: Transition) => {
       x: 100,
     },
     transition: {
-      duration: 0.5,
+      duration: 0.3,
       easeInOut,
       ...transition,
     },
