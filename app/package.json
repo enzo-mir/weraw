@@ -69,6 +69,7 @@
     "@inertiajs/react": "^2.0.3",
     "@types/jsonwebtoken": "^9.0.8",
     "@vinejs/vine": "^3.0.0",
+    "cloudinary": "^2.5.1",
     "edge.js": "^6.2.1",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.5.0",

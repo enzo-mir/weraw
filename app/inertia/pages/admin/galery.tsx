@@ -19,8 +19,6 @@ const Galery = (props: PropsType) => {
     new URLSearchParams(window.location.search).get('customer') ||
     (props.profiles?.length && props.profiles?.[0].id)
 
-  console.log(props.images)
-
   const [imagesData, setImagesData] = useState<GaleryType[] | null>(null)
 
   function changeFilter(e: React.ChangeEvent<HTMLSelectElement>) {

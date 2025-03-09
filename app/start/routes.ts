@@ -3,6 +3,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 import app from '@adonisjs/core/services/app'
 import env from './env.js'
+const PhotosController = () => import('#controllers/client/photos_controller')
 const ImagesController = () => import('#controllers/images_controller')
 const GaleryClientController = () => import('#controllers/client/galery_client_controller')
 const GaleriesController = () => import('#controllers/admin/galery_controller')
@@ -13,6 +14,8 @@ router.on('/login').renderInertia('login')
 router.post('/auth/login', [AuthentificationsController, 'login'])
 router.post('/auth/logout', [AuthentificationsController, 'logout'])
 router.get('/dashboard', [DashboardController, 'index']).use(middleware.auth())
+
+/* photos : DOMAIN */
 
 router
   .group(() => {
@@ -52,3 +55,5 @@ router
   })
   .prefix('/galery')
   .use(middleware.auth())
+
+router.get('/photos', [PhotosController, 'index'])

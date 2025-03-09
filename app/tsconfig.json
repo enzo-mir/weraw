@@ -3,6 +3,8 @@
   "compilerOptions": {
     "outDir": "./build",
     "rootDir": "./",
+    "resolveJsonModule": true,
+
     "paths": {
       "#schemas/*": ["./app/schemas/*.ts"]
     }

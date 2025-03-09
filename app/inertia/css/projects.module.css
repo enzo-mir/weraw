@@ -1,0 +1,141 @@
+.header {
+  padding: 1em 1em 3em 1em;
+  font-family: var(--bricolage-condensed--font);
+  font-size: 1.5em;
+}
+.header img {
+  rotate: 90deg;
+}
+.header a {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.header a:hover {
+  gap: 0.2em;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+  height: 100%;
+  width: 100%;
+  padding-inline: 4em;
+}
+
+.main h1 {
+  font-family: var(--kg-font);
+  font-size: 2em;
+  font-weight: 300;
+  color: var(--blue);
+  font-size: clamp(2.5em, 6vw, 4em);
+}
+
+.head_section {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: 100%;
+}
+
+.head_section aside {
+  display: grid;
+  grid-template-columns: auto auto;
+  position: relative;
+  width: 100%;
+}
+
+.head_section aside img {
+  --size: 350px;
+  width: var(--size);
+  height: auto;
+  object-fit: cover;
+
+  &:nth-child(3) {
+    height: var(--size);
+    width: auto;
+  }
+}
+
+.head_section > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  width: clamp(300px, 60%, 700px);
+  & em {
+    font-family: var(--kg-font);
+    font-weight: 100;
+  }
+
+  & p {
+    font-size: 1.4em;
+    line-height: 150%;
+  }
+}
+
+.photos_section {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  gap: 5em;
+  width: 100%;
+}
+
+.photos_section > div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 3em;
+}
+
+.metadata {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.photos_section > div:nth-child(even) > article {
+  align-items: end;
+}
+.photos_section > div:nth-child(even) > ul {
+  flex-direction: row-reverse;
+}
+
+.metadata h3 {
+  font-family: var(--kg-font);
+  font-size: clamp(2em, 4vw, 3em);
+  font-weight: 300;
+}
+
+.metadata span {
+  color: var(--blue);
+  font-weight: 300;
+}
+
+.metadata div {
+  padding-top: 1em;
+}
+
+.metadata p {
+  font-size: 1.4em;
+  line-height: 120%;
+}
+
+.collection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  width: 100%;
+}
+.collection li {
+  display: flex;
+  width: max-content;
+}
+
+.collection img {
+  object-fit: cover;
+  border-radius: 8px;
+}

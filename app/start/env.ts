@@ -56,4 +56,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for configuring the drive package
   |----------------------------------------------------------
   */
+
+  API_KEY_CLOUDINARY: Env.schema.string(),
+  API_KEY_SECRET_CLOUDINARY: Env.schema.string(),
+  API_NAME_CLOUDINARY: Env.schema.string(),
 })

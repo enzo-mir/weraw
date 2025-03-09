@@ -29,71 +29,53 @@
   color: var(--blue);
   font-style: normal;
 }
-
-.url_section {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 3em min-content;
-  place-self: end;
-  column-gap: 1em;
-  width: 100%;
-}
-
-.url_section h2 {
-  background-color: #fff;
-  padding: 0.5em 1em;
-  border-radius: 1em;
-  grid-area: 1 / 1 / 2 / 3;
-  color: black;
+.pellicule_section {
   width: fit-content;
-  font-family: var(--bricolage-condensed--font);
   height: fit-content;
-  width: fit-content;
-  font-size: clamp(1em, 2vw, 1.5em);
-}
+  color: var(--bg);
+  align-self: center;
 
-.url_section > div {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2em;
-  border: 2px solid white;
-  width: 100%;
-  border-radius: 4em;
-  transition: all 0.2s ease-out;
-}
-.url_section > img {
-  place-self: center;
-}
-.url_section > div button {
-  aspect-ratio: 1/1;
-  border-radius: 50%;
-  background-color: var(--pink);
-  transition: all 0.2s ease-out;
-  border: none;
-}
-.url_section > div input {
-  height: 50px;
-  background-color: transparent;
-  border: unset;
-  color: white;
-  padding: 0.5em 1em;
-  font-size: clamp(1em, 2.5vw, 1.5em);
-  height: 100%;
-  width: 100%;
-}
+  & button {
+    position: relative;
+    font-family: var(--bricolage-condensed--font);
+    background-color: #fff;
+    color: var(--bg);
+    transition: all 0.15s ease;
+    border: none;
 
-.url_section > div input:focus-visible {
-  outline: none;
-}
-.url_section > div:has(input:invalid) {
-  border: 2px solid var(--pink);
-}
-.url_section > div:has(input:valid) {
-  border: 2px solid var(--green);
-}
-.url_section > div:has(input:valid) button {
-  background-color: var(--green);
+    &::after {
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      top: 7px;
+      left: 7px;
+      border-radius: 50px;
+      z-index: -1;
+      background-color: var(--pink);
+      border: 2px solid white;
+      opacity: 1;
+      transition: all 0.15s ease;
+    }
+
+    &::before {
+      position: absolute;
+      content: '';
+      top: -2em;
+      right: -4em;
+      width: 50px;
+      height: 50px;
+      background-image: url('../assets/icons/arrow_link.png');
+      transform: rotateX(180deg) scale(-1);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+
+  & em {
+    color: var(--pink);
+  }
 }
 
 .aside {

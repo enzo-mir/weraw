@@ -7,7 +7,7 @@ import style from '#css/home.module.css'
 import { useState } from 'react'
 import { urlSchema } from '#types/url.type'
 import { ZodError } from 'zod'
-import { Head } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import { toast } from 'react-toastify'
 import { motion } from 'motion/react'
 import { leftToRightAnimation } from '~/utils/animations/left_to_right'
@@ -52,26 +52,13 @@ export default function Home() {
           </motion.p>
           <motion.section
             {...leftToRightAnimation({ delay: 0.75, duration: 0.2 })}
-            className={style.url_section}
+            className={style.pellicule_section}
           >
-            <h2>
-              Rentrez votre url <em>WeRaw</em>
-            </h2>
-            <img src={arrowLink} alt="Arrow link icon" width={30} />
-            <div>
-              <input
-                type="url"
-                value={url}
-                onChange={(e) => setUrl(e.currentTarget.value)}
-                name="weraw_url"
-                placeholder="https://photos.weraw.fr/..."
-                required
-                pattern="^https:\/\/photos\.weraw.fr\/.*"
-              />
-              <button onClick={submitUrl}>
-                <img src={checkimg} alt="Check icon" width={25} height={25} />
-              </button>
-            </div>
+            <button onClick={() => router.visit('/photos')}>
+              <h2>
+                Découvrez ma <em>pellicule</em>
+              </h2>
+            </button>
           </motion.section>
         </div>
         <aside className={style.aside}>
