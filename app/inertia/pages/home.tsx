@@ -15,6 +15,7 @@ export default function Home() {
         <link rel="preload" href={waterPink} as="image" />
         <link rel="preload" href={starEye} as="image" />
         <link rel="preload" href={star} as="image" />
+        <meta name="description" content="Weraw - une application qui facilite l'intéraction entre photographe et client !" />
       </Head>
       <main className={style.main}>
         <div className={style.text_side}>

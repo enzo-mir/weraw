@@ -25,6 +25,10 @@ const Projects = (props: ProjectTypeProps) => {
     <>
       <Head>
         <title>Ma pellicule</title>
+        <meta
+          name="description"
+          content="Weraw - Voici la galerie de mes projets photographiques, plongez dans l'univers visuel de chaque événement que j'ai capturé !"
+        />
       </Head>
       <header className={styles.header}>
         <Link href="/">
