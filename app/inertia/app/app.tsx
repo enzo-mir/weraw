@@ -25,7 +25,7 @@ createInertiaApp({
     createRoot(el).render(
       <Suspense fallback={<></>}>
         <ToastContainer />
-          <Loader>
+        <Loader>
           <App {...props} />
         </Loader>
       </Suspense>

@@ -15,6 +15,29 @@ import { ProjectTypeProps } from '~/utils/types/projects.type'
 import Layout from './layout'
 
 const Projects = (props: ProjectTypeProps) => {
+  function isAdaptable(
+    photo: (typeof props.collection)[0][0],
+    index: number,
+    collection: (typeof props.collection)[0]
+  ) {
+    const isSmallScreen = window.matchMedia('(max-width: 500px)').matches
+    if (!isSmallScreen) return false
+
+    const ratio = photo.height / photo.width
+
+    const nextPhoto = collection[index + 1]
+    const nextRatio = nextPhoto ? nextPhoto.height / nextPhoto.width : null
+
+    const oldPhoto = collection[index - 1]
+    const oldRatio = oldPhoto ? oldPhoto.height / oldPhoto.width : null
+
+    const isPortrait = ratio > 1
+    const isNextPortrait = nextRatio !== null && nextRatio > 1
+    const isOldPortrait = oldRatio !== null && oldRatio > 1
+
+    return isPortrait && (isNextPortrait || isOldPortrait)
+  }
+
   return (
     <>
       <Head>
@@ -87,7 +110,9 @@ const Projects = (props: ProjectTypeProps) => {
                 {collection.map((photo) => (
                   <motion.li
                     key={photo.asset_id}
-                    style={{ gridColumn: `span ${photo.height / photo.width === 2 / 3 ? 2 : 1}` }}
+                    style={{
+                      width: isAdaptable(photo, index, collection) ? 'calc(50% - 1em)' : 'auto',
+                    }}
                     viewport={{ amount: 1 }}
                   >
                     <motion.img
