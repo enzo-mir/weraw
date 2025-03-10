@@ -4,35 +4,17 @@ import pinkStart from '#assets/images/pink_star.png'
 import bee from '#assets/images/bee.png'
 import nono from '#assets/images/nono.png'
 import styles from '#css/projects.module.css'
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, Variants } from 'motion/react'
+import { motion } from 'motion/react'
 import { upToDownAnimation } from '~/utils/animations/up_to_down'
 import Round from '#assets/icons/round'
 import arrowBlue from '#assets/icons/arrow_link_blue.png'
 import arrow from '#assets/icons/down_arrow.svg'
 import { leftToRightAnimation } from '~/utils/animations/left_to_right'
-import arrowBlack from '#assets/icons/down_arrow_dark.svg'
-import { JSX, useState } from 'react'
+import { JSX } from 'react'
 import { ProjectTypeProps } from '~/utils/types/projects.type'
 import Layout from './layout'
-const cardVariants: Variants = {
-  offscreen: {},
-  onscreen: {
-    rotate: -5,
-    transition: {
-      type: 'spring',
-      bounce: 0.5,
-      duration: 2,
-    },
-  },
-}
+
 const Projects = (props: ProjectTypeProps) => {
-  const { scrollYProgress } = useScroll()
-  const [scrollY, setScrollY] = useState(0)
-
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    setScrollY(latest)
-  })
-
   return (
     <>
       <Head>
@@ -106,15 +88,12 @@ const Projects = (props: ProjectTypeProps) => {
                   <motion.li
                     key={photo.asset_id}
                     style={{ gridColumn: `span ${photo.height / photo.width === 2 / 3 ? 2 : 1}` }}
-                    initial="offscreen"
-                    whileInView="onscreen"
                     viewport={{ amount: 1 }}
                   >
                     <motion.img
                       src={photo.secure_url}
                       loading="lazy"
                       alt={photo.metadata.title}
-                      variants={cardVariants}
                       height={400}
                     />
                   </motion.li>
@@ -123,23 +102,10 @@ const Projects = (props: ProjectTypeProps) => {
             </div>
           ))}
         </section>
-        <AnimatePresence>
-          {scrollY > 0.3 ? (
-            <motion.button
-              className={styles.back_to_top}
-              onClick={() => window.scrollTo(0, 0)}
-              initial={{ bottom: -100 }}
-              animate={{ bottom: 20, transition: { duration: 0.2 } }}
-              exit={{ bottom: -100 }}
-            >
-              <img src={arrowBlack} property="high" width={20} height={20} />
-            </motion.button>
-          ) : null}
-        </AnimatePresence>
       </main>
     </>
   )
 }
-Projects.layout = (children: JSX.Element) => <Layout>{children}</Layout>
+Projects.layout = (children: JSX.Element) => <Layout button={true}>{children}</Layout>
 
 export default Projects

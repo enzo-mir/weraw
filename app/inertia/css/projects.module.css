@@ -27,17 +27,14 @@
 
 .back_to_top {
   position: fixed;
-  bottom: 1em;
   right: 1em;
   width: 40px;
   height: 40px;
-  z-index: 100;
+  bottom: 5em;
   background-color: #fff;
   rotate: 180deg;
   padding: 0px;
   border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
   border: none;
   z-index: 100;
   visibility: hidden;
@@ -238,6 +235,9 @@
   }
   .main h1 img {
     bottom: -1.25em;
+    right: -1.5em;
+    rotate: -25deg;
+    scale: 0.7;
   }
 }
 
@@ -250,10 +250,21 @@
 @media screen and (max-width: 500px) {
   .main {
     padding-inline: 2em;
+    overflow-x: hidden;
   }
+
   .head_section aside img:nth-child(2) {
-    display: none;
+    scale: 0.8;
   }
+  .head_section aside {
+    grid-template-columns: 50% 1fr;
+  }
+
+  .head_section aside img:first-child {
+    rotate: -30deg;
+    scale: 0.8;
+  }
+
   .head_section > div div p {
     text-wrap: auto;
   }
@@ -264,6 +275,9 @@
 
   .collection li {
     grid-column: unset !important;
+  }
+  .collection li img {
+    border-radius: 0;
   }
   .back_to_top {
     visibility: visible;
