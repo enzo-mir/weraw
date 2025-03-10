@@ -1,5 +1,5 @@
 import env from '#start/env'
-import { v2 as cloudinary } from 'cloudinary'
+import { v2 as cloudinary, ResourceApiOptions } from 'cloudinary'
 import metadataCollection from '../static/collection.data.json' with { type: 'json' }
 
 cloudinary.config({
@@ -16,9 +16,10 @@ export default async () => {
     max_results: 500,
   })
 
-  const array = metadataCollection.map(() => [])
+  const array: Array<Array<ResourceApiOptions & { metadata: (typeof metadataCollection)[0] }>> =
+    metadataCollection.map(() => [])
 
-  resources.map((resource) => {
+  resources.map((resource: ResourceApiOptions) => {
     metadataCollection.forEach((metadata, index) => {
       if (metadata.folder === resource.folder) {
         array[index].push({ ...resource, metadata })
